@@ -1,0 +1,26 @@
+configuration:
+  applications:
+    itunes:
+      mac: iTunes
+      windows: iTunes.exe
+      linux: null
+  computers:
+    macbook-pro:
+      hostname: Jaces-MacBook-Pro.local
+      address:
+        internal: 10.1.201.48
+        external: 184.175.133.194
+      username: Browning
+    macbook-pro2:
+      hostname: Jaces-MacBook-Pro.local
+      address:
+        internal: 9.9.9.9
+        external: 8.8.8.8
+status:
+  itunes:
+    macbook-pro:
+      started: 111111
+      stopped: 222222
+    macbook-pro2:
+      started: 333333
+      stopped: 444444

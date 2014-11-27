@@ -1,4 +1,5 @@
 """pytest configuration."""
+# pylint:disable=E1101
 
 import os
 import pytest

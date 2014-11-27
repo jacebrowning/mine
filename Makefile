@@ -153,7 +153,7 @@ pep8: .depends-ci
 
 .PHONY: pep257
 pep257: .depends-ci
-	$(PEP257) $(PACKAGE)
+	$(PEP257) $(PACKAGE) --ignore=D102
 
 .PHONY: pylint
 pylint: .depends-dev
@@ -185,12 +185,14 @@ tests-nose: .depends-ci
 
 .PHONY: test-pytest
 test-pytest: .depends-ci
+	$(COVERAGE) erase
 	$(COVERAGE) run --source $(PACKAGE) -m py.test $(PACKAGE) --doctest-modules
-	$(COVERAGE) report --show-missing --fail-under=100
+	$(COVERAGE) report --show-missing --fail-under=82
 
 .PHONY: tests-pytest
 tests-pytest: .depends-ci
-	TEST_INTEGRATION=1 $(MAKE) test
+	$(COVERAGE) erase
+	TEST_INTEGRATION=1 $(COVERAGE) run --source $(PACKAGE) -m py.test $(PACKAGE) --doctest-modules
 	$(COVERAGE) report --show-missing --fail-under=100
 
 # Cleanup ####################################################################

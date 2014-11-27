@@ -1,3 +1,6 @@
+"""Common exceptions, classes, and functions."""
+# pylint: disable=R0903
+
 import logging
 
 import yorm

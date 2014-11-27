@@ -2,6 +2,7 @@
 
 
 import os
+import pytest
 from mine.test.conftest import FILES
 
 from mine.application import Application
@@ -12,15 +13,16 @@ from mine.settings import Settings, Configuration
 import yorm
 
 
+@pytest.mark.integration
 def test_settings():
     """Verify a sample file is created."""
-    PATH = os.path.join(FILES, 'mine.yml')
+    path = os.path.join(FILES, 'mine.yml')
 
-    if os.path.exists(PATH):
-        os.remove(PATH)
+    if os.path.exists(path):
+        os.remove(path)
 
     settings = Settings()
-    yorm.store(settings, PATH)
+    yorm.store(settings, path)
 
     itunes = Application('itunes')
     itunes.versions.mac = ''
@@ -49,4 +51,4 @@ def test_settings():
 
     settings.status = [itunes_status]
 
-    assert os.path.exists(PATH)
+    assert os.path.exists(path)

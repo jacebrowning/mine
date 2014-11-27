@@ -1,5 +1,5 @@
-
-import abc
+"""Data structures for all settings."""
+# pylint: disable=R0903
 
 import yorm
 
@@ -13,14 +13,18 @@ from .status import Statuses
 @yorm.map_attr(computers=Computers)
 class Configuration(common.AttributeDictionary):
 
+    """A dictionary of configuration settings."""
+
     def __init__(self):
-        self.applications = []
-        self.computers = []
+        self.applications = Applications()
+        self.computers = Computers()
 
 
 @yorm.map_attr(configuration=Configuration)
 @yorm.map_attr(status=Statuses)
 class Settings:
+
+    """Primary wrapper for all settings."""
 
     def __init__(self):
         self.configuration = Configuration()

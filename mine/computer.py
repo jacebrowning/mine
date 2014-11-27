@@ -1,5 +1,5 @@
-
-import abc
+"""Data structures for computer information."""
+# pylint: disable=R0903
 
 from . import common
 
@@ -12,6 +12,8 @@ log = common.logger(__name__)
 @yorm.map_attr(external=common.NoneString)
 class Address(common.AttributeDictionary):
 
+    """A dictionary of IP addresses."""
+
     def __init__(self):
         self.internal = None
         self.external = None
@@ -22,6 +24,8 @@ class Address(common.AttributeDictionary):
 @yorm.map_attr(address=Address)
 class Computer(common.AttributeDictionary):
 
+    """A dictionary of identifying computer information."""
+
     def __init__(self, label):
         self.label = label
         self.hostname = ""
@@ -30,4 +34,5 @@ class Computer(common.AttributeDictionary):
 
 @yorm.map_attr(all=Computer)
 class Computers(yorm.container.List):
-    pass
+
+    """A list of computers."""

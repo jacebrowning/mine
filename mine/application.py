@@ -1,5 +1,5 @@
-
-import abc
+"""Data structures for application information."""
+# pylint: disable=R0903
 
 from . import common
 
@@ -13,6 +13,8 @@ log = common.logger(__name__)
 @yorm.map_attr(linux=common.NoneString)
 class Versions(common.AttributeDictionary):
 
+    """A dictionary of OS-specific application filenames."""
+
     def __init__(self):
         self.mac = None
         self.windows = None
@@ -23,6 +25,8 @@ class Versions(common.AttributeDictionary):
 @yorm.map_attr(versions=Versions)
 class Application(common.AttributeDictionary):
 
+    """A dictionary of application information."""
+
     def __init__(self, label):
         self.label = label
         self.versions = Versions()
@@ -30,4 +34,5 @@ class Application(common.AttributeDictionary):
 
 @yorm.map_attr(all=Application)
 class Applications(yorm.container.List):
-    pass
+
+    """A list of monitored applications."""

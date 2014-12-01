@@ -86,8 +86,6 @@ ci: check test tests
 .PHONY: env
 env: .virtualenv $(EGG_INFO)
 $(EGG_INFO): Makefile setup.py requirements.txt
-	# TODO: remove this line when a released YORM is used
-	- $(PIP) uninstall YORM --yes
 	VIRTUAL_ENV=$(ENV) $(PYTHON) setup.py develop
 	touch $(EGG_INFO)  # flag to indicate package is installed
 

@@ -38,13 +38,5 @@ setuptools.setup(
         'Programming Language :: Python :: 3.3',
     ],
 
-    # TODO: switch to requirements.txt after YORM is stable
-    # install_requires=open('requirements.txt').readlines(),
-
-    install_requires=[
-        "YORM",
-    ],
-    dependency_links=[
-        'https://github.com/jacebrowning/yorm/archive/develop.zip#egg=YORM'
-    ]
+    install_requires=open('requirements.txt').readlines(),
 )

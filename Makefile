@@ -187,7 +187,7 @@ tests-nose: .depends-ci
 test-pytest: .depends-ci
 	$(COVERAGE) erase
 	$(COVERAGE) run --source $(PACKAGE) -m py.test $(PACKAGE) --doctest-modules
-	$(COVERAGE) report --show-missing --fail-under=82
+	$(COVERAGE) report --show-missing --fail-under=81
 
 .PHONY: tests-pytest
 tests-pytest: .depends-ci

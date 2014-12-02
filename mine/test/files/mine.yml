@@ -22,9 +22,11 @@ configuration:
     hostname: ''
     label: macbook-pro
 status:
-- application: itunes
-  computers:
-  - computer: macbook-pro
-    timestamps:
-      started: 444
-      stopped: null
+  applications:
+  - application: itunes
+    computers:
+    - computer: macbook-pro
+      timestamps:
+        started: 444
+        stopped: null
+  counter: 499

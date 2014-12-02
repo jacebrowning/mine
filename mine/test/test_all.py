@@ -8,7 +8,7 @@ from mine.test.conftest import FILES
 from mine.application import Application
 from mine.computer import Computer
 from mine.status import State, Status
-from mine.settings import Settings, Configuration
+from mine.settings import ProgramConfiguration, ProgramStatus, Settings
 
 import yorm
 
@@ -37,7 +37,7 @@ def test_settings():
 
     mac2 = Computer('macbook-pro')
 
-    configuration = Configuration()
+    configuration = ProgramConfiguration()
     configuration.applications = [itunes, iphoto]
     configuration.computers = [mac, mac2]
 
@@ -49,6 +49,10 @@ def test_settings():
     itunes_status = Status('itunes')
     itunes_status.computers = [mac_state]
 
-    settings.status = [itunes_status]
+    status = ProgramStatus()
+    status.applications = [itunes_status]
+    status.counter = 499
+
+    settings.status = status
 
     assert os.path.exists(path)

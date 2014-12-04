@@ -12,14 +12,14 @@ configuration:
       windows: null
   computers:
   - address:
-      external: 1.2.3.4
-      internal: 10.0.0.10
+      external: 1.1.1.1
+      internal: 2.2.2.2
     hostname: Jaces-MacBook
     label: macbook
   - address:
-      external: 68.43.180.239
-      internal: 10.0.0.10
-    hostname: Jaces-MacBook-Pro.local
+      external: 3.3.3.3
+      internal: 4.4.4.4
+    hostname: Jaces-MacBook-2
     label: macbook-pro
 status:
   applications:

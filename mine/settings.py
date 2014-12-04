@@ -1,5 +1,4 @@
 """Data structures for all settings."""
-# pylint: disable=R0903
 
 import yorm
 

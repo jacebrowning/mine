@@ -14,9 +14,9 @@ import yorm
 
 
 @pytest.mark.integration
-def test_settings():
+def test_settings_out():
     """Verify a sample file is created."""
-    path = os.path.join(FILES, 'mine.yml')
+    path = os.path.join(FILES, 'mine-out.yml')
 
     if os.path.exists(path):
         os.remove(path)
@@ -56,3 +56,19 @@ def test_settings():
     settings.status = status
 
     assert os.path.exists(path)
+
+
+@pytest.mark.integration
+def test_settings_in():
+    """Verify a sample file is loaded."""
+    path = os.path.join(FILES, 'mine-in.yml')
+
+    settings = Settings()
+    yorm.store(settings, path)
+
+    assert settings.configuration.applications
+    for application in settings.configuration.applications:
+        if application.label == 'slack':
+            break
+    else:
+        assert False

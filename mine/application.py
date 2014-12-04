@@ -1,5 +1,4 @@
 """Data structures for application information."""
-# pylint: disable=R0903
 
 from . import common
 

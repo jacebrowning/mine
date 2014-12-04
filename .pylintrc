@@ -5,7 +5,8 @@
 # W0511: TODO in comments
 # R0904: Too many public methods
 # C0103: Invalid constant name
-disable=I0011,W0142,W0511,R0904,C0103
+# RO903: Too few public methods
+disable=I0011,W0142,W0511,R0904,C0103,R0903
 
 [REPORTS]
 

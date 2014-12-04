@@ -1,5 +1,4 @@
 """Data structures for application/computer status."""
-# pylint: disable=R0903
 
 from . import common
 

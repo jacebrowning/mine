@@ -1,9 +1,12 @@
 """Data structures for computer information."""
-# pylint: disable=R0903
 
-from . import common
+import socket
+from contextlib import closing
 
 import yorm
+import ipgetter
+
+from . import common
 
 log = common.logger(__name__)
 
@@ -15,8 +18,20 @@ class Address(common.AttributeDictionary):
     """A dictionary of IP addresses."""
 
     def __init__(self):
-        self.internal = None
-        self.external = None
+        self.external = self.get_external()
+        self.internal = self.get_internal()
+
+    @staticmethod
+    def get_external():
+        """Get this computer's external IP address."""
+        return ipgetter.myip()
+
+    @staticmethod
+    def get_internal():
+        """Get this computer's (first) internal IP address."""
+        with closing(socket.socket(socket.AF_INET, socket.SOCK_DGRAM)) as s:
+            s.connect(("8.8.8.8", 80))
+            return s.getsockname()[0]
 
 
 @yorm.map_attr(label=yorm.standard.String)
@@ -28,8 +43,13 @@ class Computer(common.AttributeDictionary):
 
     def __init__(self, label):
         self.label = label
-        self.hostname = ""
+        self.hostname = self.get_hostname()
         self.address = Address()
+
+    @staticmethod
+    def get_hostname():
+        """Get this computer's hostname."""
+        return socket.gethostname()
 
 
 @yorm.map_attr(all=Computer)

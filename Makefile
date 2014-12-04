@@ -5,10 +5,8 @@ ifndef TRAVIS
 endif
 
 # Test runner settings
-ifndef TEST_RUNNER
-	# options are: nose, pytest
-	TEST_RUNNER := pytest
-endif
+UNIT_TEST_COVERAGE := 86
+INTEGRATION_TEST_COVERAGE := 100
 
 # Project settings
 PROJECT := mine
@@ -57,7 +55,6 @@ PEP8RADIUS := $(BIN)/pep8radius
 PEP257 := $(BIN)/pep257
 PYLINT := $(BIN)/pylint
 PYREVERSE := $(BIN)/pyreverse
-NOSE := $(BIN)/nosetests
 PYTEST := $(BIN)/py.test
 COVERAGE := $(BIN)/coverage
 
@@ -166,34 +163,16 @@ fix: .depends-dev
 # Testing ####################################################################
 
 .PHONY: test
-test: test-$(TEST_RUNNER)
-
-.PHONY: tests
-tests: tests-$(TEST_RUNNER)
-
-# nosetest commands
-
-.PHONY: test-nose
-test-nose: .depends-ci
-	$(NOSE) --config=.noserc
-
-.PHONY: tests-nose
-tests-nose: .depends-ci
-	TEST_INTEGRATION=1 $(NOSE) --config=.noserc --cover-package=$(PACKAGE) -xv
-
-# pytest commands
-
-.PHONY: test-pytest
-test-pytest: .depends-ci
+test: .depends-ci
 	$(COVERAGE) erase
 	$(COVERAGE) run --source $(PACKAGE) -m py.test $(PACKAGE) --doctest-modules
-	$(COVERAGE) report --show-missing --fail-under=81
+	$(COVERAGE) report --show-missing --fail-under=$(UNIT_TEST_COVERAGE)
 
-.PHONY: tests-pytest
-tests-pytest: .depends-ci
+.PHONY: tests
+tests: .depends-ci
 	$(COVERAGE) erase
 	TEST_INTEGRATION=1 $(COVERAGE) run --source $(PACKAGE) -m py.test $(PACKAGE) --doctest-modules
-	$(COVERAGE) report --show-missing --fail-under=100
+	$(COVERAGE) report --show-missing --fail-under=$(INTEGRATION_TEST_COVERAGE)
 
 # Cleanup ####################################################################
 

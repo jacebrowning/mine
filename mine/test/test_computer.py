@@ -24,3 +24,12 @@ def test_init():
     assert 'Sample-Computer.local' == computer.hostname
     assert '1.2.3.4' == computer.address.external
     assert '5.6.7.8' == computer.address.internal
+
+
+def test_init_defaults():
+    """Verify the correct computer information can be overridden."""
+    computer = Computer('label', 'hostname', 'external', 'internal')
+    assert 'label' == computer.label
+    assert 'hostname' == computer.hostname
+    assert 'external' == computer.address.external
+    assert 'internal' == computer.address.internal

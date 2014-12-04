@@ -17,9 +17,9 @@ class Address(common.AttributeDictionary):
 
     """A dictionary of IP addresses."""
 
-    def __init__(self):
-        self.external = self.get_external()
-        self.internal = self.get_internal()
+    def __init__(self, external=None, internal=None):
+        self.external = external or self.get_external()
+        self.internal = internal or self.get_internal()
 
     @staticmethod
     def get_external():
@@ -41,10 +41,10 @@ class Computer(common.AttributeDictionary):
 
     """A dictionary of identifying computer information."""
 
-    def __init__(self, label):
+    def __init__(self, label, hostname=None, external=None, internal=None):
         self.label = label
-        self.hostname = self.get_hostname()
-        self.address = Address()
+        self.hostname = hostname or self.get_hostname()
+        self.address = Address(external=external, internal=internal)
 
     @staticmethod
     def get_hostname():

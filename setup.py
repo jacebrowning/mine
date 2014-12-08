@@ -6,7 +6,7 @@ Setup script for mine.
 
 import setuptools
 
-from mine import __project__, __version__
+from mine import __project__, __version__, CLI, DESCRIPTION
 
 import os
 if os.path.exists('README.rst'):
@@ -20,14 +20,14 @@ setuptools.setup(
     name=__project__,
     version=__version__,
 
-    description="TBD",
+    description=DESCRIPTION,
     url='https://github.com/jacebrowning/mine',
     author='Jace Browning',
     author_email='jacebrowning@gmail.com',
 
     packages=setuptools.find_packages(),
 
-    entry_points={'console_scripts': []},
+    entry_points={'console_scripts': [CLI + ' = mine.cli:main']},
 
     long_description=(README + '\n' + CHANGES),
     license='MIT',
@@ -36,6 +36,7 @@ setuptools.setup(
         'Natural Language :: English',
         'Operating System :: OS Independent',
         'Programming Language :: Python :: 3.3',
+        'Programming Language :: Python :: 3.4',
     ],
 
     install_requires=open('requirements.txt').readlines(),

@@ -8,7 +8,7 @@ from mine.test.conftest import FILES
 from mine.application import Application
 from mine.computer import Computer
 from mine.status import State, Status
-from mine.settings import ProgramConfiguration, ProgramStatus, Settings
+from mine.config import ProgramConfiguration, ProgramStatus, Settings
 
 import yorm
 

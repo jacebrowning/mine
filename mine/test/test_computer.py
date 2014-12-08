@@ -1,4 +1,4 @@
-"""Integration tests for the `mine` package."""
+"""Unit tests for the `computer` module."""
 # pylint: disable=R0201
 
 from unittest.mock import Mock, patch

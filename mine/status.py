@@ -13,9 +13,19 @@ class Timestamps(common.AttributeDictionary):
 
     """A dictionary of last start and stop times."""
 
-    def __init__(self):
-        self.started = None
-        self.stopped = None
+    def __init__(self, started=None, stopped=None):
+        self.started = started
+        self.stopped = stopped
+
+    @property
+    def active(self):
+        """Determine if the timestamps indicate current activity."""
+        if not self.started:
+            return False
+        elif not self.stopped:
+            return True
+        else:
+            return self.started > self.stopped
 
 
 @yorm.map_attr(computer=yorm.standard.String)

@@ -13,7 +13,7 @@ log = common.logger(__name__)
 
 @yorm.map_attr(internal=common.NoneString)
 @yorm.map_attr(external=common.NoneString)
-class Address(common.AttributeDictionary):
+class Address(yorm.container.Dictionary):
 
     """A dictionary of IP addresses."""
 
@@ -37,7 +37,7 @@ class Address(common.AttributeDictionary):
 @yorm.map_attr(label=yorm.standard.String)
 @yorm.map_attr(hostname=yorm.standard.String)
 @yorm.map_attr(address=Address)
-class Computer(common.AttributeDictionary):
+class Computer(yorm.container.Dictionary):
 
     """A dictionary of identifying computer information."""
 
@@ -53,7 +53,7 @@ class Computer(common.AttributeDictionary):
 
 
 @yorm.map_attr(all=Computer)
-class Computers(list, yorm.container.List):
+class Computers(yorm.container.List):
 
     """A list of computers."""
 

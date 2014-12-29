@@ -9,7 +9,7 @@ log = common.logger(__name__)
 
 @yorm.map_attr(started=common.NoneInteger)
 @yorm.map_attr(stopped=common.NoneInteger)
-class Timestamps(common.AttributeDictionary):
+class Timestamps(yorm.container.Dictionary):
 
     """A dictionary of last start and stop times."""
 
@@ -30,7 +30,7 @@ class Timestamps(common.AttributeDictionary):
 
 @yorm.map_attr(computer=yorm.standard.String)
 @yorm.map_attr(timestamps=Timestamps)
-class State(common.AttributeDictionary):
+class State(yorm.container.Dictionary):
 
     """A dictionary of computer state."""
 
@@ -47,7 +47,7 @@ class States(yorm.container.List):
 
 @yorm.map_attr(application=yorm.standard.String)
 @yorm.map_attr(computers=States)
-class Status(common.AttributeDictionary):
+class Status(yorm.container.Dictionary):
 
     """A dictionary of computers using an application."""
 

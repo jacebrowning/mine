@@ -27,22 +27,6 @@ class NoneInteger(yorm.standard.Integer):
     DEFAULT = None
 
 
-class dict2(dict):
-
-    """A `dict` with keys available as attributes."""
-
-    def __init__(self, *args, **kwargs):
-        super(dict2, self).__init__(*args, **kwargs)
-        self.__dict__ = self
-
-
-class AttributeDictionary(yorm.container.Dictionary):
-
-    """Base class for an attribute dictionary of attribute converters."""
-
-    TYPE = dict2
-
-
 class HelpFormatter(argparse.HelpFormatter):
 
     """Command-line help text formatter with wider help text."""

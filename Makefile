@@ -84,6 +84,8 @@ ci: check test tests
 env: .virtualenv $(EGG_INFO)
 $(EGG_INFO): Makefile setup.py requirements.txt
 	VIRTUAL_ENV=$(ENV) $(PYTHON) setup.py develop
+	# TODO: remove this live dependency and update requirements.txt
+	$(PYTHON) ../YORM/setup.py develop
 	touch $(EGG_INFO)  # flag to indicate package is installed
 
 .PHONY: .virtualenv

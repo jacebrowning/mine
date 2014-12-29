@@ -1,2 +1,2 @@
-YORM == 0.2
+#YORM >= 0.2
 ipgetter >= 0.6

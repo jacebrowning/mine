@@ -1,5 +1,6 @@
 """Program defaults."""
 
+import os
 import logging
 
 # Logging settings
@@ -11,3 +12,6 @@ QUIET_LOGGING_LEVEL = logging.WARNING
 DEFAULT_LOGGING_LEVEL = logging.WARNING
 VERBOSE_LOGGING_LEVEL = logging.INFO
 VERBOSE2_LOGGING_LEVEL = logging.DEBUG
+
+# Path settings
+PATH = os.path.expanduser(os.path.join('~', 'MediaFire', 'mine.yml'))

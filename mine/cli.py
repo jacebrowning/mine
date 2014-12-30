@@ -68,7 +68,6 @@ def run(path=PATH):  # pragma: no cover (not implemented)
     configuration = settings.configuration
     computer = configuration.computers.get_current()
     settings.yorm_mapper.store(settings)
-    return False
     status = settings.status
 
     for application in configuration.applications:

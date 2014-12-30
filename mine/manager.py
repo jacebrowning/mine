@@ -2,9 +2,36 @@
 
 import abc
 import platform
+import functools
+
+from . import common
+
+log = common.logger(__name__)
 
 # TODO: delete this after implementing `BaseManager`
 # pylint: disable=R0903
+
+
+def log_running(func):
+    """Decorator for methods that return application status."""
+    @functools.wraps(func)
+    def wrapped(self, application, *args, **kwargs):
+        """Wrapped method to log if an application is running."""
+        running = func(self, application, *args, **kwargs)
+        log.info("%s is%s running", application, "" if running else " not")
+        return running
+    return wrapped
+
+
+def log_stopping(func):
+    """Decorator for methods that stop an application."""
+    @functools.wraps(func)
+    def wrapped(self, application, *args, **kwargs):
+        """Wrapped method to log that an application is being stopped."""
+        log.info("stopping %s...", application)
+        return func(self, application, *args, **kwargs)
+    return wrapped
+
 
 
 class BaseManager(metaclass=abc.ABCMeta):
@@ -37,9 +64,11 @@ class MacManager(BaseManager):
 
     """Application manager for OS X."""
 
+    @log_running
     def is_running(self, application):
         return False
 
+    @log_stopping
     def stop(self, application):
         pass
 

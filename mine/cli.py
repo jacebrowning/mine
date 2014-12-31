@@ -7,7 +7,7 @@ import argparse
 
 from . import CLI, VERSION, DESCRIPTION
 from . import common
-from .settings import PATH
+from .settings import DEFAULT_PATH
 from .config import Settings  # TODO: consider renaming to data.Data
 from .manager import get_manager
 
@@ -57,7 +57,7 @@ def main(args=None):
         sys.exit(1)
 
 
-def run(path=PATH):  # pragma: no cover (not implemented)
+def run(path=DEFAULT_PATH):  # pragma: no cover (not implemented)
     """Run the program."""
     manager = get_manager()
 
@@ -67,18 +67,16 @@ def run(path=PATH):  # pragma: no cover (not implemented)
 
     configuration = settings.configuration
     computer = configuration.computers.get_current()
-    settings.yorm_mapper.store(settings)
+    computer.current = True
     status = settings.status
 
     for application in configuration.applications:
-        if manager.is_running(application):
+        if manager.is_running(application, computer):
             latest = status.get_latest(application)
             if latest:
                 if computer != latest:
                     if status.is_running(application, computer):
                         manager.stop(application)
-                        # TODO: all start/stop calls can increment the counter
-                        status.counter += 1
                         status.stop(application, computer)
                     else:
                         status.counter += 1
@@ -90,12 +88,10 @@ def run(path=PATH):  # pragma: no cover (not implemented)
                 status.start(application, computer)
         else:
             if status.is_running(application, computer):
-                status.counter += 1
                 status.stop(application, computer)
-            else:
-                pass
 
-    settings.yorm_mapper.store(settings)
+    # TODO: remove this line when YORM stores on nested attributes
+    settings.yorm_mapper.store(settings)  # pylint: disable=E1101
 
     return False
 

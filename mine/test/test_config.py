@@ -1,8 +1,18 @@
 """Unit tests for the `config` module."""
 # pylint: disable=R0201,W0201,W0613
 
+from unittest.mock import Mock
+
 from mine.config import ProgramStatus
 from mine.application import Application
+
+
+class TestProgramStatus:
+
+    """Unit tests for the program status class."""
+
+    def setup_method(self, method):
+        pass
 
 
 class TestProgramStatusEmpty:
@@ -11,8 +21,8 @@ class TestProgramStatusEmpty:
 
     def setup_method(self, method):
         self.status = ProgramStatus()
-        self.application = Application('my-app')
-        self.computer = None
+        self.application = Application('my-application')
+        self.computer = Mock()
 
     def test_get_latest(self):
         """Verify None is returned when there is no latest computer."""

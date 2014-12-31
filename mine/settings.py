@@ -14,4 +14,4 @@ VERBOSE_LOGGING_LEVEL = logging.INFO
 VERBOSE2_LOGGING_LEVEL = logging.DEBUG
 
 # Path settings
-PATH = os.path.expanduser(os.path.join('~', 'MediaFire', 'mine.yml'))
+DEFAULT_PATH = os.path.expanduser(os.path.join('~', 'Drive', '.mine.yml'))

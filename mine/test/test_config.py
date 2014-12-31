@@ -7,19 +7,12 @@ from mine.config import ProgramStatus
 from mine.application import Application
 
 
-class TestProgramStatus:
-
-    """Unit tests for the program status class."""
-
-    def setup_method(self, method):
-        pass
-
-
 class TestProgramStatusEmpty:
 
     """Unit tests for the program status class with an empty list."""
 
     def setup_method(self, method):
+        """Create an empty program status for all tests."""
         self.status = ProgramStatus()
         self.application = Application('my-application')
         self.computer = Mock()

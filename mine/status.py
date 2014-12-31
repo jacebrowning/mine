@@ -14,6 +14,7 @@ class Timestamps(yorm.container.Dictionary):
     """A dictionary of last start and stop times."""
 
     def __init__(self, started=0, stopped=0):
+        super().__init__()
         self.started = started
         self.stopped = stopped
 
@@ -60,7 +61,7 @@ class State(yorm.container.Dictionary):
         return str(self.computer)
 
     def __lt__(self, other):
-        return self.timestamps < other.timestamps
+        return self.computer < other.computer
 
 
 @yorm.map_attr(all=State)
@@ -76,6 +77,7 @@ class Status(yorm.container.Dictionary):
     """A dictionary of computers using an application."""
 
     def __init__(self, label):
+        super().__init__()
         self.application = label
         self.computers = States()
 

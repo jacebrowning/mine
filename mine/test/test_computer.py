@@ -38,6 +38,13 @@ class TestComputer:
         assert 'external' == computer.address.external
         assert 'internal' == computer.address.internal
 
+    def test_eq(self):
+        """Verify computers and strings can be equated."""
+        assert Computer('mac1') == Computer('mac1')
+        assert Computer('mac1') != Computer('mac2')
+        assert Computer('mac1') == 'mac1'
+        assert 'mac1' != Computer('mac2')
+
     def test_get_match_none(self):
         """Verify a computer is added when missing."""
         other = Computer('label', 'hostname', 'external', 'internal')

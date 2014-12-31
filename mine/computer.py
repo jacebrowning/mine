@@ -51,6 +51,12 @@ class Computer(yorm.container.Dictionary):
     def __str__(self):
         return str(self.label)
 
+    def __eq__(self, other):
+        return str(self) == str(other)
+
+    def __ne__(self, other):
+        return not self == other
+
     @staticmethod
     def get_hostname():
         """Get this computer's hostname."""

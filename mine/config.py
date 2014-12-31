@@ -55,6 +55,7 @@ class ProgramConfiguration(yorm.container.Dictionary):
     """A dictionary of configuration settings."""
 
     def __init__(self):
+        super().__init__()
         self.applications = Applications()
         self.computers = Computers()
 
@@ -66,6 +67,7 @@ class ProgramStatus(yorm.container.Dictionary):
     """A dictionary of configuration settings."""
 
     def __init__(self):
+        super().__init__()
         self.applications = Statuses()
         self.counter = 0
 
@@ -75,7 +77,7 @@ class ProgramStatus(yorm.container.Dictionary):
             if status.application == application.label:
                 states = [s for s in status.computers if s.timestamps.active]
                 if states:
-                    states.sort(reverse=True)
+                    states.sort(key=lambda s: s.timestamps, reverse=True)
                     log.debug("%s marked as started on: %s", application,
                               ', '.join(str(s) for s in states))
                     # TODO: consider returning the computer instance?

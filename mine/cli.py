@@ -79,27 +79,42 @@ def run(path=DEFAULT_PATH):  # pragma: no cover (not implemented)
         if manager.is_running(application):
             latest = status.get_latest(application)
             if latest:
-                if computer.label != latest:
+                if computer != latest:
                     if status.is_running(application, computer):
                         log.info("%s launched on: %s", application, latest)
                         manager.stop(application)
                         status.stop(application, computer)
+                        show_running(application, latest)
+                        show_stopped(application, computer)
                     else:
                         status.start(application, computer)
+                        show_running(application, computer)
                 else:
                     pass
             else:
                 status.start(application, computer)
+                show_running(application, computer)
         else:
             if status.is_running(application, computer):
                 status.stop(application, computer)
+                show_stopped(application, computer)
             else:
                 pass
 
     # TODO: remove this line when YORM stores on nested attributes
     settings.yorm_mapper.store(settings)  # pylint: disable=E1101
 
-    return False
+    return True
+
+
+def show_running(application, computer):
+    """Display the new state of a running application."""
+    print("{} is now running on {}".format(application, computer))
+
+
+def show_stopped(application, computer):
+    """Display the new state of a stopped application."""
+    print("{} is now stopped on {}".format(application, computer))
 
 
 if __name__ == '__main__':  # pragma: no cover (manual test)

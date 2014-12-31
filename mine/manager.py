@@ -12,7 +12,7 @@ from . import common
 log = common.logger(__name__)
 
 # TODO: delete this after implementing `BaseManager`
-# pylint: disable=R0903
+# pylint: disable=R0903,W0223,E0110
 
 
 def log_running(func):

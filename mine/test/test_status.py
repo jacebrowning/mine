@@ -28,3 +28,17 @@ class TestTimestamps:
     def test_running(self, active, timestamps):
         """Verify started/stopped counters determine activity."""
         assert active == timestamps.active
+
+    def test_eq(self):
+        """Verify timestamps can be equated."""
+        assert Timestamps(1, 1) == Timestamps(1, 1)
+        assert Timestamps(1, 2) == Timestamps(1, 2)
+        assert Timestamps(1, 2) != Timestamps(1, 3)
+        assert Timestamps(4, 2) == Timestamps(4, 3)
+
+    def test_lt(self):
+        """Verify timestamps can be sorted."""
+        assert Timestamps(1, 2) < Timestamps(1, 3)
+        assert Timestamps(1, 4) > Timestamps(1, 3)
+        assert Timestamps(4, 2) < Timestamps(5, 3)
+        assert Timestamps(3, 2) < Timestamps(4, 3)

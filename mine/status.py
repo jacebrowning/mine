@@ -7,15 +7,32 @@ import yorm
 log = common.logger(__name__)
 
 
-@yorm.map_attr(started=common.NoneInteger)
-@yorm.map_attr(stopped=common.NoneInteger)
+@yorm.map_attr(started=yorm.standard.Integer)
+@yorm.map_attr(stopped=yorm.standard.Integer)
 class Timestamps(yorm.container.Dictionary):
 
     """A dictionary of last start and stop times."""
 
-    def __init__(self, started=None, stopped=None):
+    def __init__(self, started=0, stopped=0):
         self.started = started
         self.stopped = stopped
+
+    def __repr__(self):
+        return "<timestamp {}>".format(self.latest)
+
+    def __eq__(self, other):
+        return self.latest == other.latest
+
+    def __ne__(self, other):
+        return not self == other
+
+    def __lt__(self, other):
+        return self.latest < other.latest
+
+    @property
+    def latest(self):
+        """Get the latest timestamp."""
+        return max((self.started, self.stopped))
 
     @property
     def active(self):
@@ -35,8 +52,15 @@ class State(yorm.container.Dictionary):
     """A dictionary of computer state."""
 
     def __init__(self, label):
+        super().__init__()
         self.computer = label
         self.timestamps = Timestamps()
+
+    def __str__(self):
+        return str(self.computer)
+
+    def __lt__(self, other):
+        return self.timestamps < other.timestamps
 
 
 @yorm.map_attr(all=State)

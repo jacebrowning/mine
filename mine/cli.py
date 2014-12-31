@@ -66,29 +66,32 @@ def run(path=DEFAULT_PATH):  # pragma: no cover (not implemented)
     yorm.store(settings, path)
 
     configuration = settings.configuration
+    log.info("identifying current computer...")
     computer = configuration.computers.get_current()
-    computer.current = True
+    log.info("current computer: %s", computer)
     status = settings.status
 
+    # TODO: add print() for status and replace pass
     for application in configuration.applications:
-        if manager.is_running(application, computer):
+        if manager.is_running(application):
             latest = status.get_latest(application)
             if latest:
-                if computer != latest:
+                if computer.label != latest:
                     if status.is_running(application, computer):
+                        log.info("%s launched on: %s", application, latest)
                         manager.stop(application)
                         status.stop(application, computer)
                     else:
-                        status.counter += 1
                         status.start(application, computer)
                 else:
                     pass
             else:
-                status.counter += 1
                 status.start(application, computer)
         else:
             if status.is_running(application, computer):
                 status.stop(application, computer)
+            else:
+                pass
 
     # TODO: remove this line when YORM stores on nested attributes
     settings.yorm_mapper.store(settings)  # pylint: disable=E1101

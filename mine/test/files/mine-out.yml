@@ -28,5 +28,5 @@ status:
     - computer: macbook-pro
       timestamps:
         started: 444
-        stopped: null
+        stopped: 0
   counter: 499

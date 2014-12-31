@@ -42,8 +42,6 @@ class Computer(yorm.container.Dictionary):
 
     """A dictionary of identifying computer information."""
 
-    current = False
-
     def __init__(self, label, hostname=None, external=None, internal=None):
         super().__init__()
         self.label = label
@@ -51,10 +49,7 @@ class Computer(yorm.container.Dictionary):
         self.address = Address(external=external, internal=internal)
 
     def __str__(self):
-        if self.current:
-            return "this computer ({})".format(self.label)
-        else:
-            return str(self.label)
+        return str(self.label)
 
     @staticmethod
     def get_hostname():

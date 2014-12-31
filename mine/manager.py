@@ -1,12 +1,13 @@
 """Classes to manage application state."""
 
+import os
 import abc
 import platform
 import functools
 
-from . import common
+import psutil
 
-THIS = "this computer"
+from . import common
 
 log = common.logger(__name__)
 
@@ -17,11 +18,16 @@ log = common.logger(__name__)
 def log_running(func):
     """Decorator for methods that return application status."""
     @functools.wraps(func)
-    def wrapped(self, application, computer):
+    def wrapped(self, application):
         """Wrapped method to log if an application is running."""
-        running = func(self, application, computer)
-        log.info("%s is%s running on %s",
-                 application, "" if running else " not", computer)
+        running = func(self, application)
+        if running is None:
+            status = "untracked"
+        elif running:
+            status = "running"
+        else:
+            status = "not running"
+        log.info("%s: %s", status, application)
         return running
     return wrapped
 
@@ -29,10 +35,12 @@ def log_running(func):
 def log_stopping(func):
     """Decorator for methods that stop an application."""
     @functools.wraps(func)
-    def wrapped(self, application, computer):
+    def wrapped(self, application):
         """Wrapped method to log that an application is being stopped."""
-        log.info("stopping %s on %s...", application, computer)
-        return func(self, application, computer)
+        log.info("stopping %s...", application)
+        result = func(self, application)
+        log.info("not running: %s", application)
+        return result
     return wrapped
 
 
@@ -41,7 +49,7 @@ class BaseManager(metaclass=abc.ABCMeta):
     """Base application manager."""
 
     @abc.abstractmethod
-    def is_running(self, application, computer=THIS):
+    def is_running(self, application):
         """Determine if an application is currently running."""
         raise NotImplementedError
 
@@ -52,7 +60,7 @@ class BaseManager(metaclass=abc.ABCMeta):
 #         raise NotImplementedError
 
     @abc.abstractclassmethod
-    def stop(self, application, computer=THIS):
+    def stop(self, application):
         """Stop an application on the current computer."""
         raise NotImplementedError
 
@@ -67,12 +75,30 @@ class MacManager(BaseManager):
     """Application manager for OS X."""
 
     @log_running
-    def is_running(self, application, computer=THIS):
-        return False
+    def is_running(self, application):
+        name = application.versions.mac
+        if not name:
+            return None
+        process = self._get_process(name)
+        return process is not None
 
     @log_stopping
-    def stop(self, application, computer=THIS):
-        pass
+    def stop(self, application):
+        name = application.versions.mac
+        process = self._get_process(name)
+        if process.is_running():
+            process.terminate()
+
+    @staticmethod
+    def _get_process(name):
+        """Get a process whose executable path contains an app name."""
+        for process in psutil.process_iter():
+            try:
+                path = process.exe()
+                if name in path.split(os.sep):
+                    return process
+            except psutil.AccessDenied:
+                pass  # the process is likely owned by root
 
 
 class WindowsManager(BaseManager):

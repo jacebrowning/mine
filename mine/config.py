@@ -18,19 +18,33 @@ def log_running(func):
     def wrapped(self, application, computer):
         """Wrapped method to log if an application is running."""
         running = func(self, application, computer)
-        log.debug("%s was marked as%s running on %s",
-                  application, "" if running else " not", computer)
+        log.debug("%s marked as %s on: %s",
+                  application, "started" if running else "stopped", computer)
         return running
     return wrapped
 
 
-def log_stopped(func):
+def log_starting(func):
+    """Decorator for methods that mark an application as started."""
+    @functools.wraps(func)
+    def wrapped(self, application, computer):
+        """Wrapped method to log that an application is started."""
+        log.debug("marking %s as started on %s...", application, computer)
+        result = func(self, application, computer)
+        log.debug("%s marked as started on: %s", application, computer)
+        return result
+    return wrapped
+
+
+def log_stopping(func):
     """Decorator for methods that mark an application as stopped."""
     @functools.wraps(func)
     def wrapped(self, application, computer):
         """Wrapped method to log that an application is stopped."""
-        log.info("marking %s as stopped on %s...", application, computer)
-        return func(self, application, computer)
+        log.debug("marking %s as stopped on %s...", application, computer)
+        result = func(self, application, computer)
+        log.debug("%s marked as stopped on: %s", application, computer)
+        return result
     return wrapped
 
 
@@ -56,9 +70,18 @@ class ProgramStatus(yorm.container.Dictionary):
         self.counter = 0
 
     def get_latest(self, application):
-        """Get the last computer logged as running an application."""
+        """Get the last computer's label logged as running an application."""
         for status in self.applications:
-            pass
+            if status.application == application.label:
+                states = [s for s in status.computers if s.timestamps.active]
+                if states:
+                    states.sort(reverse=True)
+                    log.debug("%s marked as started on: %s", application,
+                              ', '.join(str(s) for s in states))
+                    # TODO: consider returning the computer instance?
+                    return states[0].computer
+
+        log.debug("marked as started on: nothing")
         return None
 
     @log_running
@@ -73,6 +96,7 @@ class ProgramStatus(yorm.container.Dictionary):
         else:
             status = None
 
+        # TODO: this method probably doesn't need to set a default
         # Status not found so add the application/computer as stopped
         self.counter += 1
         state = State(computer.label)
@@ -85,14 +109,15 @@ class ProgramStatus(yorm.container.Dictionary):
             status.computers.append(state)
         return state.timestamps.active
 
+    @log_starting
     def start(self, application, computer):
         """Log an application as running on a computer."""
         for status in self.applications:
             if status.application == application.label:
-                for state in status.application.computers:
+                for state in status.computers:
                     if state.computer == computer.label:
                         self.counter += 1
-                        status.timestamps.started = self.counter
+                        state.timestamps.started = self.counter
                         return
                 break
         else:
@@ -109,7 +134,7 @@ class ProgramStatus(yorm.container.Dictionary):
         else:
             status.computers.append(state)
 
-    @log_stopped
+    @log_stopping
     def stop(self, application, computer):
         """Log an application as no longer running on a computer."""
         for status in self.applications:

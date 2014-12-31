@@ -7,7 +7,7 @@ import yorm
 
 from . import settings
 
-MAX_VERBOSITY = 3
+MAX_VERBOSITY = 4
 
 logger = logging.getLogger
 verbosity = 0
@@ -56,7 +56,7 @@ class WarningFormatter(logging.Formatter, object):
 
 def configure_logging(count=0):
     """Configure logging using the provided verbosity count."""
-    assert MAX_VERBOSITY == 3
+    assert MAX_VERBOSITY == 4
 
     if count == -1:
         level = settings.QUIET_LOGGING_LEVEL
@@ -73,8 +73,11 @@ def configure_logging(count=0):
     elif count == 2:
         level = settings.VERBOSE2_LOGGING_LEVEL
         default_format = verbose_format = settings.VERBOSE_LOGGING_FORMAT
-    else:
+    elif count == 3:
         level = settings.VERBOSE2_LOGGING_LEVEL
+        default_format = verbose_format = settings.VERBOSE2_LOGGING_FORMAT
+    else:
+        level = settings.VERBOSE2_LOGGING_LEVEL - 1
         default_format = verbose_format = settings.VERBOSE2_LOGGING_FORMAT
 
     # Set a custom formatter

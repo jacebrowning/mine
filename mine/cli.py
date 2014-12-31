@@ -66,10 +66,13 @@ def run(path=DEFAULT_PATH):  # pragma: no cover (not implemented)
     yorm.store(settings, path)
 
     configuration = settings.configuration
+    status = settings.status
+
     log.info("identifying current computer...")
     computer = configuration.computers.get_current()
     log.info("current computer: %s", computer)
-    status = settings.status
+    # TODO: remove this line when fixed: https://github.com/jacebrowning/yorm/issues/47
+    settings.configuration = configuration
 
     # TODO: add print() for status and replace pass
     for application in configuration.applications:

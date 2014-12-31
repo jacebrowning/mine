@@ -55,7 +55,8 @@ class TestLogging:
         ('-v', 1),
         ('-vv', 2),
         ('-vvv', 3),
-        ('-vvvv', 3),
+        ('-vvvv', 4),
+        ('-vvvvv', 4),
         ('-q', -1),
     ]
 

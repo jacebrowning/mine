@@ -109,6 +109,7 @@ class Computers(yorm.container.List):
 
         # Or, this is a new computer
         this.label = self.generate_label(this)
+        log.debug("new computer: %s", this)
         self.append(this)
         return this
 

@@ -3,7 +3,6 @@
 import argparse
 import logging
 
-import yorm
 
 from . import settings
 
@@ -11,20 +10,6 @@ MAX_VERBOSITY = 4
 
 logger = logging.getLogger
 verbosity = 0
-
-
-class NoneString(yorm.standard.String):
-
-    """Converter for the `str` type with `None` as default."""
-
-    DEFAULT = None
-
-
-class NoneInteger(yorm.standard.Integer):
-
-    """Converter for the `int` type with `None` as default."""
-
-    DEFAULT = None
 
 
 class HelpFormatter(argparse.HelpFormatter):

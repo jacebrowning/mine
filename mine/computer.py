@@ -11,8 +11,8 @@ from . import common
 log = common.logger(__name__)
 
 
-@yorm.map_attr(internal=common.NoneString)
-@yorm.map_attr(external=common.NoneString)
+@yorm.map_attr(internal=yorm.extended.NoneString)
+@yorm.map_attr(external=yorm.extended.NoneString)
 class Address(yorm.container.Dictionary):
 
     """A dictionary of IP addresses."""

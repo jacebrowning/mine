@@ -7,9 +7,9 @@ import yorm
 log = common.logger(__name__)
 
 
-@yorm.map_attr(mac=common.NoneString)
-@yorm.map_attr(windows=common.NoneString)
-@yorm.map_attr(linux=common.NoneString)
+@yorm.map_attr(mac=yorm.extended.NoneString)
+@yorm.map_attr(windows=yorm.extended.NoneString)
+@yorm.map_attr(linux=yorm.extended.NoneString)
 class Versions(yorm.container.Dictionary):
 
     """A dictionary of OS-specific application filenames."""

@@ -7,9 +7,9 @@ import argparse
 
 from . import CLI, VERSION, DESCRIPTION
 from . import common
-from .settings import DEFAULT_PATH
-from .config import Settings  # TODO: consider renaming to data.Data
+from .data import Data
 from .manager import get_manager
+from . import settings
 
 import yorm
 
@@ -57,25 +57,25 @@ def main(args=None):
         sys.exit(1)
 
 
-def run(path=DEFAULT_PATH):  # pragma: no cover (not implemented)
+def run(path=settings.DEFAULT_PATH):  # pragma: no cover (not implemented)
     """Run the program."""
     manager = get_manager()
 
     # TODO: convert to `yorm.load()` when available
-    settings = Settings()
-    yorm.store(settings, path)
+    data = Data()
+    yorm.store(data, path)
 
-    configuration = settings.configuration
-    status = settings.status
+    config = data.config
+    status = data.status
 
     log.info("identifying current computer...")
-    computer = configuration.computers.get_current()
+    computer = config.computers.get_current()
     log.info("current computer: %s", computer)
     # TODO: remove this line when fixed: https://github.com/jacebrowning/yorm/issues/47
-    settings.configuration = configuration
+    data.config = config
 
     # TODO: add print() for status and replace pass
-    for application in configuration.applications:
+    for application in config.applications:
         if manager.is_running(application):
             latest = status.get_latest(application)
             if latest:
@@ -102,7 +102,7 @@ def run(path=DEFAULT_PATH):  # pragma: no cover (not implemented)
                 pass
 
     # TODO: remove this line when YORM stores on nested attributes
-    settings.yorm_mapper.store(settings)  # pylint: disable=E1101
+    data.yorm_mapper.store(data)  # pylint: disable=E1101
 
     return True
 

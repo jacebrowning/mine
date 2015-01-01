@@ -3,7 +3,7 @@
 
 from unittest.mock import Mock, patch
 
-from mine.computer import Computer, Computers
+from mine.computer import Computer, ComputerList
 
 
 class MockSocket(Mock):
@@ -48,7 +48,7 @@ class TestComputer:
     def test_get_match_none(self):
         """Verify a computer is added when missing."""
         other = Computer('label', 'hostname', 'external', 'internal')
-        computers = Computers([other])
+        computers = ComputerList([other])
         this = computers.get_current()
         assert 'sample' == this.label
         assert 'Sample.local' == this.hostname
@@ -59,7 +59,7 @@ class TestComputer:
     def test_get_match_all(self):
         """Verify a computer can be matched exactly."""
         other = Computer('all', 'Sample.local', '1.2.3.4', '5.6.7.8')
-        computers = Computers([other])
+        computers = ComputerList([other])
         this = computers.get_current()
         assert 'all' == this.label
         assert 'Sample.local' == this.hostname
@@ -70,7 +70,7 @@ class TestComputer:
     def test_get_match_hostname_external(self):
         """Verify a computer can be matched by hostname and external."""
         other = Computer('external', 'Sample.local', '1.2.3.4', '9.9.9.9')
-        computers = Computers([other])
+        computers = ComputerList([other])
         this = computers.get_current()
         assert 'external' == this.label
         assert 'Sample.local' == this.hostname
@@ -81,7 +81,7 @@ class TestComputer:
     def test_get_match_hostname_internal(self):
         """Verify a computer can be matched by hostname and internal."""
         other = Computer('internal', 'Sample.local', '9.9.9.9', '5.6.7.8')
-        computers = Computers([other])
+        computers = ComputerList([other])
         this = computers.get_current()
         assert 'internal' == this.label
         assert 'Sample.local' == this.hostname
@@ -93,7 +93,7 @@ class TestComputer:
         """Verify a computer can be matched by a single hostname."""
         others = [Computer('sample', 'Sample.local', '9.9.9.9', '9.9.9.9'),
                   Computer('another', 'Another.local', '9.9.9.9', '9.9.9.9')]
-        computers = Computers(others)
+        computers = ComputerList(others)
         this = computers.get_current()
         assert 'sample' == this.label
         assert 'Sample.local' == this.hostname
@@ -105,7 +105,7 @@ class TestComputer:
         """Verify a computer cannot be matched by multiple hostnames."""
         others = [Computer('sample', 'Sample.local', '9.9.9.9', '9.9.9.9'),
                   Computer('sample-2', 'Sample.local', '8.8.8.8', '8.8.8.8')]
-        computers = Computers(others)
+        computers = ComputerList(others)
         this = computers.get_current()
         assert 'sample-3' == this.label
         assert 'Sample.local' == this.hostname
@@ -116,7 +116,7 @@ class TestComputer:
     def test_get_match_external_internal(self):
         """Verify a computer can be matched by external and internal."""
         other = Computer('another', 'Another.local', '1.2.3.4', '5.6.7.8')
-        computers = Computers([other])
+        computers = ComputerList([other])
         this = computers.get_current()
         assert 'another' == this.label
         assert 'Sample.local' == this.hostname

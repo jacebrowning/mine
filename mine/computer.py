@@ -64,7 +64,7 @@ class Computer(yorm.container.Dictionary):
 
 
 @yorm.map_attr(all=Computer)
-class Computers(yorm.container.List):
+class ComputerList(yorm.container.List):
 
     """A list of computers."""
 

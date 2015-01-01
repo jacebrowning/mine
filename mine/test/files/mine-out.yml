@@ -1,4 +1,4 @@
-configuration:
+config:
   applications:
   - label: itunes
     versions:
@@ -26,7 +26,7 @@ status:
   - application: itunes
     computers:
     - computer: macbook-pro
-      timestamps:
+      timestamp:
         started: 444
         stopped: 0
   counter: 499

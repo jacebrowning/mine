@@ -37,6 +37,6 @@ class Application(yorm.container.Dictionary):
 
 
 @yorm.map_attr(all=Application)
-class Applications(yorm.container.List):
+class ApplicationList(yorm.container.List):
 
     """A list of monitored applications."""

@@ -10,7 +10,7 @@ log = common.logger(__name__)
 @yorm.map_attr(mac=yorm.extended.NoneString)
 @yorm.map_attr(windows=yorm.extended.NoneString)
 @yorm.map_attr(linux=yorm.extended.NoneString)
-class Versions(yorm.container.Dictionary):
+class Versions(yorm.extended.AttributeDictionary):
 
     """A dictionary of OS-specific application filenames."""
 
@@ -23,7 +23,7 @@ class Versions(yorm.container.Dictionary):
 
 @yorm.map_attr(label=yorm.standard.String)
 @yorm.map_attr(versions=Versions)
-class Application(yorm.container.Dictionary):
+class Application(yorm.extended.AttributeDictionary):
 
     """A dictionary of application information."""
 

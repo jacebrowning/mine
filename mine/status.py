@@ -48,7 +48,7 @@ def log_stopping(func):
 
 @yorm.map_attr(computer=yorm.standard.String)
 @yorm.map_attr(timestamp=Timestamp)
-class State(yorm.container.Dictionary):
+class State(yorm.extended.AttributeDictionary):
 
     """A dictionary of computer state."""
 
@@ -72,7 +72,7 @@ class StateList(yorm.container.List):
 
 @yorm.map_attr(application=yorm.standard.String)
 @yorm.map_attr(computers=StateList)
-class Status(yorm.container.Dictionary):
+class Status(yorm.extended.AttributeDictionary):
 
     """A dictionary of computers using an application."""
 
@@ -90,7 +90,7 @@ class StatusList(yorm.container.List):
 
 @yorm.map_attr(applications=StatusList)
 @yorm.map_attr(counter=yorm.standard.Integer)
-class ProgramStatus(yorm.container.Dictionary):
+class ProgramStatus(yorm.extended.AttributeDictionary):
 
     """A dictionary of current program status."""
 

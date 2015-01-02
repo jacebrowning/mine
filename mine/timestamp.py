@@ -9,7 +9,7 @@ log = common.logger(__name__)
 
 @yorm.map_attr(started=yorm.standard.Integer)
 @yorm.map_attr(stopped=yorm.standard.Integer)
-class Timestamp(yorm.container.Dictionary):
+class Timestamp(yorm.extended.AttributeDictionary):
 
     """A dictionary of last start and stop times."""
 

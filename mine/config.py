@@ -12,7 +12,7 @@ log = common.logger(__name__)
 
 @yorm.map_attr(applications=ApplicationList)
 @yorm.map_attr(computers=ComputerList)
-class ProgramConfig(yorm.container.Dictionary):
+class ProgramConfig(yorm.extended.AttributeDictionary):
 
     """A dictionary of program configuration settings."""
 

@@ -35,8 +35,17 @@ class Application(yorm.extended.AttributeDictionary):
     def __str__(self):
         return str(self.label)
 
+    def __eq__(self, other):
+        return str(self).lower() == str(other).lower()
+
+    def __ne__(self, other):
+        return not self == other
+
+    def __lt__(self, other):
+        return str(self).lower() < str(other).lower()
+
 
 @yorm.map_attr(all=Application)
-class ApplicationList(yorm.container.List):
+class ApplicationList(yorm.extended.SortedList):
 
     """A list of monitored applications."""

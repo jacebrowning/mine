@@ -1,15 +1,15 @@
 config:
   applications:
-  - label: itunes
-    versions:
-      linux: null
-      mac: ''
-      windows: iTunes.exe
   - label: iphoto
     versions:
       linux: null
       mac: iPhoto
       windows: null
+  - label: itunes
+    versions:
+      linux: null
+      mac: ''
+      windows: iTunes.exe
   computers:
   - address:
       external: 1.1.1.1

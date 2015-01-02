@@ -52,10 +52,13 @@ class Computer(yorm.extended.AttributeDictionary):
         return str(self.label)
 
     def __eq__(self, other):
-        return str(self) == str(other)
+        return str(self).lower() == str(other).lower()
 
     def __ne__(self, other):
         return not self == other
+
+    def __lt__(self, other):
+        return str(self).lower() < str(other).lower()
 
     @staticmethod
     def get_hostname():
@@ -64,7 +67,7 @@ class Computer(yorm.extended.AttributeDictionary):
 
 
 @yorm.map_attr(all=Computer)
-class ComputerList(yorm.container.List):
+class ComputerList(yorm.extended.SortedList):
 
     """A list of computers."""
 

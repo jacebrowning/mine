@@ -65,7 +65,7 @@ class State(yorm.extended.AttributeDictionary):
 
 
 @yorm.map_attr(all=State)
-class StateList(yorm.container.List):
+class StateList(yorm.extended.SortedList):
 
     """A list of computer states for an application."""
 
@@ -81,9 +81,12 @@ class Status(yorm.extended.AttributeDictionary):
         self.application = label
         self.computers = StateList()
 
+    def __lt__(self, other):
+        return self.application < other.application
+
 
 @yorm.map_attr(all=Status)
-class StatusList(yorm.container.List):
+class StatusList(yorm.extended.SortedList):
 
     """A list of application statuses."""
 

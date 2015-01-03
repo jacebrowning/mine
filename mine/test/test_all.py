@@ -108,7 +108,7 @@ def test_data_in():
 
     assert data.config.applications
     for application in data.config.applications:
-        if application.label == 'slack':
+        if application.name == 'slack':
             break
     else:
         assert False

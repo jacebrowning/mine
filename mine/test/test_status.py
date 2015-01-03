@@ -28,11 +28,11 @@ class TestProgramStatusEmpty:
     def test_start(self):
         """Verify starting an application adds it to the list."""
         self.status.start(self.application, self.computer)
-        labels = [status.application for status in self.status.applications]
-        assert self.application.label in labels
+        names = [status.application for status in self.status.applications]
+        assert self.application.name in names
 
     def test_stop(self):
         """Verify stopping an application adds it to the list."""
         self.status.stop(self.application, self.computer)
-        labels = [status.application for status in self.status.applications]
-        assert self.application.label in labels
+        names = [status.application for status in self.status.applications]
+        assert self.application.name in names

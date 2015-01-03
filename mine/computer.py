@@ -35,21 +35,21 @@ class Address(yorm.extended.AttributeDictionary):
             return s.getsockname()[0]
 
 
-@yorm.map_attr(label=yorm.standard.String)
+@yorm.map_attr(name=yorm.standard.String)
 @yorm.map_attr(hostname=yorm.standard.String)
 @yorm.map_attr(address=Address)
 class Computer(yorm.extended.AttributeDictionary):
 
     """A dictionary of identifying computer information."""
 
-    def __init__(self, label, hostname=None, external=None, internal=None):
+    def __init__(self, name, hostname=None, external=None, internal=None):
         super().__init__()
-        self.label = label
+        self.name = name
         self.hostname = hostname or self.get_hostname()
         self.address = Address(external=external, internal=internal)
 
     def __str__(self):
-        return str(self.label)
+        return str(self.name)
 
     def __eq__(self, other):
         return str(self).lower() == str(other).lower()
@@ -72,9 +72,9 @@ class ComputerList(yorm.extended.SortedList):
     """A list of computers."""
 
     @property
-    def labels(self):
+    def names(self):
         """Get a list of all computers' labels."""
-        return [c.label for c in self]
+        return [c.name for c in self]
 
     @property
     def hostnames(self):
@@ -117,18 +117,18 @@ class ComputerList(yorm.extended.SortedList):
                 return other
 
         # Or, this is a new computer
-        this.label = self.generate_label(this)
+        this.name = self.generate_name(this)
         log.debug("new computer: %s", this)
         self.append(this)
         return this
 
-    def generate_label(self, computer):
+    def generate_name(self, computer):
         """Generate a new label for a computer."""
-        label = computer.hostname.lower().split('.')[0]
+        name = computer.hostname.lower().split('.')[0]
         copy = 1
-        while label in self.labels:
+        while name in self.names:
             copy += 1
-            label2 = "{}-{}".format(label, copy)
-            if label2 not in self.labels:
-                label = label2
-        return label
+            name2 = "{}-{}".format(name, copy)
+            if name2 not in self.names:
+                name = name2
+        return name

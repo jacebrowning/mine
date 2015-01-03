@@ -21,19 +21,19 @@ class Versions(yorm.extended.AttributeDictionary):
         self.linux = None
 
 
-@yorm.map_attr(label=yorm.standard.String)
+@yorm.map_attr(name=yorm.standard.String)
 @yorm.map_attr(versions=Versions)
 class Application(yorm.extended.AttributeDictionary):
 
     """A dictionary of application information."""
 
-    def __init__(self, label):
+    def __init__(self, name):
         super().__init__()
-        self.label = label
+        self.name = name
         self.versions = Versions()
 
     def __str__(self):
-        return str(self.label)
+        return str(self.name)
 
     def __eq__(self, other):
         return str(self).lower() == str(other).lower()

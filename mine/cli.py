@@ -42,6 +42,7 @@ def main(args=None):
 
     # Run the program
     try:
+        log.debug("running main command...")
         success = run()
     except KeyboardInterrupt:
         msg = "command cancelled"
@@ -71,10 +72,9 @@ def run(path=settings.DEFAULT_PATH):  # pragma: no cover (not implemented)
     log.info("identifying current computer...")
     computer = config.computers.get_current()
     log.info("current computer: %s", computer)
-    # TODO: remove this line when fixed: https://github.com/jacebrowning/yorm/issues/47
+    # TODO: remove this fix when YORM stops overwriting attributes: https://github.com/jacebrowning/yorm/issues/47
     data.config = config
 
-    # TODO: add print() for status and replace pass
     for application in config.applications:
         if manager.is_running(application):
             latest = status.get_latest(application)
@@ -101,7 +101,7 @@ def run(path=settings.DEFAULT_PATH):  # pragma: no cover (not implemented)
             else:
                 pass
 
-    # TODO: remove this line when YORM stores on nested attributes
+    # TODO: remove this fix when YORM stores on nested attributes: https://github.com/jacebrowning/yorm/issues/42
     data.yorm_mapper.store(data)  # pylint: disable=E1101
 
     return True

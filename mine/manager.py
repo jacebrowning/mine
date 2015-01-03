@@ -12,6 +12,8 @@ from . import common
 log = common.logger(__name__)
 
 # TODO: delete this after implementing `BaseManager`
+# https://github.com/jacebrowning/mine/issues/8
+# https://github.com/jacebrowning/mine/issues/9
 # pylint: disable=R0903,W0223,E0110
 
 
@@ -54,6 +56,7 @@ class BaseManager(metaclass=abc.ABCMeta):
         raise NotImplementedError
 
 # TODO: add this method when a feature calls for it
+# https://github.com/jacebrowning/mine/issues/5
 #     @abc.abstractclassmethod
 #     def start(self, application):
 #         """Start an application on the current computer."""

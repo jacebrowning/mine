@@ -45,6 +45,11 @@ class TestComputer:
         assert Computer('mac1') == 'mac1'
         assert 'mac1' != Computer('mac2')
 
+    def test_lt(self):
+        """Verify computers can be sorted."""
+        assert Computer('mac1') < Computer('mac2')
+        assert Computer('def') > Computer('ABC')
+
     def test_get_match_none(self):
         """Verify a computer is added when missing."""
         other = Computer('name', 'hostname', 'external', 'internal')

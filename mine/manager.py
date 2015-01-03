@@ -46,7 +46,7 @@ def log_stopping(func):
     return wrapped
 
 
-class BaseManager(metaclass=abc.ABCMeta):
+class BaseManager(metaclass=abc.ABCMeta):  # pragma: no cover (abstract)
 
     """Base application manager."""
 
@@ -71,6 +71,12 @@ class BaseManager(metaclass=abc.ABCMeta):
 class LinuxManager(BaseManager):
 
     """Application manager for Linux."""
+
+    def is_running(self, application):
+        pass
+
+    def stop(self, application):
+        pass
 
 
 class MacManager(BaseManager):
@@ -108,10 +114,16 @@ class WindowsManager(BaseManager):
 
     """Application manager for Windows."""
 
+    def is_running(self, application):
+        pass
 
-def get_manager():
+    def stop(self, application):
+        pass
+
+
+def get_manager(name=None):
     """Return an application manager for the current operating system."""
-    name = platform.system()
+    name = name or platform.system()
     if name == 'Windows':
         return WindowsManager()
     elif name == 'Darwin':

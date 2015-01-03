@@ -58,7 +58,7 @@ def main(args=None):
         sys.exit(1)
 
 
-def run(path=settings.DEFAULT_PATH):  # pragma: no cover (not implemented)
+def run(path=settings.DEFAULT_PATH):
     """Run the program."""
     manager = get_manager()
 

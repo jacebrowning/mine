@@ -81,6 +81,9 @@ class Status(yorm.extended.AttributeDictionary):
         self.application = name
         self.computers = StateList()
 
+    def __str__(self):
+        return str(self.application)
+
     def __lt__(self, other):
         return self.application < other.application
 
@@ -125,22 +128,9 @@ class ProgramStatus(yorm.extended.AttributeDictionary):
                 for state in status.computers:
                     if state.computer == computer.name:
                         return state.timestamp.active
-                break
-        else:
-            status = None
 
-        # TODO: this method probably doesn't need to set a default
-        # Status not found so add the application/computer as stopped
-        self.counter += 1
-        state = State(computer.name)
-        state.timestamp.stopped = self.counter
-        if status is None:
-            status = Status(application.name)
-            status.computers.append(state)
-            self.applications.append(status)
-        else:
-            status.computers.append(state)
-        return state.timestamp.active
+        # Status not found, assume the application is not running
+        return False
 
     @log_starting
     def start(self, application, computer):
@@ -156,7 +146,7 @@ class ProgramStatus(yorm.extended.AttributeDictionary):
         else:
             status = None
 
-        # Status not found so add the application/computer as started
+        # Status not found, add the application/computer as started
         self.counter += 1
         state = State(computer.name)
         state.timestamp.started = self.counter
@@ -181,7 +171,7 @@ class ProgramStatus(yorm.extended.AttributeDictionary):
         else:
             status = None
 
-        # Status not found so add the application/computer as stopped
+        # Status not found, add the application/computer as stopped
         self.counter += 1
         state = State(computer.name)
         state.timestamp.stopped = self.counter

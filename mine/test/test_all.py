@@ -1,6 +1,5 @@
 """Integration tests for the `mine` package."""
 
-
 import os
 import pytest
 from mine.test.conftest import FILES

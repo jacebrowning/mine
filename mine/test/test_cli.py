@@ -35,6 +35,14 @@ class TestMain:
         with pytest.raises(SystemExit):
             cli.main([])
 
+    @patch('mine.cli.log')
+    @patch('mine.cli.run', Mock(side_effect=KeyboardInterrupt))
+    def test_interrupt_verbose(self, mock_log):
+        """Verify the CLI can be interrupted (verbose output)."""
+        with pytest.raises(SystemExit):
+            cli.main(['-vvvv'])
+        assert mock_log.exception.call_count == 1
+
 
 def mock_run(*args, **kwargs):
     """Placeholder logic for logging tests."""

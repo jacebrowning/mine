@@ -1,6 +1,5 @@
 """Data structures for all settings."""
 
-
 import yorm
 
 from . import common

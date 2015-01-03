@@ -3,6 +3,7 @@
 
 import os
 import pytest
+import platform
 
 import yorm
 
@@ -22,3 +23,10 @@ def pytest_runtest_setup(item):
             yorm.settings.fake = False
     else:
         yorm.settings.fake = True
+
+    if 'linux_only' in item.keywords and platform.system() != 'Linux':
+        pytest.skip("test can only be run on Linux")
+    if 'mac_only' in item.keywords and platform.system() != 'Darwin':
+        pytest.skip("test can only be run on OS X")
+    if 'windows_only' in item.keywords and platform.system() != 'Windows':
+        pytest.skip("test can only be run on Windows")

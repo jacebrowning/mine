@@ -1,30 +1,38 @@
 """Unit tests for the `status` module."""
-# pylint: disable=R0201
+# pylint: disable=R0201,W0201,W0613
 
-import pytest
+from unittest.mock import Mock
 
-from mine.status import Timestamps
+from mine.status import ProgramStatus
+from mine.application import Application
 
 
-class TestTimestamps:
+class TestProgramStatusEmpty:
 
-    """Unit tests for the timestamps class."""
+    """Unit tests for the program status class with an empty list."""
 
-    none = Timestamps()
-    started_only = Timestamps(started=42)
-    stopped_only = Timestamps(stopped=42)
-    started_after_stopped = Timestamps(2, 1)
-    stopped_after_started = Timestamps(3, 4)
+    def setup_method(self, method):
+        """Create an empty program status for all tests."""
+        self.status = ProgramStatus()
+        self.application = Application('my-application')
+        self.computer = Mock()
 
-    active_timestamps = [
-        (False, none),
-        (True, started_only),
-        (False, stopped_only),
-        (True, started_after_stopped),
-        (False, stopped_after_started),
-    ]
+    def test_get_latest(self):
+        """Verify None is returned when there is no latest computer."""
+        assert None == self.status.get_latest(self.application)
 
-    @pytest.mark.parametrize("active,timestamps", active_timestamps)
-    def test_running(self, active, timestamps):
-        """Verify started/stopped counters determine activity."""
-        assert active == timestamps.active
+    def test_is_running(self):
+        """Verify no app is running when the list is empty."""
+        assert False == self.status.is_running(self.application, self.computer)
+
+    def test_start(self):
+        """Verify starting an application adds it to the list."""
+        self.status.start(self.application, self.computer)
+        names = [status.application for status in self.status.applications]
+        assert self.application.name in names
+
+    def test_stop(self):
+        """Verify stopping an application adds it to the list."""
+        self.status.stop(self.application, self.computer)
+        names = [status.application for status in self.status.applications]
+        assert self.application.name in names

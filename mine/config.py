@@ -1,41 +1,22 @@
 """Data structures for all settings."""
 
+
 import yorm
 
 from . import common
-from .application import Applications
-from .computer import Computers
-from .status import Statuses
+from .application import ApplicationList
+from .computer import ComputerList
+
+log = common.logger(__name__)
 
 
-@yorm.map_attr(applications=Applications)
-@yorm.map_attr(computers=Computers)
-class ProgramConfiguration(common.AttributeDictionary):
+@yorm.map_attr(applications=ApplicationList)
+@yorm.map_attr(computers=ComputerList)
+class ProgramConfig(yorm.extended.AttributeDictionary):
 
-    """A dictionary of configuration settings."""
-
-    def __init__(self):
-        self.applications = Applications()
-        self.computers = Computers()
-
-
-@yorm.map_attr(applications=Statuses)
-@yorm.map_attr(counter=yorm.standard.Integer)
-class ProgramStatus(common.AttributeDictionary):
-
-    """A dictionary of configuration settings."""
+    """A dictionary of program configuration settings."""
 
     def __init__(self):
-        self.applications = Applications()
-        self.counter = 0
-
-
-@yorm.map_attr(configuration=ProgramConfiguration)
-@yorm.map_attr(status=ProgramStatus)
-class Settings:
-
-    """Primary wrapper for all settings."""
-
-    def __init__(self):
-        self.configuration = ProgramConfiguration()
-        self.status = ProgramStatus()
+        super().__init__()
+        self.applications = ApplicationList()
+        self.computers = ComputerList()

@@ -1,32 +1,32 @@
-configuration:
+config:
   applications:
-  - label: itunes
-    versions:
-      linux: null
-      mac: ''
-      windows: iTunes.exe
-  - label: iphoto
+  - name: iphoto
     versions:
       linux: null
       mac: iPhoto
       windows: null
+  - name: itunes
+    versions:
+      linux: null
+      mac: ''
+      windows: iTunes.exe
   computers:
   - address:
       external: 1.1.1.1
       internal: 2.2.2.2
     hostname: Jaces-MacBook
-    label: macbook
+    name: macbook
   - address:
       external: 3.3.3.3
       internal: 4.4.4.4
     hostname: Jaces-MacBook-2
-    label: macbook-pro
+    name: macbook-pro
 status:
   applications:
   - application: itunes
     computers:
     - computer: macbook-pro
-      timestamps:
+      timestamp:
         started: 444
-        stopped: null
+        stopped: 0
   counter: 499

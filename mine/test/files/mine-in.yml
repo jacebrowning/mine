@@ -1,11 +1,11 @@
-configuration:
+config:
   applications:
-  - label: slack
+  - name: slack
     versions:
       linux: null
       mac: 'Slack.app'
       windows: null
-  - label: iphoto
+  - name: iphoto
     versions:
       linux: null
       mac: iPhoto
@@ -15,18 +15,18 @@ configuration:
       external: 1.2.3.4
       internal: null
     hostname: Jaces-MacBook
-    label: macbook
+    name: macbook
   - address:
       external: null
       internal: null
     hostname: ''
-    label: macbook-pro
+    name: macbook-pro
 status:
   applications:
   - application: itunes
     computers:
     - computer: macbook-pro
-      timestamps:
+      timestamp:
         started: 444
         stopped: null
   counter: 499

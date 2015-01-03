@@ -3,44 +3,13 @@
 import argparse
 import logging
 
-import yorm
 
 from . import settings
 
-MAX_VERBOSITY = 3
+MAX_VERBOSITY = 4
 
 logger = logging.getLogger
 verbosity = 0
-
-
-class NoneString(yorm.standard.String):
-
-    """Converter for the `str` type with `None` as default."""
-
-    DEFAULT = None
-
-
-class NoneInteger(yorm.standard.Integer):
-
-    """Converter for the `int` type with `None` as default."""
-
-    DEFAULT = None
-
-
-class dict2(dict):
-
-    """A `dict` with keys available as attributes."""
-
-    def __init__(self, *args, **kwargs):
-        super(dict2, self).__init__(*args, **kwargs)
-        self.__dict__ = self
-
-
-class AttributeDictionary(yorm.container.Dictionary):
-
-    """Base class for an attribute dictionary of attribute converters."""
-
-    TYPE = dict2
 
 
 class HelpFormatter(argparse.HelpFormatter):
@@ -51,7 +20,7 @@ class HelpFormatter(argparse.HelpFormatter):
         super().__init__(*args, max_help_position=40, **kwargs)
 
 
-class WarningFormatter(logging.Formatter, object):
+class WarningFormatter(logging.Formatter):
 
     """Logging formatter that displays verbose formatting for WARNING+."""
 
@@ -72,7 +41,7 @@ class WarningFormatter(logging.Formatter, object):
 
 def configure_logging(count=0):
     """Configure logging using the provided verbosity count."""
-    assert MAX_VERBOSITY == 3
+    assert MAX_VERBOSITY == 4
 
     if count == -1:
         level = settings.QUIET_LOGGING_LEVEL
@@ -84,19 +53,26 @@ def configure_logging(count=0):
         verbose_format = settings.LEVELED_LOGGING_FORMAT
     elif count == 1:
         level = settings.VERBOSE_LOGGING_LEVEL
-        default_format = settings.DEFAULT_LOGGING_FORMAT
-        verbose_format = settings.LEVELED_LOGGING_FORMAT
+        default_format = settings.VERBOSE_LOGGING_FORMAT
+        verbose_format = settings.VERBOSE_LOGGING_FORMAT
     elif count == 2:
         level = settings.VERBOSE2_LOGGING_LEVEL
-        default_format = verbose_format = settings.VERBOSE_LOGGING_FORMAT
-    else:
+        default_format = settings.VERBOSE_LOGGING_FORMAT
+        verbose_format = settings.VERBOSE_LOGGING_FORMAT
+    elif count == 3:
         level = settings.VERBOSE2_LOGGING_LEVEL
-        default_format = verbose_format = settings.VERBOSE2_LOGGING_FORMAT
+        default_format = settings.VERBOSE2_LOGGING_FORMAT
+        verbose_format = settings.VERBOSE2_LOGGING_FORMAT
+    else:
+        level = settings.VERBOSE2_LOGGING_LEVEL - 1
+        default_format = settings.VERBOSE2_LOGGING_FORMAT
+        verbose_format = settings.VERBOSE2_LOGGING_FORMAT
 
     # Set a custom formatter
     logging.basicConfig(level=level)
     logging.captureWarnings(True)
-    formatter = WarningFormatter(default_format, verbose_format)
+    formatter = WarningFormatter(default_format, verbose_format,
+                                 datefmt=settings.LOGGING_DATEFMT)
     logging.root.handlers[0].setFormatter(formatter)
 
     # Warn about excessive verbosity

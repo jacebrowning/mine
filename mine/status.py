@@ -61,7 +61,7 @@ class State(yorm.extended.AttributeDictionary):
         return str(self.computer)
 
     def __lt__(self, other):
-        return self.computer < other.computer
+        return str(self.computer).lower() < str(other.computer).lower()
 
 
 @yorm.map_attr(all=State)
@@ -85,7 +85,7 @@ class Status(yorm.extended.AttributeDictionary):
         return str(self.application)
 
     def __lt__(self, other):
-        return self.application < other.application
+        return str(self.application).lower() < str(other.application).lower()
 
 
 @yorm.map_attr(all=Status)

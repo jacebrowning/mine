@@ -38,7 +38,7 @@ class TestState:
     def test_lt(self):
         """Verify states can be sorted."""
         assert self.state1 < self.state2
-        assert self.state2 > self.state4
+        assert self.state3 > self.state1
 
 
 class TestStatus:
@@ -70,7 +70,7 @@ class TestStatus:
     def test_lt(self):
         """Verify statuss can be sorted."""
         assert self.status1 < self.status2
-        assert self.status2 > self.status4
+        assert self.status3 > self.status1
 
 
 class TestProgramStatusEmpty:

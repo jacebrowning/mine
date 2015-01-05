@@ -73,32 +73,67 @@ class TestStatus:
         assert self.status3 > self.status1
 
 
-class TestProgramStatusEmpty:
+class TestProgramStatus:
 
-    """Unit tests for the program status class with an empty list."""
+    """Unit tests for the program status class."""
 
     def setup_method(self, method):
         """Create an empty program status for all tests."""
         self.status = ProgramStatus()
         self.application = Application('my-application')
         self.computer = Mock()
+        self.computer.name = 'local'
+        self.computer2 = Mock()
+        self.computer2.name = 'remote'
+        self.computer3 = Mock()
+        self.computer3.name = 'remote2'
 
     def test_get_latest(self):
+        """Verify the latest computer can be determined."""
+        self.status.start(self.application, self.computer)
+        self.status.start(self.application, self.computer2)
+        self.status.stop(self.application, self.computer3)
+        assert self.computer2.name == self.status.get_latest(self.application)
+        assert 3 == self.status.counter
+
+    def test_get_latest_empty(self):
         """Verify None is returned when there is no latest computer."""
         assert None == self.status.get_latest(self.application)
+        assert 0 == self.status.counter
 
-    def test_is_running(self):
+    def test_is_running_empty(self):
         """Verify no app is running when the list is empty."""
         assert False == self.status.is_running(self.application, self.computer)
+        assert 0 == self.status.counter
 
     def test_start(self):
         """Verify starting an application adds it to the list."""
         self.status.start(self.application, self.computer)
         names = [status.application for status in self.status.applications]
         assert self.application.name in names
+        assert 1 == self.status.counter
 
     def test_stop(self):
         """Verify stopping an application adds it to the list."""
         self.status.stop(self.application, self.computer)
         names = [status.application for status in self.status.applications]
         assert self.application.name in names
+        assert 1 == self.status.counter
+
+    def test_start_again(self):
+        """Verify starting a known application increments the counter."""
+        self.status.start(self.application, self.computer)
+        self.status.start(self.application, self.computer)
+        self.status.start(self.application, self.computer2)
+        assert self.status.is_running(self.application, self.computer)
+        assert self.status.is_running(self.application, self.computer2)
+        assert 3 == self.status.counter
+
+    def test_stop_again(self):
+        """Verify stopping a known application increments the counter."""
+        self.status.stop(self.application, self.computer)
+        self.status.stop(self.application, self.computer)
+        self.status.stop(self.application, self.computer2)
+        assert not self.status.is_running(self.application, self.computer)
+        assert not self.status.is_running(self.application, self.computer2)
+        assert 3 == self.status.counter

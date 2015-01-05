@@ -75,36 +75,43 @@ def run(path=settings.DEFAULT_PATH):
     # TODO: remove this fix when YORM stops overwriting attributes: https://github.com/jacebrowning/yorm/issues/47
     data.config = config
 
-    for application in config.applications:
-        if manager.is_running(application):
-            latest = status.get_latest(application)
-            if latest:
-                if computer != latest:
-                    if status.is_running(application, computer):
-                        log.info("%s launched on: %s", application, latest)
-                        manager.stop(application)
-                        status.stop(application, computer)
-                        show_running(application, latest)
-                        show_stopped(application, computer)
-                    else:
-                        status.start(application, computer)
-                        show_running(application, computer)
-                else:
-                    pass
-            else:
-                status.start(application, computer)
-                show_running(application, computer)
-        else:
-            if status.is_running(application, computer):
-                status.stop(application, computer)
-                show_stopped(application, computer)
-            else:
-                pass
+    update_status(config, status, computer, manager)
 
     # TODO: remove this fix when YORM stores on nested attributes: https://github.com/jacebrowning/yorm/issues/42
     data.yorm_mapper.store(data)  # pylint: disable=E1101
 
     return True
+
+
+# TODO: consider moving this logic to `data`
+def update_status(config, status, computer, manager):
+    """Update and store each application's status."""
+    for application in config.applications:
+        if manager.is_running(application):
+            latest = status.get_latest(application)
+            if computer != latest:
+                if status.is_running(application, computer):
+                    # case 1: application just launched remotely
+                    log.info("%s launched on: %s", application, latest)
+                    manager.stop(application)
+                    status.stop(application, computer)
+                    show_running(application, latest)
+                    show_stopped(application, computer)
+                else:
+                    # case 2: application just launched locally
+                    status.start(application, computer)
+                    show_running(application, computer)
+            else:
+                # case 3: application already running locally
+                pass
+        else:
+            if status.is_running(application, computer):
+                # case 4: application just closed locally
+                status.stop(application, computer)
+                show_stopped(application, computer)
+            else:
+                # case 5: application already closed locally
+                pass
 
 
 def show_running(application, computer):

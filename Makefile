@@ -6,7 +6,7 @@ endif
 
 # Test runner settings
 UNIT_TEST_COVERAGE := 80
-INTEGRATION_TEST_COVERAGE := 80
+INTEGRATION_TEST_COVERAGE := 96
 
 # Project settings
 PROJECT := mine

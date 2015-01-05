@@ -22,6 +22,7 @@ def log_running(func):
     @functools.wraps(func)
     def wrapped(self, application):
         """Wrapped method to log if an application is running."""
+        log.debug("determining if %s is running...", application)
         running = func(self, application)
         if running is None:
             status = "untracked"
@@ -105,7 +106,11 @@ class MacManager(BaseManager):
             try:
                 path = process.exe()
                 if name in path.split(os.sep):
-                    return process
+                    if process.status() == psutil.STATUS_ZOMBIE:
+                        log.debug("skipped zombie process: %s", path)
+                    else:
+                        log.debug("found matching process: %s", path)
+                        return process
             except psutil.AccessDenied:
                 pass  # the process is likely owned by root
 

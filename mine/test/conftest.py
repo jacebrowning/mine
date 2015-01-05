@@ -4,7 +4,6 @@
 import os
 import pytest
 import platform
-
 import yorm
 
 ENV = 'TEST_INTEGRATION'  # environment variable to enable integration tests

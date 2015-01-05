@@ -102,7 +102,7 @@ class LinuxManager(BaseManager):  # pragma: no cover (manual)
                 pass  # the process is likely owned by root
 
 
-class MacManager(BaseManager):
+class MacManager(BaseManager):  # pragma: no cover (manual)
 
     """Application manager for OS X."""
 

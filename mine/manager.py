@@ -69,15 +69,37 @@ class BaseManager(metaclass=abc.ABCMeta):  # pragma: no cover (abstract)
         raise NotImplementedError
 
 
-class LinuxManager(BaseManager):
+class LinuxManager(BaseManager):  # pragma: no cover (manual)
 
     """Application manager for Linux."""
 
     def is_running(self, application):
-        pass
+        name = application.versions.linux
+        if not name:
+            return None
+        process = self._get_process(name)
+        return process is not None
 
     def stop(self, application):
-        pass
+        name = application.versions.linux
+        process = self._get_process(name)
+        if process.is_running():
+            process.terminate()
+
+    @staticmethod
+    def _get_process(name):
+        """Get a process whose name matches."""
+        for process in psutil.process_iter():
+            try:
+                if name == process.name():
+                    path = process.exe()
+                    if process.status() == psutil.STATUS_ZOMBIE:
+                        log.debug("skipped zombie process: %s", path)
+                    else:
+                        log.debug("found matching process: %s", path)
+                        return process
+            except psutil.AccessDenied:
+                pass  # the process is likely owned by root
 
 
 class MacManager(BaseManager):
@@ -115,7 +137,7 @@ class MacManager(BaseManager):
                 pass  # the process is likely owned by root
 
 
-class WindowsManager(BaseManager):
+class WindowsManager(BaseManager):  # pragma: no cover (manual)
 
     """Application manager for Windows."""
 

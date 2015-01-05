@@ -5,8 +5,8 @@ ifndef TRAVIS
 endif
 
 # Test runner settings
-UNIT_TEST_COVERAGE := 80
-INTEGRATION_TEST_COVERAGE := 80
+UNIT_TEST_COVERAGE := 90
+INTEGRATION_TEST_COVERAGE := 98
 
 # Project settings
 PROJECT := mine

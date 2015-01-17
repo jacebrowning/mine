@@ -63,7 +63,7 @@ class BaseManager(metaclass=abc.ABCMeta):  # pragma: no cover (abstract)
 #         """Start an application on the current computer."""
 #         raise NotImplementedError
 
-    @abc.abstractclassmethod
+    @abc.abstractmethod
     def stop(self, application):
         """Stop an application on the current computer."""
         raise NotImplementedError

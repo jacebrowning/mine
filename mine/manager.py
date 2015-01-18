@@ -164,7 +164,7 @@ class WindowsManager(BaseManager):  # pragma: no cover (manual)
 
 def get_manager(name=None):
     """Return an application manager for the current operating system."""
-    log.info("detecting the current system..")
+    log.info("detecting the current system...")
     name = name or platform.system()
     if name == WindowsManager.NAME:
         manager = WindowsManager()

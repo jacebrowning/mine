@@ -15,7 +15,7 @@ def test_find_dropbox(tmpdir):
     tmpdir.chdir()
     _touch('Dropbox', '.mine.yml')
 
-    path = services.get_path(str(tmpdir))
+    path = services.get_path(tmpdir.strpath)
 
     assert os.path.isfile(path)
 
@@ -25,7 +25,7 @@ def test_find_dropbox_personal(tmpdir):
     tmpdir.chdir()
     _touch('Dropbox (Personal)', '.mine.yml')
 
-    path = services.get_path(str(tmpdir))
+    path = services.get_path(tmpdir.strpath)
 
     assert os.path.isfile(path)
 
@@ -37,7 +37,7 @@ def test_find_depth(tmpdir):
     _touch('Dropbox', 'a', 'b', '.mine.yml')
 
     with pytest.raises(OSError):
-        services.get_path(str(tmpdir))
+        services.get_path(tmpdir.strpath)
 
 
 @patch('os.path.isdir', Mock(return_value=False))

@@ -33,6 +33,7 @@ def main(args=None):
     # Build main parser
     parser = argparse.ArgumentParser(prog=CLI, description=DESCRIPTION,
                                      **shared)
+    parser.add_argument('-f', '--file', help="custom settings file path")
 
     # Parse arguments
     args = parser.parse_args(args=args)
@@ -43,7 +44,7 @@ def main(args=None):
     # Run the program
     try:
         log.debug("running main command...")
-        success = run()
+        success = run(path=args.file)
     except KeyboardInterrupt:
         msg = "command cancelled"
         if common.verbosity == common.MAX_VERBOSITY:

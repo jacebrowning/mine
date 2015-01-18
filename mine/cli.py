@@ -8,8 +8,8 @@ import argparse
 from . import CLI, VERSION, DESCRIPTION
 from . import common
 from .data import Data
+from .services import get_path
 from .manager import get_manager
-from . import settings
 
 import yorm
 
@@ -58,9 +58,10 @@ def main(args=None):
         sys.exit(1)
 
 
-def run(path=settings.DEFAULT_PATH):
+def run(path=None):
     """Run the program."""
     manager = get_manager()
+    path = path or get_path()
 
     # TODO: convert to `yorm.load()` when available
     data = Data()

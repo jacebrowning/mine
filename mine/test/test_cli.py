@@ -45,12 +45,23 @@ class TestMain:
         assert mock_log.exception.call_count == 1
 
     @pytest.mark.integration
-    def test_path(self, tmpdir):
+    def test_file(self, tmpdir):
         """Verify a custom setting file path can be used."""
         tmpdir.chdir()
         path = tmpdir.join('custom.ext').strpath
 
         cli.main(['--file', path])
+
+        assert os.path.isfile(path)
+
+    # @pytest.mark.integration
+    def test_service(self, tmpdir):
+        """Verify a custom service can be used."""
+        tmpdir.chdir()
+        dirpath = tmpdir.join('Drive').strpath
+        path = os.path.join(dirpath, '.mine.yml')
+
+        cli.main(['--service', 'drive'])
 
         assert os.path.isfile(path)
 

@@ -17,7 +17,8 @@ log = common.logger(__name__)
 # pylint: disable=R0903,W0223,E0110
 
 
-def log_running(func):
+# TODO: enable coverage when a Linux test is implemented
+def log_running(func):  # pragma: no cover (manual)
     """Decorator for methods that return application status."""
     @functools.wraps(func)
     def wrapped(self, application):
@@ -35,7 +36,8 @@ def log_running(func):
     return wrapped
 
 
-def log_stopping(func):
+# TODO: enable coverage when a Linux test is implemented
+def log_stopping(func):  # pragma: no cover (manual)
     """Decorator for methods that stop an application."""
     @functools.wraps(func)
     def wrapped(self, application):

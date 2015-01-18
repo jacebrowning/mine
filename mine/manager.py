@@ -17,7 +17,8 @@ log = common.logger(__name__)
 # pylint: disable=R0903,W0223,E0110
 
 
-def log_running(func):
+# TODO: enable coverage when a Linux test is implemented
+def log_running(func):  # pragma: no cover (manual)
     """Decorator for methods that return application status."""
     @functools.wraps(func)
     def wrapped(self, application):
@@ -35,7 +36,8 @@ def log_running(func):
     return wrapped
 
 
-def log_stopping(func):
+# TODO: enable coverage when a Linux test is implemented
+def log_stopping(func):  # pragma: no cover (manual)
     """Decorator for methods that stop an application."""
     @functools.wraps(func)
     def wrapped(self, application):
@@ -50,6 +52,11 @@ def log_stopping(func):
 class BaseManager(metaclass=abc.ABCMeta):  # pragma: no cover (abstract)
 
     """Base application manager."""
+
+    NAME = FRIENDLY = None
+
+    def __str__(self):
+        return self.FRIENDLY
 
     @abc.abstractmethod
     def is_running(self, application):
@@ -72,6 +79,9 @@ class BaseManager(metaclass=abc.ABCMeta):  # pragma: no cover (abstract)
 class LinuxManager(BaseManager):  # pragma: no cover (manual)
 
     """Application manager for Linux."""
+
+    NAME = 'Linux'
+    FRIENDLY = NAME
 
     def is_running(self, application):
         name = application.versions.linux
@@ -105,6 +115,9 @@ class LinuxManager(BaseManager):  # pragma: no cover (manual)
 class MacManager(BaseManager):  # pragma: no cover (manual)
 
     """Application manager for OS X."""
+
+    NAME = 'Darwin'
+    FRIENDLY = 'Mac'
 
     @log_running
     def is_running(self, application):
@@ -141,6 +154,9 @@ class WindowsManager(BaseManager):  # pragma: no cover (manual)
 
     """Application manager for Windows."""
 
+    NAME = 'Windows'
+    FRIENDLY = NAME
+
     def is_running(self, application):
         pass
 
@@ -150,11 +166,15 @@ class WindowsManager(BaseManager):  # pragma: no cover (manual)
 
 def get_manager(name=None):
     """Return an application manager for the current operating system."""
+    log.info("detecting the current system...")
     name = name or platform.system()
-    if name == 'Windows':
-        return WindowsManager()
-    elif name == 'Darwin':
-        return MacManager()
+    if name == WindowsManager.NAME:
+        manager = WindowsManager()
+    elif name == MacManager.NAME:
+        manager = MacManager()
     else:
-        assert name == 'Linux'
-        return LinuxManager()
+        assert name == LinuxManager.NAME
+        manager = LinuxManager()
+
+    log.info("current system: %s", manager)
+    return manager

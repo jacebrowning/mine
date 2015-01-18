@@ -1,6 +1,7 @@
 """Unit tests for the 'cli' module."""
 # pylint: disable=R0201
 
+import os
 import pytest
 from unittest.mock import Mock, patch
 import logging
@@ -42,6 +43,16 @@ class TestMain:
         with pytest.raises(SystemExit):
             cli.main(['-vvvv'])
         assert mock_log.exception.call_count == 1
+
+    @pytest.mark.integration
+    def test_path(self, tmpdir):
+        """Verify a custom setting file path can be used."""
+        tmpdir.chdir()
+        path = tmpdir.join('custom.ext').strpath
+
+        cli.main(['--file', path])
+
+        assert os.path.isfile(path)
 
 
 def mock_run(*args, **kwargs):

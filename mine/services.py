@@ -20,7 +20,7 @@ DEPTH = 3  # number of levels to search for the settings file
 log = common.logger(__name__)
 
 
-def get_path(top=None):
+def get_path(top=None, name=None):
     """Return the path to the settings file."""
     log.info("looking for settings file...")
     top = top or _default_top()

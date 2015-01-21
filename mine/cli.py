@@ -33,7 +33,11 @@ def main(args=None):
     # Build main parser
     parser = argparse.ArgumentParser(prog=CLI, description=DESCRIPTION,
                                      **shared)
-    parser.add_argument('-f', '--file', help="custom settings file path")
+    group = parser.add_mutually_exclusive_group()
+    group.add_argument('-s', '--service', metavar='NAME',
+                       help="override the default file sync service")
+    group.add_argument('-f', '--file', metavar='PATH',
+                       help="override the full settings file path")
 
     # Parse arguments
     args = parser.parse_args(args=args)
@@ -44,7 +48,7 @@ def main(args=None):
     # Run the program
     try:
         log.debug("running main command...")
-        success = run(path=args.file)
+        success = run(name=args.service, path=args.file)
     except KeyboardInterrupt:
         msg = "command cancelled"
         if common.verbosity == common.MAX_VERBOSITY:
@@ -59,10 +63,10 @@ def main(args=None):
         sys.exit(1)
 
 
-def run(path=None):
+def run(name=None, path=None):
     """Run the program."""
     manager = get_manager()
-    path = path or get_path()
+    path = path or get_path(name=name)
 
     # TODO: convert to `yorm.load()` when available
     data = Data()

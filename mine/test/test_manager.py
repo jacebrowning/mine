@@ -63,6 +63,17 @@ class TestMacManager:
         application = Application('fake-program-for-mine')
         assert None == self.manager.is_running(application)
 
+    @pytest.mark.mac_only
+    @pytest.mark.integration
+    def test_stop_start(self):
+        """Verify a process can be stopped and started."""
+        application = Application('mail')
+        application.versions.mac = 'Mail.app'
+        self.manager.stop(application)
+        assert not self.manager.is_running(application)
+        self.manager.start(application)
+        assert self.manager.is_running(application)
+
 
 class TestWindowsManager:
 

@@ -2,6 +2,7 @@
 
 import os
 import abc
+import time
 import platform
 import functools
 
@@ -37,6 +38,19 @@ def log_running(func):  # pragma: no cover (manual)
 
 
 # TODO: enable coverage when a Linux test is implemented
+def log_starting(func):  # pragma: no cover (manual)
+    """Decorator for methods that start an application."""
+    @functools.wraps(func)
+    def wrapped(self, application):
+        """Wrapped method to log that an application is being started."""
+        log.info("starting %s...", application)
+        result = func(self, application)
+        log.info("running: %s", application)
+        return result
+    return wrapped
+
+
+# TODO: enable coverage when a Linux test is implemented
 def log_stopping(func):  # pragma: no cover (manual)
     """Decorator for methods that stop an application."""
     @functools.wraps(func)
@@ -63,12 +77,10 @@ class BaseManager(metaclass=abc.ABCMeta):  # pragma: no cover (abstract)
         """Determine if an application is currently running."""
         raise NotImplementedError
 
-# TODO: add this method when a feature calls for it
-# https://github.com/jacebrowning/mine/issues/5
-#     @abc.abstractclassmethod
-#     def start(self, application):
-#         """Start an application on the current computer."""
-#         raise NotImplementedError
+    @abc.abstractmethod
+    def start(self, application):
+        """Start an application on the current computer."""
+        raise NotImplementedError
 
     @abc.abstractmethod
     def stop(self, application):
@@ -89,6 +101,9 @@ class LinuxManager(BaseManager):  # pragma: no cover (manual)
             return None
         process = self._get_process(name)
         return process is not None
+
+    def start(self, application):
+        pass
 
     def stop(self, application):
         name = application.versions.linux
@@ -127,12 +142,23 @@ class MacManager(BaseManager):  # pragma: no cover (manual)
         process = self._get_process(name)
         return process is not None
 
+    @log_starting
+    def start(self, application):
+        name = application.versions.mac
+        if os.path.exists(name):
+            path = name
+        else:
+            # TODO: search additional paths?
+            path = os.path.join("/Applications", name)
+        self._start_app(path)
+
     @log_stopping
     def stop(self, application):
         name = application.versions.mac
         process = self._get_process(name)
-        if process.is_running():
+        if process and process.is_running():
             process.terminate()
+            time.sleep(0.1)
 
     @staticmethod
     def _get_process(name):
@@ -149,6 +175,14 @@ class MacManager(BaseManager):  # pragma: no cover (manual)
             except psutil.AccessDenied:
                 pass  # the process is likely owned by root
 
+    @staticmethod
+    def _start_app(path):
+        """Start an application from it's .app directory."""
+        assert os.path.exists(path)
+        process = psutil.Popen(['open', path])
+        time.sleep(0.1)
+        return process
+
 
 class WindowsManager(BaseManager):  # pragma: no cover (manual)
 
@@ -158,6 +192,9 @@ class WindowsManager(BaseManager):  # pragma: no cover (manual)
     FRIENDLY = NAME
 
     def is_running(self, application):
+        pass
+
+    def start(self, application):
         pass
 
     def stop(self, application):

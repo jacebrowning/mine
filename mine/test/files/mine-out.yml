@@ -1,11 +1,13 @@
 config:
   applications:
   - name: iphoto
+    queued: false
     versions:
       linux: null
       mac: iPhoto
       windows: null
   - name: itunes
+    queued: false
     versions:
       linux: null
       mac: ''
@@ -29,4 +31,5 @@ status:
       timestamp:
         started: 444
         stopped: 0
+    next: null
   counter: 499

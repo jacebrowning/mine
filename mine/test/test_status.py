@@ -98,12 +98,12 @@ class TestProgramStatus:
 
     def test_get_latest_empty(self):
         """Verify None is returned when there is no latest computer."""
-        assert None == self.status.get_latest(self.application)
+        assert None is self.status.get_latest(self.application)
         assert 0 == self.status.counter
 
     def test_is_running_empty(self):
         """Verify no app is running when the list is empty."""
-        assert False == self.status.is_running(self.application, self.computer)
+        assert False is self.status.is_running(self.application, self.computer)
         assert 0 == self.status.counter
 
     def test_start(self):

@@ -72,6 +72,7 @@ class StateList(yorm.extended.SortedList):
 
 @yorm.map_attr(application=yorm.standard.String)
 @yorm.map_attr(computers=StateList)
+@yorm.map_attr(next=yorm.extended.NoneString)
 class Status(yorm.extended.AttributeDictionary):
 
     """A dictionary of computers using an application."""
@@ -80,6 +81,7 @@ class Status(yorm.extended.AttributeDictionary):
         super().__init__()
         self.application = name
         self.computers = StateList()
+        self.next = None
 
     def __str__(self):
         return str(self.application)

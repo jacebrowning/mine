@@ -77,6 +77,7 @@ def run(path=None):
     # TODO: remove this fix when YORM stops overwriting attributes: https://github.com/jacebrowning/yorm/issues/47
     data.config = config
 
+    launch_next(config, status, computer, manager)
     update_status(config, status, computer, manager)
 
     # TODO: remove this fix when YORM stores on nested attributes: https://github.com/jacebrowning/yorm/issues/42
@@ -86,8 +87,25 @@ def run(path=None):
 
 
 # TODO: consider moving this logic to `data`
+def launch_next(config, status, computer, manager):
+    """Launch applications that have been queued."""
+    log.info("launching queued applications...")
+    for status in status.applications:
+        if status.next:
+            application = config.applications.get(status.application)
+            log.info("%s queued for: %s", application, status.next)
+            if status.next == computer:
+                if not manager.is_running(application):
+                    manager.start(application)
+                status.next = None
+            elif manager.is_running(application):
+                manager.stop(application)
+
+
+# TODO: consider moving this logic to `data`
 def update_status(config, status, computer, manager):
     """Update and store each application's status."""
+    log.info("recording application status...")
     for application in config.applications:
         if manager.is_running(application):
             latest = status.get_latest(application)
@@ -119,6 +137,11 @@ def update_status(config, status, computer, manager):
 def show_running(application, computer):
     """Display the new state of a running application."""
     print("{} is now running on {}".format(application, computer))
+
+
+def show_started(application, computer):
+    """Display the new state of a started application."""
+    print("{} is now started on {}".format(application, computer))
 
 
 def show_stopped(application, computer):

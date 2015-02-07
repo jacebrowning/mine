@@ -12,7 +12,11 @@ class MockSocket(Mock):
 
     connect = Mock()
     close = Mock()
-    getsockname = lambda _: ['5.6.7.8']
+
+    @staticmethod
+    def getsockname():
+        """Mock version of socket.getsocketname()."""
+        return ['5.6.7.8']
 
 
 @patch('socket.gethostname', Mock(return_value='Sample.local'))

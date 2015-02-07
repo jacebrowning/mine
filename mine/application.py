@@ -22,14 +22,16 @@ class Versions(yorm.extended.AttributeDictionary):
 
 
 @yorm.map_attr(name=yorm.standard.String)
+@yorm.map_attr(queued=yorm.standard.Boolean)
 @yorm.map_attr(versions=Versions)
 class Application(yorm.extended.AttributeDictionary):
 
     """A dictionary of application information."""
 
-    def __init__(self, name):
+    def __init__(self, name, queued=False):
         super().__init__()
         self.name = name
+        self.queued = queued
         self.versions = Versions()
 
     def __str__(self):
@@ -49,3 +51,11 @@ class Application(yorm.extended.AttributeDictionary):
 class ApplicationList(yorm.extended.SortedList):
 
     """A list of monitored applications."""
+
+    def get(self, name):
+        """Return the application with the given name."""
+        log.debug("finding application for '%s'...", name)
+        for application in self:
+            if application == name:
+                return application
+        assert 0

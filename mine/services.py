@@ -14,7 +14,7 @@ SERVICES = (
     'Dropbox',
     'Dropbox (Personal)',
 )
-FILENAME = '.mine.yml'
+FILENAME = 'mine.yml'
 DEPTH = 3  # number of levels to search for the settings file
 
 log = common.logger(__name__)

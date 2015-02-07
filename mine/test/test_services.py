@@ -13,7 +13,7 @@ from mine.test.conftest import FILES
 def test_find_dropbox(tmpdir):
     """Verify a settings file can be found in Dropbox."""
     tmpdir.chdir()
-    _touch('Dropbox', '.mine.yml')
+    _touch('Dropbox', 'mine.yml')
 
     path = services.get_path(tmpdir.strpath)
 
@@ -23,7 +23,7 @@ def test_find_dropbox(tmpdir):
 def test_find_dropbox_personal(tmpdir):
     """Verify a settings file can be found in Dropbox (Personal)."""
     tmpdir.chdir()
-    _touch('Dropbox (Personal)', '.mine.yml')
+    _touch('Dropbox (Personal)', 'mine.yml')
 
     path = services.get_path(tmpdir.strpath)
 
@@ -34,7 +34,7 @@ def test_find_dropbox_personal(tmpdir):
 def test_find_depth(tmpdir):
     """Verify a settings file is not found below the maximum depth."""
     tmpdir.chdir()
-    _touch('Dropbox', 'a', 'b', '.mine.yml')
+    _touch('Dropbox', 'a', 'b', 'mine.yml')
 
     with pytest.raises(OSError):
         services.get_path(tmpdir.strpath)

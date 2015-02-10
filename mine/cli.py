@@ -90,14 +90,18 @@ def run(path=None):
 def launch_next(config, status, computer, manager):
     """Launch applications that have been queued."""
     log.info("launching queued applications...")
-    for status in status.applications:
-        if status.next:
-            application = config.applications.get(status.application)
-            log.info("%s queued for: %s", application, status.next)
-            if status.next == computer:
-                if not manager.is_running(application):
-                    manager.start(application)
-                status.next = None
+    for app_status in status.applications:
+        if app_status.next:
+            application = config.applications.get(app_status.application)
+            log.info("%s queued for: %s", application, app_status.next)
+            if app_status.next == computer:
+                latest = status.get_latest(application)
+                if latest in (computer, None):
+                    if not manager.is_running(application):
+                        manager.start(application)
+                    app_status.next = None
+                else:
+                    log.info("%s still running on: %s", application, latest)
             elif manager.is_running(application):
                 manager.stop(application)
 

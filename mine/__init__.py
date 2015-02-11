@@ -9,7 +9,7 @@ __version__ = '0.0.0'
 
 CLI = 'mine'
 VERSION = __project__ + '-' + __version__
-DESCRIPTION = "TBD"
+DESCRIPTION = "Manages running applications across multiple computers."
 
 PYTHON_VERSION = 3, 3
 

@@ -106,6 +106,12 @@ class TestProgramStatus:
         assert False is self.status.is_running(self.application, self.computer)
         assert 0 == self.status.counter
 
+    def test_queue(self):
+        """Verify queuing an application sets the next computer."""
+        self.status.queue(self.application, self.computer)
+        app_status = self.status.find(self.application)
+        assert self.computer == app_status.next
+
     def test_start(self):
         """Verify starting an application adds it to the list."""
         self.status.start(self.application, self.computer)

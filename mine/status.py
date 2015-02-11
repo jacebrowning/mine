@@ -107,6 +107,16 @@ class ProgramStatus(yorm.extended.AttributeDictionary):
         self.applications = StatusList()
         self.counter = 0
 
+    def find(self, application):
+        """Return the application status for an application."""
+        for app_status in self.applications:
+            if app_status.application == application.name:
+                break
+        else:
+            app_status = Status(application.name)
+            self.applications.append(app_status)
+        return app_status
+
     def get_latest(self, application):
         """Get the last computer's name logged as running an application."""
         for status in self.applications:
@@ -134,9 +144,15 @@ class ProgramStatus(yorm.extended.AttributeDictionary):
         # Status not found, assume the application is not running
         return False
 
+    def queue(self, application, computer):
+        """Record an application as queued for launch on a computer."""
+        for status in self.applications:
+            if status.application == application.name:
+                status.next = computer
+
     @log_starting
     def start(self, application, computer):
-        """Log an application as running on a computer."""
+        """Record an application as running on a computer."""
         for status in self.applications:
             if status.application == application.name:
                 for state in status.computers:
@@ -161,7 +177,7 @@ class ProgramStatus(yorm.extended.AttributeDictionary):
 
     @log_stopping
     def stop(self, application, computer):
-        """Log an application as no longer running on a computer."""
+        """Record an application as no longer running on a computer."""
         for status in self.applications:
             if status.application == application.name:
                 for state in status.computers:

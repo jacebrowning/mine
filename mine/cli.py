@@ -97,8 +97,12 @@ def run(path=None, cleanup=True, switch=None):
 
     if cleanup:
         clean(config, status)
+    if switch is True:
+        switch = computer
+    elif switch:
+        switch = config.computers.match(switch)
     if switch:
-        queue(config, status, computer if switch is True else switch)
+        queue(config, status, switch)
     launch(config, status, computer, manager)
     update(config, status, computer, manager)
 

@@ -72,6 +72,13 @@ class ComputerList(yorm.extended.SortedList):
             if computer == name:
                 return computer
 
+    def match(self, partial):
+        """Find a computer with a similar name."""
+        log.debug("finding computer similar to '%s'...", partial)
+        for computer in self:
+            if partial.lower() in computer.name.lower():
+                return computer
+
     def get_current(self):
         """Get the current computer's information."""
         this = Computer(None)

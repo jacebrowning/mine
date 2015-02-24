@@ -80,6 +80,11 @@ class TestComputerList:
         with pytest.raises(AssertionError):
             self.computers.get('fake')
 
+    def test_match(self):
+        """Verify a similar computer can be found."""
+        computer = self.computers.match('AB')
+        assert 'abc' == computer.name
+
     def test_generate_name(self):
         """Verify a computer name is generated correctly."""
         computers = ComputerList()

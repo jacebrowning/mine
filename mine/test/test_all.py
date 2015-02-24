@@ -204,7 +204,7 @@ class TestProcesses:
 
         # Act
 
-        cli.run(self.path)
+        cli.run(self.path, cleanup=False)
 
         # Assert
 
@@ -236,7 +236,7 @@ class TestProcesses:
         self._start_application()
 
         # Act
-        cli.run(self.path)
+        cli.run(self.path, cleanup=False)
 
         # Assert
 

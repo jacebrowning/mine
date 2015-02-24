@@ -3,6 +3,8 @@
 
 from unittest.mock import Mock, patch
 
+import pytest
+
 from mine.computer import Computer, ComputerList
 
 
@@ -64,6 +66,19 @@ class TestComputer:
 class TestComputerList:
 
     """Unit tests for lists of computers."""
+
+    computers = ComputerList([Computer('abc', 'abc.local', 1),
+                              Computer('def', 'def.local', 2)])
+
+    def test_get(self):
+        """Verify a computer can be found in a list."""
+        computer = self.computers.get('ABC')
+        assert 'abc' == computer.name
+
+    def test_get_missing(self):
+        """Verify an invalid names raise an assertion."""
+        with pytest.raises(AssertionError):
+            self.computers.get('fake')
 
     def test_generate_name(self):
         """Verify a computer name is generated correctly."""

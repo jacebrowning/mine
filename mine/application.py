@@ -53,9 +53,14 @@ class ApplicationList(yorm.extended.SortedList):
     """A list of monitored applications."""
 
     def get(self, name):
-        """Return the application with the given name."""
+        """Get the application with the given name."""
+        application = self.find(name)
+        assert application, name
+        return application
+
+    def find(self, name):
+        """Find the application with the given name, else None."""
         log.debug("finding application for '%s'...", name)
         for application in self:
             if application == name:
                 return application
-        assert None, name

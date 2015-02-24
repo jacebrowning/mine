@@ -59,6 +59,19 @@ class ComputerList(yorm.extended.SortedList):
         """Get a list of all computers' labels."""
         return [c.name for c in self]
 
+    def get(self, name):
+        """Get the computer with the given name."""
+        computer = self.find(name)
+        assert computer, name
+        return computer
+
+    def find(self, name):
+        """Find the computer with the given name, else None."""
+        log.debug("finding computer for '%s'...", name)
+        for computer in self:
+            if computer == name:
+                return computer
+
     def get_current(self):
         """Get the current computer's information."""
         this = Computer(None)

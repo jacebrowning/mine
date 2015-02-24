@@ -72,7 +72,7 @@ def main(args=None):
         sys.exit(1)
 
 
-def run(path=None, switch=None):
+def run(path=None, cleanup=True, switch=None):
     """Run the program.
 
     :param path: custom settings file path
@@ -95,6 +95,8 @@ def run(path=None, switch=None):
     # TODO: remove this fix when YORM stops overwriting attributes: https://github.com/jacebrowning/yorm/issues/47
     data.config = config
 
+    if cleanup:
+        clean(config, status)
     if switch:
         queue(config, status, computer if switch is True else switch)
     launch(config, status, computer, manager)
@@ -104,6 +106,21 @@ def run(path=None, switch=None):
     data.yorm_mapper.store(data)  # pylint: disable=E1101
 
     return True
+
+
+# TODO: consider moving this logic to `data`
+def clean(config, status):
+    """Remove undefined applications and computers."""
+    log.info("cleaning up applications and computers...")
+    for appstatus in status.applications.copy():
+        if not config.applications.find(appstatus.application):
+            status.applications.remove(appstatus)
+            log.info("removed application: %s", appstatus)
+        else:
+            for computerstate in appstatus.computers.copy():
+                if not config.computers.find(computerstate.computer):
+                    appstatus.computers.remove(computerstate)
+                    log.info("removed computer: %s", computerstate)
 
 
 # TODO: consider moving this logic to `data`

@@ -52,6 +52,6 @@ class TestApplicationList:
         assert 'iTunes' == app.name
 
     def test_get_missing(self):
-        """Verify an invalid names raises an assertion."""
+        """Verify an invalid names raise an assertion."""
         with pytest.raises(AssertionError):
             self.apps.get('fake')

@@ -66,6 +66,7 @@ class ComputerList(yorm.extended.SortedList):
         # Search for a matching address
         for other in self:
             if this.address == other.address:
+                other.hostname = this.hostname
                 return other
 
         # Else, this is a new computer

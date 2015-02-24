@@ -29,3 +29,6 @@ def pytest_runtest_setup(item):
         pytest.skip("test can only be run on OS X")
     if 'windows_only' in item.keywords and platform.system() != 'Windows':
         pytest.skip("test can only be run on Windows")
+
+    if os.getenv('TEST_IDE') and 'not_ide' in item.keywords:
+        pytest.skip("test cannot be run from an IDE")

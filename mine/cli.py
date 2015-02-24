@@ -19,6 +19,7 @@ log = common.logger(__name__)
 
 def main(args=None):
     """Process command-line arguments and run the program."""
+
     # Shared options
     debug = argparse.ArgumentParser(add_help=False)
     debug.add_argument('-V', '--version', action='version', version=VERSION)
@@ -34,9 +35,21 @@ def main(args=None):
     parser = argparse.ArgumentParser(prog=CLI, description=DESCRIPTION,
                                      **shared)
     parser.add_argument('-f', '--file', help="custom settings file path")
+    subs = parser.add_subparsers(help="", dest='command', metavar="<command>")
+
+    # Build switch parser
+    info = "start applications on another computer"
+    sub = subs.add_parser('switch', description=info.capitalize() + '.',
+                          help=info, **shared)
+    sub.add_argument('name', nargs='?',
+                     help="computer to queue for launch (default: current)")
 
     # Parse arguments
     args = parser.parse_args(args=args)
+    if args.command == 'switch':
+        computer = args.name if args.name else True
+    else:
+        computer = None
 
     # Configure logging
     common.configure_logging(args.verbose)
@@ -44,7 +57,7 @@ def main(args=None):
     # Run the program
     try:
         log.debug("running main command...")
-        success = run(path=args.file)
+        success = run(path=args.file, switch=computer)
     except KeyboardInterrupt:
         msg = "command cancelled"
         if common.verbosity == common.MAX_VERBOSITY:
@@ -59,8 +72,13 @@ def main(args=None):
         sys.exit(1)
 
 
-def run(path=None):
-    """Run the program."""
+def run(path=None, switch=None):
+    """Run the program.
+
+    :param path: custom settings file path
+    :param switch: computer name to queue for launch
+
+    """
     manager = get_manager()
     path = path or get_path()
 
@@ -77,7 +95,10 @@ def run(path=None):
     # TODO: remove this fix when YORM stops overwriting attributes: https://github.com/jacebrowning/yorm/issues/47
     data.config = config
 
-    update_status(config, status, computer, manager)
+    if switch:
+        queue(config, status, computer if switch is True else switch)
+    launch(config, status, computer, manager)
+    update(config, status, computer, manager)
 
     # TODO: remove this fix when YORM stores on nested attributes: https://github.com/jacebrowning/yorm/issues/42
     data.yorm_mapper.store(data)  # pylint: disable=E1101
@@ -86,8 +107,41 @@ def run(path=None):
 
 
 # TODO: consider moving this logic to `data`
-def update_status(config, status, computer, manager):
-    """Update and store each application's status."""
+def queue(config, status, computer):
+    """Queue applications for launch."""
+    log.info("queuing applications for launch...")
+    for application in config.applications:
+        if application.queued:
+            log.debug("queuing %s on %s...", application, computer)
+            status.queue(application, computer)
+        else:
+            log.debug("skipping %s (not queued)...", application)
+
+
+# TODO: consider moving this logic to `data`
+def launch(config, status, computer, manager):
+    """Launch applications that have been queued."""
+    log.info("launching queued applications...")
+    for app_status in status.applications:
+        if app_status.next:
+            application = config.applications.get(app_status.application)
+            log.info("%s queued for: %s", application, app_status.next)
+            if app_status.next == computer:
+                latest = status.get_latest(application)
+                if latest in (computer, None):
+                    if not manager.is_running(application):
+                        manager.start(application)
+                    app_status.next = None
+                else:
+                    log.info("%s still running on: %s", application, latest)
+            elif manager.is_running(application):
+                manager.stop(application)
+
+
+# TODO: consider moving this logic to `data`
+def update(config, status, computer, manager):
+    """Update each application's status."""
+    log.info("recording application status...")
     for application in config.applications:
         if manager.is_running(application):
             latest = status.get_latest(application)
@@ -119,6 +173,11 @@ def update_status(config, status, computer, manager):
 def show_running(application, computer):
     """Display the new state of a running application."""
     print("{} is now running on {}".format(application, computer))
+
+
+def show_started(application, computer):
+    """Display the new state of a started application."""
+    print("{} is now started on {}".format(application, computer))
 
 
 def show_stopped(application, computer):

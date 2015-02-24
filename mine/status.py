@@ -72,6 +72,7 @@ class StateList(yorm.extended.SortedList):
 
 @yorm.map_attr(application=yorm.standard.String)
 @yorm.map_attr(computers=StateList)
+@yorm.map_attr(next=yorm.extended.NoneString)
 class Status(yorm.extended.AttributeDictionary):
 
     """A dictionary of computers using an application."""
@@ -80,6 +81,7 @@ class Status(yorm.extended.AttributeDictionary):
         super().__init__()
         self.application = name
         self.computers = StateList()
+        self.next = None
 
     def __str__(self):
         return str(self.application)
@@ -104,6 +106,16 @@ class ProgramStatus(yorm.extended.AttributeDictionary):
         super().__init__()
         self.applications = StatusList()
         self.counter = 0
+
+    def find(self, application):
+        """Return the application status for an application."""
+        for app_status in self.applications:
+            if app_status.application == application.name:
+                break
+        else:
+            app_status = Status(application.name)
+            self.applications.append(app_status)
+        return app_status
 
     def get_latest(self, application):
         """Get the last computer's name logged as running an application."""
@@ -132,9 +144,14 @@ class ProgramStatus(yorm.extended.AttributeDictionary):
         # Status not found, assume the application is not running
         return False
 
+    def queue(self, application, computer):
+        """Record an application as queued for launch on a computer."""
+        status = self.find(application)
+        status.next = computer.name
+
     @log_starting
     def start(self, application, computer):
-        """Log an application as running on a computer."""
+        """Record an application as running on a computer."""
         for status in self.applications:
             if status.application == application.name:
                 for state in status.computers:
@@ -159,7 +176,7 @@ class ProgramStatus(yorm.extended.AttributeDictionary):
 
     @log_stopping
     def stop(self, application, computer):
-        """Log an application as no longer running on a computer."""
+        """Record an application as no longer running on a computer."""
         for status in self.applications:
             if status.application == application.name:
                 for state in status.computers:

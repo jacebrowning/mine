@@ -1,24 +1,22 @@
 config:
   applications:
   - name: iphoto
+    queued: false
     versions:
       linux: null
       mac: iPhoto
       windows: null
   - name: itunes
+    queued: false
     versions:
       linux: null
       mac: ''
       windows: iTunes.exe
   computers:
-  - address:
-      external: 1.1.1.1
-      internal: 2.2.2.2
+  - address: AA:BB:CC:DD:EE:FF
     hostname: Jaces-MacBook
     name: macbook
-  - address:
-      external: 3.3.3.3
-      internal: 4.4.4.4
+  - address: 11:22:33:44:55:66
     hostname: Jaces-MacBook-2
     name: macbook-pro
 status:
@@ -29,4 +27,5 @@ status:
       timestamp:
         started: 444
         stopped: 0
+    next: null
   counter: 499

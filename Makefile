@@ -5,8 +5,8 @@ ifndef TRAVIS
 endif
 
 # Test runner settings
-UNIT_TEST_COVERAGE := 91
-INTEGRATION_TEST_COVERAGE := 99
+UNIT_TEST_COVERAGE := 85
+INTEGRATION_TEST_COVERAGE := 93
 
 # Project settings
 PROJECT := mine
@@ -151,7 +151,7 @@ pep8: .depends-ci
 
 .PHONY: pep257
 pep257: .depends-ci
-	$(PEP257) $(PACKAGE) --ignore=D102
+	$(PEP257) $(PACKAGE) --ignore=D102,D202
 
 .PHONY: pylint
 pylint: .depends-dev

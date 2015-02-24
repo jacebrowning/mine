@@ -11,14 +11,10 @@ config:
       mac: iPhoto
       windows: null
   computers:
-  - address:
-      external: 1.2.3.4
-      internal: null
+  - address: AA:BB:CC:DD:EE:FF
     hostname: Jaces-MacBook
     name: macbook
-  - address:
-      external: null
-      internal: null
+  - address: ''
     hostname: ''
     name: macbook-pro
 status:

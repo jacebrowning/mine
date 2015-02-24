@@ -22,7 +22,7 @@ class TestLinuxManager:
         pytest.skip("TODO: implement test")
         application = Application('fake-program-for-mine')
         application.versions.linux = 'fake_program_for_mine.sh'
-        assert False == self.manager.is_running(application)
+        assert False is self.manager.is_running(application)
 
     @pytest.mark.linux_only
     def test_is_running_true(self):
@@ -32,7 +32,7 @@ class TestLinuxManager:
     def test_is_running_none(self):
         """Verify a process can be detected as untracked."""
         application = Application('fake-program-for-mine')
-        assert None == self.manager.is_running(application)
+        assert None is self.manager.is_running(application)
 
 
 class TestMacManager:
@@ -49,19 +49,31 @@ class TestMacManager:
         """Verify a process can be detected as not running."""
         application = Application('fake-program-for-mine')
         application.versions.mac = 'FakeProgramForMine.app'
-        assert False == self.manager.is_running(application)
+        assert False is self.manager.is_running(application)
 
     @pytest.mark.mac_only
     def test_is_running_true(self):
         """Verify a process can be detected as running."""
         application = Application('finder')
         application.versions.mac = 'Finder.app'
-        assert True == self.manager.is_running(application)
+        assert True is self.manager.is_running(application)
 
     def test_is_running_none(self):
         """Verify a process can be detected as untracked."""
         application = Application('fake-program-for-mine')
-        assert None == self.manager.is_running(application)
+        assert None is self.manager.is_running(application)
+
+    @pytest.mark.mac_only
+    @pytest.mark.not_ide
+    @pytest.mark.integration
+    def test_stop_start(self):
+        """Verify a process can be stopped and started."""
+        application = Application('mail')
+        application.versions.mac = 'Mail.app'
+        self.manager.stop(application)
+        assert not self.manager.is_running(application)
+        self.manager.start(application)
+        assert self.manager.is_running(application)
 
 
 class TestWindowsManager:
@@ -79,7 +91,7 @@ class TestWindowsManager:
         pytest.skip("TODO: implement test")
         application = Application('fake-program-for-mine')
         application.versions.windows = 'FakeProgramForMine.exe'
-        assert False == self.manager.is_running(application)
+        assert False is self.manager.is_running(application)
 
     @pytest.mark.windows_only
     def test_is_running_true(self):
@@ -87,9 +99,9 @@ class TestWindowsManager:
         pytest.skip("TODO: implement test")
         application = Application('explorer')
         application.versions.windows = 'explorer.exe'
-        assert True == self.manager.is_running(application)
+        assert True is self.manager.is_running(application)
 
     def test_is_running_none(self):
         """Verify a process can be detected as untracked."""
         application = Application('fake-program-for-mine')
-        assert None == self.manager.is_running(application)
+        assert None is self.manager.is_running(application)

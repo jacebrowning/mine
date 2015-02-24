@@ -55,7 +55,24 @@ class TestMain:
         assert os.path.isfile(path)
 
 
-def mock_run(*args, **kwargs):
+class TestSwitch:
+
+    """Unit tests for the `switch` function."""
+
+    @patch('mine.cli.run')
+    def test_switch(self, mock_run):
+        """Verify a the current computer can be queued."""
+        cli.main(['switch'])
+        mock_run.assert_called_once_with(path=None, switch=True)
+
+    @patch('mine.cli.run')
+    def test_switch_specific(self, mock_run):
+        """Verify a specific computer can be queued."""
+        cli.main(['switch', 'foobar'])
+        mock_run.assert_called_once_with(path=None, switch='foobar')
+
+
+def _mock_run(*args, **kwargs):
     """Placeholder logic for logging tests."""
     logging.debug(args)
     logging.debug(kwargs)
@@ -64,7 +81,7 @@ def mock_run(*args, **kwargs):
     return True
 
 
-@patch('mine.cli.run', mock_run)
+@patch('mine.cli.run', _mock_run)
 class TestLogging:
 
     """Integration tests for the Doorstop CLI logging."""

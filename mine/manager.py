@@ -3,6 +3,7 @@
 import os
 import abc
 import time
+import glob
 import platform
 import functools
 
@@ -148,8 +149,15 @@ class MacManager(BaseManager):  # pragma: no cover (manual)
         if os.path.exists(name):
             path = name
         else:
-            # TODO: search additional paths?
-            path = os.path.join("/Applications", name)
+            path = os.path.join('/Applications', name)
+            if not os.path.exists(path):
+                pattern = os.path.join("/Applications/*", name)
+                log.debug("glob pattern: %s", pattern)
+                paths = glob.glob(pattern)
+                for path in paths:
+                    log.debug("match: %s", path)
+                assert paths, "not found: {}".format(application)
+                path = paths[0]
         self._start_app(path)
 
     @log_stopping
@@ -163,10 +171,11 @@ class MacManager(BaseManager):  # pragma: no cover (manual)
     @staticmethod
     def _get_process(name):
         """Get a process whose executable path contains an app name."""
+        log.debug("searching for exe path containing '%s'...", name)
         for process in psutil.process_iter():
             try:
-                path = process.exe()
-                if name in path.split(os.sep):
+                path = process.exe().lower()
+                if name.lower() in path.split(os.sep):
                     if process.status() == psutil.STATUS_ZOMBIE:
                         log.debug("skipped zombie process: %s", path)
                     else:

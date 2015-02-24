@@ -146,9 +146,8 @@ class ProgramStatus(yorm.extended.AttributeDictionary):
 
     def queue(self, application, computer):
         """Record an application as queued for launch on a computer."""
-        for status in self.applications:
-            if status.application == application.name:
-                status.next = str(computer)
+        status = self.find(application)
+        status.next = computer.name
 
     @log_starting
     def start(self, application, computer):

@@ -178,7 +178,7 @@ class MacManager(BaseManager):  # pragma: no cover (manual)
     @staticmethod
     def _start_app(path):
         """Start an application from it's .app directory."""
-        assert os.path.exists(path)
+        assert os.path.exists(path), path
         process = psutil.Popen(['open', path])
         time.sleep(0.1)
         return process

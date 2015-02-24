@@ -58,4 +58,4 @@ class ApplicationList(yorm.extended.SortedList):
         for application in self:
             if application == name:
                 return application
-        assert 0
+        assert None, name

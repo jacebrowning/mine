@@ -83,8 +83,8 @@ class TestFiles:
         iphoto = Application('iphoto')
         iphoto.versions.mac = 'iPhoto'
 
-        mac = Computer('macbook', 'Jaces-MacBook', '1.1.1.1', '2.2.2.2')
-        mac2 = Computer('macbook-pro', 'Jaces-MacBook-2', '3.3.3.3', '4.4.4.4')
+        mac = Computer('macbook', 'Jaces-MacBook', 'AA:BB:CC:DD:EE:FF')
+        mac2 = Computer('macbook-pro', 'Jaces-MacBook-2', '11:22:33:44:55:66')
 
         configuration = ProgramConfig()
         configuration.applications = [itunes, iphoto]
@@ -195,8 +195,7 @@ class TestProcesses:
         assert self.data.status.is_running(self.application, self.computer)
 
         # manually mark the application as running on a remote computer
-        computer = Computer('other', hostname='Other.local',
-                            external='1.2.3.4', internal='5.6.7.8')
+        computer = Computer('other', 'Other.local', 'AA:BB:CC:DD:EE:FF')
         status = self.data.status
         status.start(self.application, computer)
         self.data.status = status
@@ -226,8 +225,7 @@ class TestProcesses:
         self._store_data()
 
         # manually mark the application as running on a remote computer
-        computer = Computer('other', hostname='Other.local',
-                            external='1.2.3.4', internal='5.6.7.8')
+        computer = Computer('other', 'Other.local', 'AA:BB:CC:DD:EE:FF')
         status = self.data.status
         status.start(self.application, computer)
         self.data.status = status

@@ -1,52 +1,28 @@
 """Data structures for computer information."""
 
+import uuid
 import socket
-from contextlib import closing
+
 
 import yorm
-import ipgetter
 
 from . import common
 
 log = common.logger(__name__)
 
 
-@yorm.map_attr(internal=yorm.extended.NoneString)
-@yorm.map_attr(external=yorm.extended.NoneString)
-class Address(yorm.extended.AttributeDictionary):
-
-    """A dictionary of IP addresses."""
-
-    def __init__(self, external=None, internal=None):
-        super().__init__()
-        self.external = external or self.get_external()
-        self.internal = internal or self.get_internal()
-
-    @staticmethod
-    def get_external():
-        """Get this computer's external IP address."""
-        return ipgetter.myip()
-
-    @staticmethod
-    def get_internal():
-        """Get this computer's (first) internal IP address."""
-        with closing(socket.socket(socket.AF_INET, socket.SOCK_DGRAM)) as s:
-            s.connect(("8.8.8.8", 80))
-            return s.getsockname()[0]
-
-
 @yorm.map_attr(name=yorm.standard.String)
 @yorm.map_attr(hostname=yorm.standard.String)
-@yorm.map_attr(address=Address)
+@yorm.map_attr(address=yorm.standard.String)
 class Computer(yorm.extended.AttributeDictionary):
 
     """A dictionary of identifying computer information."""
 
-    def __init__(self, name, hostname=None, external=None, internal=None):
+    def __init__(self, name, hostname=None, address=None):
         super().__init__()
         self.name = name
+        self.address = address or self.get_address()
         self.hostname = hostname or self.get_hostname()
-        self.address = Address(external=external, internal=internal)
 
     def __str__(self):
         return str(self.name)
@@ -59,6 +35,13 @@ class Computer(yorm.extended.AttributeDictionary):
 
     def __lt__(self, other):
         return str(self).lower() < str(other).lower()
+
+    @staticmethod
+    def get_address(node=None):
+        """Get this computer's MAC address."""
+        if node is None:
+            node = uuid.getnode()
+        return ':'.join(("%012X" % node)[i:i + 2] for i in range(0, 12, 2))
 
     @staticmethod
     def get_hostname():
@@ -76,47 +59,16 @@ class ComputerList(yorm.extended.SortedList):
         """Get a list of all computers' labels."""
         return [c.name for c in self]
 
-    @property
-    def hostnames(self):
-        """Get a list of all computers' hostnames."""
-        return [c.hostname for c in self]
-
     def get_current(self):
         """Get the current computer's information."""
         this = Computer(None)
 
-        # Search for (1) any matching hostname and...
+        # Search for a matching address
         for other in self:
-            if this.hostname == other.hostname:
-
-                # (2) a matching external AND internal addresses
-                if all((this.address.external == other.address.external,
-                        this.address.internal == other.address.internal)):
-                    return other
-
-                # (2) a matching external OR internal addresses
-                elif any((this.address.external == other.address.external,
-                          this.address.internal == other.address.internal)):
-                    other.address.external = this.address.external
-                    other.address.internal = this.address.internal
-                    return other
-
-                # (2) only one matching hostname
-                elif self.hostnames.count(this.hostname) == 1:
-                    other.address.external = this.address.external
-                    other.address.internal = this.address.internal
-                    return other
-
-        # Or, search for...
-        for other in self:
-
-            # a matching external AND internal addresses
-            if all((this.address.external == other.address.external,
-                    this.address.internal == other.address.internal)):
-                other.hostname = this.hostname
+            if this.address == other.address:
                 return other
 
-        # Or, this is a new computer
+        # Else, this is a new computer
         this.name = self.generate_name(this)
         log.debug("new computer: %s", this)
         self.append(this)

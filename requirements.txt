@@ -1,3 +1,2 @@
-#YORM >= 0.2
-ipgetter >= 0.6
+# YORM >= 0.2.1
 psutil >= 2.1, < 3

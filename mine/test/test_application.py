@@ -3,7 +3,7 @@
 
 import pytest
 
-from mine.application import Application
+from mine.application import Application, ApplicationList
 
 
 class TestApplication:
@@ -38,3 +38,20 @@ class TestApplication:
         """Verify applications can be sorted."""
         assert self.app2 < self.app1
         assert self.app3 > self.app2
+
+
+class TestApplicationList:
+
+    """Unit tests for lists of applications."""
+
+    apps = ApplicationList([TestApplication.app1, TestApplication.app2])
+
+    def test_get(self):
+        """Verify an application can be found in a list."""
+        app = self.apps.get('itunes')
+        assert 'iTunes' == app.name
+
+    def test_get_missing(self):
+        """Verify an invalid names raises an assertion."""
+        with pytest.raises(AssertionError):
+            self.apps.get('fake')

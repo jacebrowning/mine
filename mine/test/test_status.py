@@ -110,7 +110,7 @@ class TestProgramStatus:
         """Verify queuing an application sets the next computer."""
         self.status.queue(self.application, self.computer)
         app_status = self.status.find(self.application)
-        assert self.computer == app_status.next
+        assert self.computer.name == app_status.next
 
     def test_start(self):
         """Verify starting an application adds it to the list."""

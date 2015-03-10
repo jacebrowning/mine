@@ -11,9 +11,9 @@ from . import common
 log = common.logger(__name__)
 
 
-@yorm.map_attr(name=yorm.standard.String)
-@yorm.map_attr(hostname=yorm.standard.String)
-@yorm.map_attr(address=yorm.standard.String)
+@yorm.attr(name=yorm.standard.String)
+@yorm.attr(hostname=yorm.standard.String)
+@yorm.attr(address=yorm.standard.String)
 class Computer(yorm.extended.AttributeDictionary):
 
     """A dictionary of identifying computer information."""
@@ -49,8 +49,8 @@ class Computer(yorm.extended.AttributeDictionary):
         return socket.gethostname()
 
 
-@yorm.map_attr(all=Computer)
-class ComputerList(yorm.extended.SortedList):
+@yorm.attr(all=Computer)
+class Computers(yorm.extended.SortedList):
 
     """A list of computers."""
 

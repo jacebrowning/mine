@@ -3,19 +3,19 @@
 import yorm
 
 from . import common
-from .application import ApplicationList
-from .computer import ComputerList
+from .application import Applications
+from .computer import Computers
 
 log = common.logger(__name__)
 
 
-@yorm.map_attr(applications=ApplicationList)
-@yorm.map_attr(computers=ComputerList)
+@yorm.attr(applications=Applications)
+@yorm.attr(computers=Computers)
 class ProgramConfig(yorm.extended.AttributeDictionary):
 
     """A dictionary of program configuration settings."""
 
     def __init__(self):
         super().__init__()
-        self.applications = ApplicationList()
-        self.computers = ComputerList()
+        self.applications = Applications()
+        self.computers = Computers()

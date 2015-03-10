@@ -7,9 +7,9 @@ import yorm
 log = common.logger(__name__)
 
 
-@yorm.map_attr(mac=yorm.extended.NoneString)
-@yorm.map_attr(windows=yorm.extended.NoneString)
-@yorm.map_attr(linux=yorm.extended.NoneString)
+@yorm.attr(mac=yorm.extended.NoneString)
+@yorm.attr(windows=yorm.extended.NoneString)
+@yorm.attr(linux=yorm.extended.NoneString)
 class Versions(yorm.extended.AttributeDictionary):
 
     """A dictionary of OS-specific application filenames."""
@@ -21,9 +21,9 @@ class Versions(yorm.extended.AttributeDictionary):
         self.linux = None
 
 
-@yorm.map_attr(name=yorm.standard.String)
-@yorm.map_attr(queued=yorm.standard.Boolean)
-@yorm.map_attr(versions=Versions)
+@yorm.attr(name=yorm.standard.String)
+@yorm.attr(queued=yorm.standard.Boolean)
+@yorm.attr(versions=Versions)
 class Application(yorm.extended.AttributeDictionary):
 
     """A dictionary of application information."""
@@ -47,8 +47,8 @@ class Application(yorm.extended.AttributeDictionary):
         return str(self).lower() < str(other).lower()
 
 
-@yorm.map_attr(all=Application)
-class ApplicationList(yorm.extended.SortedList):
+@yorm.attr(all=Application)
+class Applications(yorm.extended.SortedList):
 
     """A list of monitored applications."""
 

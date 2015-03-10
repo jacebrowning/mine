@@ -82,9 +82,8 @@ def run(path=None, cleanup=True, switch=None):
     manager = get_manager()
     path = path or get_path()
 
-    # TODO: convert to `yorm.load()` when available
     data = Data()
-    yorm.store(data, path)
+    yorm.sync(data, path)
 
     config = data.config
     status = data.status
@@ -107,7 +106,7 @@ def run(path=None, cleanup=True, switch=None):
     update(config, status, computer, manager)
 
     # TODO: remove this fix when YORM stores on nested attributes: https://github.com/jacebrowning/yorm/issues/42
-    data.yorm_mapper.store(data)  # pylint: disable=E1101
+    yorm.update_file(data)  # pylint: disable=E1101
 
     return True
 

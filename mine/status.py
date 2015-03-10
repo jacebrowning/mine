@@ -46,8 +46,8 @@ def log_stopping(func):
     return wrapped
 
 
-@yorm.map_attr(computer=yorm.standard.String)
-@yorm.map_attr(timestamp=Timestamp)
+@yorm.attr(computer=yorm.standard.String)
+@yorm.attr(timestamp=Timestamp)
 class State(yorm.extended.AttributeDictionary):
 
     """A dictionary of computer state."""
@@ -64,15 +64,15 @@ class State(yorm.extended.AttributeDictionary):
         return str(self.computer).lower() < str(other.computer).lower()
 
 
-@yorm.map_attr(all=State)
+@yorm.attr(all=State)
 class StateList(yorm.extended.SortedList):
 
     """A list of computer states for an application."""
 
 
-@yorm.map_attr(application=yorm.standard.String)
-@yorm.map_attr(computers=StateList)
-@yorm.map_attr(next=yorm.extended.NoneString)
+@yorm.attr(application=yorm.standard.String)
+@yorm.attr(computers=StateList)
+@yorm.attr(next=yorm.extended.NoneString)
 class Status(yorm.extended.AttributeDictionary):
 
     """A dictionary of computers using an application."""
@@ -90,14 +90,14 @@ class Status(yorm.extended.AttributeDictionary):
         return str(self.application).lower() < str(other.application).lower()
 
 
-@yorm.map_attr(all=Status)
+@yorm.attr(all=Status)
 class StatusList(yorm.extended.SortedList):
 
     """A list of application statuses."""
 
 
-@yorm.map_attr(applications=StatusList)
-@yorm.map_attr(counter=yorm.standard.Integer)
+@yorm.attr(applications=StatusList)
+@yorm.attr(counter=yorm.standard.Integer)
 class ProgramStatus(yorm.extended.AttributeDictionary):
 
     """A dictionary of current program status."""

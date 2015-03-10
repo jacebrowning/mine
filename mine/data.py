@@ -10,8 +10,8 @@ from .status import ProgramStatus
 log = common.logger(__name__)
 
 
-@yorm.map_attr(config=ProgramConfig)
-@yorm.map_attr(status=ProgramStatus)
+@yorm.attr(config=ProgramConfig)
+@yorm.attr(status=ProgramStatus)
 class Data:
 
     """Primary wrapper for all settings."""

@@ -34,7 +34,7 @@ class TestFiles:
             os.remove(path)
 
         data = Data()
-        yorm.store(data, path)
+        yorm.sync(data, path)
 
         itunes = Application('itunes')
         itunes.versions.mac = ''
@@ -74,7 +74,7 @@ class TestFiles:
             os.remove(path)
 
         data = Data()
-        yorm.store(data, path)
+        yorm.sync(data, path)
 
         itunes = Application('itunes')
         itunes.versions.mac = ''
@@ -111,7 +111,7 @@ class TestFiles:
         path = os.path.join(FILES, 'mine-in.yml')
 
         data = Data()
-        yorm.store(data, path)
+        yorm.sync(data, path)
 
         assert data.config.applications
         for application in data.config.applications:
@@ -145,12 +145,12 @@ class TestProcesses:
         self.data = Data()
         self.data.config.applications.append(self.application)
         self.computer = self.data.config.computers.get_current()
-        yorm.store(self.data, self.path)
+        yorm.sync(self.data, self.path)
 
-    def _load_data(self):
+    def _fetch_data(self):
         """Read the final data file back for verification."""
         data = Data()
-        yorm.store(data, self.path)
+        yorm.sync(data, self.path)
         return data
 
     def _start_application(self):
@@ -211,7 +211,7 @@ class TestProcesses:
         # verify the application is no longer running
         assert not self._is_application_running()
         # verify the application is marked as running remotely
-        data = self._load_data()
+        data = self._fetch_data()
         assert 3 == data.status.counter
         assert not data.status.is_running(self.application, self.computer)
         assert data.status.is_running(self.application, computer)
@@ -242,7 +242,7 @@ class TestProcesses:
 
         assert self._is_application_running()
 
-        data = self._load_data()
+        data = self._fetch_data()
         assert 2 == data.status.counter
         assert data.status.is_running(self.application, self.computer)
         assert data.status.is_running(self.application, computer)
@@ -270,7 +270,7 @@ class TestProcesses:
 
         assert self._is_application_running()
 
-        data = self._load_data()
+        data = self._fetch_data()
         assert 1 == data.status.counter
         assert data.status.is_running(self.application, self.computer)
 
@@ -297,7 +297,7 @@ class TestProcesses:
 
         assert not self._is_application_running()
 
-        data = self._load_data()
+        data = self._fetch_data()
         assert 2 == data.status.counter
         assert not data.status.is_running(self.application, self.computer)
 
@@ -319,6 +319,6 @@ class TestProcesses:
 
         assert not self._is_application_running()
 
-        data = self._load_data()
+        data = self._fetch_data()
         assert 0 == data.status.counter
         assert not data.status.is_running(self.application, self.computer)

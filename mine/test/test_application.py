@@ -3,7 +3,7 @@
 
 import pytest
 
-from mine.application import Application, ApplicationList
+from mine.application import Application, Applications
 
 
 class TestApplication:
@@ -40,11 +40,11 @@ class TestApplication:
         assert self.app3 > self.app2
 
 
-class TestApplicationList:
+class TestApplications:
 
     """Unit tests for lists of applications."""
 
-    apps = ApplicationList([TestApplication.app1, TestApplication.app2])
+    apps = Applications([TestApplication.app1, TestApplication.app2])
 
     def test_get(self):
         """Verify an application can be found in a list."""

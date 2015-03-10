@@ -5,7 +5,7 @@ from unittest.mock import Mock, patch
 
 import pytest
 
-from mine.computer import Computer, ComputerList
+from mine.computer import Computer, Computers
 
 
 @patch('uuid.getnode', Mock(return_value=0))
@@ -43,7 +43,7 @@ class TestComputer:
     def test_get_match_none(self):
         """Verify a computer is added when missing."""
         other = Computer('name', 'hostname', 'address')
-        computers = ComputerList([other])
+        computers = Computers([other])
         this = computers.get_current()
         assert 'sample' == this.name
         assert '00:00:00:00:00:00' == this.address
@@ -53,7 +53,7 @@ class TestComputer:
     def test_get_match_all(self):
         """Verify a computer can be matched exactly."""
         other = Computer('all', 'Sample.local', '00:00:00:00:00:00')
-        computers = ComputerList([other])
+        computers = Computers([other])
         this = computers.get_current()
         assert 'all' == this.name
         assert '00:00:00:00:00:00' == this.address
@@ -63,12 +63,12 @@ class TestComputer:
 
 @patch('uuid.getnode', Mock(return_value=0))
 @patch('socket.gethostname', Mock(return_value='Sample.local'))
-class TestComputerList:
+class TestComputers:
 
     """Unit tests for lists of computers."""
 
-    computers = ComputerList([Computer('abc', 'abc.local', 1),
-                              Computer('def', 'def.local', 2)])
+    computers = Computers([Computer('abc', 'abc.local', 1),
+                           Computer('def', 'def.local', 2)])
 
     def test_get(self):
         """Verify a computer can be found in a list."""
@@ -87,14 +87,14 @@ class TestComputerList:
 
     def test_generate_name(self):
         """Verify a computer name is generated correctly."""
-        computers = ComputerList()
+        computers = Computers()
         computer = Computer(None, hostname='Jaces-iMac.local')
         name = computers.generate_name(computer)
         assert 'jaces-imac' == name
 
     def test_generate_name_duplicates(self):
         """Verify a computer name is generated correctly with duplicates."""
-        computers = ComputerList([Computer('jaces-imac')])
+        computers = Computers([Computer('jaces-imac')])
         computer = Computer(None, hostname='Jaces-iMac.local')
         name = computers.generate_name(computer)
         assert 'jaces-imac-2' == name

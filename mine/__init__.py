@@ -5,7 +5,7 @@
 import sys
 
 __project__ = 'mine'
-__version__ = '0.0.0'
+__version__ = '0.1dev'
 
 CLI = 'mine'
 VERSION = __project__ + '-' + __version__

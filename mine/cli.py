@@ -7,8 +7,8 @@ import argparse
 
 from . import CLI, VERSION, DESCRIPTION
 from . import common
+from . import services
 from .data import Data
-from .services import get_path
 from .manager import get_manager
 
 import yorm
@@ -44,12 +44,21 @@ def main(args=None):
     sub.add_argument('name', nargs='?',
                      help="computer to queue for launch (default: current)")
 
+    # Build clean parser
+    info = "clean up configuration and remove conflicted files"
+    sub = subs.add_parser('clean', description=info.capitalize() + '.',
+                          help=info, **shared)
+    sub.add_argument('-f', '--force', action='store_true',
+                     help="actually delete the conflicted files")
+
     # Parse arguments
     args = parser.parse_args(args=args)
+    kwargs = {'switch': None}
     if args.command == 'switch':
-        computer = args.name if args.name else True
-    else:
-        computer = None
+        kwargs['switch'] = args.name if args.name else True
+    elif args.command == 'clean':
+        kwargs['delete'] = True
+        kwargs['force'] = args.force
 
     # Configure logging
     common.configure_logging(args.verbose)
@@ -57,7 +66,7 @@ def main(args=None):
     # Run the program
     try:
         log.debug("running main command...")
-        success = run(path=args.file, switch=computer)
+        success = run(path=args.file, **kwargs)
     except KeyboardInterrupt:
         msg = "command cancelled"
         if common.verbosity == common.MAX_VERBOSITY:
@@ -72,7 +81,7 @@ def main(args=None):
         sys.exit(1)
 
 
-def run(path=None, cleanup=True, switch=None):
+def run(path=None, cleanup=True, delete=False, force=False, switch=None):
     """Run the program.
 
     :param path: custom settings file path
@@ -80,7 +89,8 @@ def run(path=None, cleanup=True, switch=None):
 
     """
     manager = get_manager()
-    path = path or get_path()
+    root = services.find_root()
+    path = path or services.find_config_path(root=root)
 
     data = Data()
     yorm.sync(data, path)
@@ -96,12 +106,16 @@ def run(path=None, cleanup=True, switch=None):
 
     if cleanup:
         clean(config, status)
+    if delete:
+        return services.delete_conflicts(root, force=force)
+
     if switch is True:
         switch = computer
     elif switch:
         switch = config.computers.match(switch)
     if switch:
         queue(config, status, switch)
+
     launch(config, status, computer, manager)
     update(config, status, computer, manager)
 

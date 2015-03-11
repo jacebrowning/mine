@@ -51,7 +51,8 @@ def test_find_no_home():
 def test_find_no_share():
     """Verify an error occurs when no service directory is found."""
     with pytest.raises(EnvironmentError):
-        services.find_config_path(FILES)
+        with patch('os.getenv', Mock(return_value=False)):
+            services.find_config_path(FILES)
 
 
 @patch('os.remove')

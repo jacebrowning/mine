@@ -33,7 +33,12 @@ def find_root(top=None):
             log.debug("found sharing service: %s", path)
             return path
 
-    raise EnvironmentError("no sharing service found")
+    msg = "no sharing service found"
+    if os.getenv('CI'):
+        log.warning(msg)
+        return top
+    else:
+        raise EnvironmentError(msg)
 
 
 def find_config_path(top=None, root=None):

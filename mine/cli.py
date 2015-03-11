@@ -107,19 +107,20 @@ def run(path=None, cleanup=True, delete=False, force=False, switch=None):
     if cleanup:
         clean(config, status)
     if delete:
-        services.delete_conflicts(root, force=force)
-    else:
-        if switch is True:
-            switch = computer
-        elif switch:
-            switch = config.computers.match(switch)
-        if switch:
-            queue(config, status, switch)
-        launch(config, status, computer, manager)
-        update(config, status, computer, manager)
+        return services.delete_conflicts(root, force=force)
 
-        # TODO: remove this fix when YORM stores on nested attributes: https://github.com/jacebrowning/yorm/issues/42
-        yorm.update_file(data)  # pylint: disable=E1101
+    if switch is True:
+        switch = computer
+    elif switch:
+        switch = config.computers.match(switch)
+    if switch:
+        queue(config, status, switch)
+
+    launch(config, status, computer, manager)
+    update(config, status, computer, manager)
+
+    # TODO: remove this fix when YORM stores on nested attributes: https://github.com/jacebrowning/yorm/issues/42
+    yorm.update_file(data)  # pylint: disable=E1101
 
     return True
 

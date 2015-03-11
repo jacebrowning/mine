@@ -1,7 +1,7 @@
 """Functions to interact with sharing services."""
 
 import os
-import glob
+import re
 import getpass
 
 from . import common
@@ -15,6 +15,7 @@ SERVICES = (
     'Dropbox',
     'Dropbox (Personal)',
 )
+CONFLICT = r".+\(.+'s conflicted copy \d+-\d+-\d+.*\).*"
 FILENAME = 'mine.yml'
 DEPTH = 3  # number of levels to search for the settings file
 
@@ -74,7 +75,22 @@ def delete_conflicts(root=None, force=False):
     root = root or find_root()
 
     log.info("%s conflicted files...", 'deleting' if force else 'displaying')
-    pattern = os.path.join(root, "*(*'s conflicted copy *-*-*)*")
-    log.debug("pattern: %r", pattern)
-    for path in glob.iglob(pattern):
-        print(path)
+    log.debug("pattern: %r", CONFLICT)
+    regex = re.compile(CONFLICT)
+    count = 0
+    for dirname, _, filenames in os.walk(root):
+        for filename in filenames:
+            if regex.match(filename):
+                count += 1
+                path = os.path.join(dirname, filename)
+                if force:
+                    os.remove(path)
+                print(path)
+
+    if count and not force:
+        print()
+        print("run again with '--force' to delete these "
+              "{} conflict(s)".format(count))
+        return False
+    else:
+        return True

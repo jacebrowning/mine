@@ -1,4 +1,5 @@
 """Unit tests for the `services` module."""
+# pylint: disable=C0111
 
 import pytest
 from unittest.mock import patch, Mock
@@ -51,6 +52,50 @@ def test_find_no_share():
     """Verify an error occurs when no service directory is found."""
     with pytest.raises(EnvironmentError):
         services.find_config_path(FILES)
+
+
+@patch('os.remove')
+class TestDeleteConflicts:
+
+    @staticmethod
+    def _create_conflicts(tmpdir, count=2):
+        tmpdir.chdir()
+        root = str(tmpdir)
+
+        for index in range(count):
+            fmt = "{} (Jace's conflicted copy 2015-03-11).fake"
+            filename = fmt.format(index)
+            _touch(root, filename)
+
+        return root
+
+    def test_fail_when_leftover_conflicts(self, _, tmpdir):
+        root = self._create_conflicts(tmpdir)
+
+        result = services.delete_conflicts(root)
+
+        assert False is result
+
+    def test_pass_when_no_conflicts(self, _, tmpdir):
+        root = self._create_conflicts(tmpdir, count=0)
+
+        result = services.delete_conflicts(root)
+
+        assert True is result
+
+    def test_no_deletion_without_force(self, mock_remove, tmpdir):
+        root = self._create_conflicts(tmpdir)
+
+        services.delete_conflicts(root, force=False)
+
+        assert 0 == mock_remove.call_count
+
+    def test_deletion_count_is_correct(self, mock_remove, tmpdir):
+        root = self._create_conflicts(tmpdir, count=2)
+
+        services.delete_conflicts(root, force=True)
+
+        assert 2 == mock_remove.call_count
 
 
 def _touch(*parts):

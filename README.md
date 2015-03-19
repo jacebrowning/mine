@@ -63,9 +63,9 @@ config:
   - name: Eclipse
     queued: false
     versions:
-      linux: null
+      linux: eclipse
       mac: Eclipse.app
-      windows: null
+      windows: eclipse.exe
   - name: iTunes
     queued: true
     versions:
@@ -81,7 +81,7 @@ config:
     name: My MacBook Air
 ```
 
-Include the applications you would like `mine` to manage. The `queued` setting indicates it must be closed before anoter instance can start. Computers are added automatically when `mine` is run.
+Include the applications you would like `mine` to manage. The `versions` dictionary identifies the name of the executable on each platform. The `queued` setting indicates it must be closed before anoter instance can start. Computers are added automatically when `mine` is run.
 
 For remote application management, `mine` needs to be called periodically on each of your computers. Cron is good for this:
 

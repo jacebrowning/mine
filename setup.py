@@ -1,8 +1,6 @@
 #!/usr/bin/env python
 
-"""
-Setup script for mine.
-"""
+"""Setup script for mine."""
 
 import setuptools
 
@@ -32,11 +30,19 @@ setuptools.setup(
     long_description=(README + '\n' + CHANGES),
     license='MIT',
     classifiers=[
-        'Development Status :: 1 - Planning',
+        'Development Status :: 3 - Alpha',
+        'Environment :: Console',
+        'Intended Audience :: End Users/Desktop',
+        'License :: OSI Approved :: MIT License',
         'Natural Language :: English',
         'Operating System :: OS Independent',
+        'Programming Language :: Python',
+        'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.3',
         'Programming Language :: Python :: 3.4',
+        'Topic :: System',
+        'Topic :: System :: Monitoring',
+        'Topic :: Utilities',
     ],
 
     install_requires=open('requirements.txt').readlines(),

@@ -11,10 +11,10 @@ from . import common
 log = common.logger(__name__)
 
 
-@yorm.attr(name=yorm.standard.String)
-@yorm.attr(hostname=yorm.standard.String)
-@yorm.attr(address=yorm.standard.String)
-class Computer(yorm.extended.AttributeDictionary):
+@yorm.attr(name=yorm.converters.String)
+@yorm.attr(hostname=yorm.converters.String)
+@yorm.attr(address=yorm.converters.String)
+class Computer(yorm.converters.AttributeDictionary):
 
     """A dictionary of identifying computer information."""
 
@@ -50,7 +50,7 @@ class Computer(yorm.extended.AttributeDictionary):
 
 
 @yorm.attr(all=Computer)
-class Computers(yorm.extended.SortedList):
+class Computers(yorm.converters.SortedList):
 
     """A list of computers."""
 

@@ -46,9 +46,9 @@ def log_stopping(func):
     return wrapped
 
 
-@yorm.attr(computer=yorm.standard.String)
+@yorm.attr(computer=yorm.converters.String)
 @yorm.attr(timestamp=Timestamp)
-class State(yorm.extended.AttributeDictionary):
+class State(yorm.converters.AttributeDictionary):
 
     """A dictionary of computer state."""
 
@@ -65,15 +65,15 @@ class State(yorm.extended.AttributeDictionary):
 
 
 @yorm.attr(all=State)
-class StateList(yorm.extended.SortedList):
+class StateList(yorm.converters.SortedList):
 
     """A list of computer states for an application."""
 
 
-@yorm.attr(application=yorm.standard.String)
+@yorm.attr(application=yorm.converters.String)
 @yorm.attr(computers=StateList)
-@yorm.attr(next=yorm.extended.NoneString)
-class Status(yorm.extended.AttributeDictionary):
+@yorm.attr(next=yorm.converters.NoneString)
+class Status(yorm.converters.AttributeDictionary):
 
     """A dictionary of computers using an application."""
 
@@ -91,14 +91,14 @@ class Status(yorm.extended.AttributeDictionary):
 
 
 @yorm.attr(all=Status)
-class StatusList(yorm.extended.SortedList):
+class StatusList(yorm.converters.SortedList):
 
     """A list of application statuses."""
 
 
 @yorm.attr(applications=StatusList)
-@yorm.attr(counter=yorm.standard.Integer)
-class ProgramStatus(yorm.extended.AttributeDictionary):
+@yorm.attr(counter=yorm.converters.Integer)
+class ProgramStatus(yorm.converters.AttributeDictionary):
 
     """A dictionary of current program status."""
 

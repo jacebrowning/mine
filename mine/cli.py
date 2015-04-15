@@ -93,7 +93,7 @@ def run(path=None, cleanup=True, delete=False, force=False, switch=None):
     path = path or services.find_config_path(root=root)
 
     data = Data()
-    yorm.sync(data, path)
+    yorm.sync(data, path, auto=False)
 
     config = data.config
     status = data.status
@@ -101,8 +101,6 @@ def run(path=None, cleanup=True, delete=False, force=False, switch=None):
     log.info("identifying current computer...")
     computer = config.computers.get_current()
     log.info("current computer: %s", computer)
-    # TODO: remove this fix when YORM stops overwriting attributes: https://github.com/jacebrowning/yorm/issues/47
-    data.config = config
 
     if cleanup:
         clean(config, status)
@@ -119,8 +117,7 @@ def run(path=None, cleanup=True, delete=False, force=False, switch=None):
     launch(config, status, computer, manager)
     update(config, status, computer, manager)
 
-    # TODO: remove this fix when YORM stores on nested attributes: https://github.com/jacebrowning/yorm/issues/42
-    yorm.update_file(data)  # pylint: disable=E1101
+    yorm.update_file(data)
 
     return True
 

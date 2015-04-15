@@ -93,7 +93,7 @@ def run(path=None, cleanup=True, delete=False, force=False, switch=None):
     path = path or services.find_config_path(root=root)
 
     data = Data()
-    yorm.sync(data, path)
+    yorm.sync(data, path, auto=False)
 
     config = data.config
     status = data.status
@@ -116,6 +116,8 @@ def run(path=None, cleanup=True, delete=False, force=False, switch=None):
 
     launch(config, status, computer, manager)
     update(config, status, computer, manager)
+
+    yorm.update_file(data)
 
     return True
 

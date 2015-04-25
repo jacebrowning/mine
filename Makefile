@@ -95,7 +95,7 @@ depends: depends-ci depends-dev
 .PHONY: depends-ci
 depends-ci: env Makefile $(DEPENDS_CI)
 $(DEPENDS_CI): Makefile
-	$(PIP) install --upgrade pep8 pep257 pylint coverage pytest pytest-cov
+	$(PIP) install --upgrade pep8 pep257 pylint coverage pytest pytest-cov pytest-capturelog
 	touch $(DEPENDS_CI)  # flag to indicate dependencies are installed
 
 .PHONY: depends-dev

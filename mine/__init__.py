@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-
 """Package for mine."""
 
 import sys

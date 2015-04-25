@@ -2,6 +2,7 @@
 *.pyc
 *.egg-info
 __pycache__
+.ipynb_checkpoints
 
 # Temporary OS files
 Icon*
@@ -13,7 +14,7 @@ env
 # Generated documentation
 docs/gen
 apidocs
-docs/*.html
+/*.html
 *.rst
 docs/*.png
 
@@ -25,6 +26,7 @@ docs/*.png
 
 # Testing and coverage results
 .coverage
+htmlcov
 pyunit.xml
 
 # Build and release directories

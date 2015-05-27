@@ -156,7 +156,7 @@ def launch(config, status, computer, manager):
     for app_status in status.applications:
         if app_status.next:
             application = config.applications.get(app_status.application)
-            log.info("%s queued for: %s", application, app_status.next)
+            show_queued(application, app_status.next)
             if app_status.next == computer:
                 latest = status.get_latest(application)
                 if latest in (computer, None):
@@ -164,7 +164,7 @@ def launch(config, status, computer, manager):
                         manager.start(application)
                     app_status.next = None
                 else:
-                    log.info("%s still running on: %s", application, latest)
+                    show_waiting(application, latest)
             elif manager.is_running(application):
                 manager.stop(application)
 
@@ -179,7 +179,6 @@ def update(config, status, computer, manager):
             if computer != latest:
                 if status.is_running(application, computer):
                     # case 1: application just launched remotely
-                    log.info("%s launched on: %s", application, latest)
                     manager.stop(application)
                     status.stop(application, computer)
                     show_running(application, latest)
@@ -199,6 +198,16 @@ def update(config, status, computer, manager):
             else:
                 # case 5: application already closed locally
                 pass
+
+
+def show_queued(application, computer):
+    """Display the state of a queued application."""
+    print("{} is queued for {}".format(application, computer))
+
+
+def show_waiting(application, computer):
+    """Display the old state of a running application."""
+    print("{} is still running on {}".format(application, computer))
 
 
 def show_running(application, computer):

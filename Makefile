@@ -12,7 +12,7 @@ endif
 
 # Test settings
 UNIT_TEST_COVERAGE := 82
-INTEGRATION_TEST_COVERAGE := 92
+INTEGRATION_TEST_COVERAGE := 91
 
 # System paths
 PLATFORM := $(shell python -c 'import sys; print(sys.platform)')

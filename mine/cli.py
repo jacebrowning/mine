@@ -71,7 +71,7 @@ def main(args=None):
         log.debug("running main command...")
         success = run(path=args.file, **kwargs)
     except KeyboardInterrupt:
-        msg = "command cancelled"
+        msg = "command canceled"
         if common.verbosity == common.MAX_VERBOSITY:
             log.exception(msg)
         else:

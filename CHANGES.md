@@ -1,13 +1,14 @@
-Changelog
-=========
+# Version History
 
-0.1.2 (2015/05/17)
-------------------
+## 0.2 (dev)
 
-- Upgrade to YORM v0.4.
+- Added '--daemon' option to run continuously.
 
-0.1.1 (2015/03/19)
-------------------
+## 0.1.2 (2015/05/17)
+
+- Upgraded to YORM v0.4.
+
+## 0.1.1 (2015/03/19)
 
  - Initial release.
 

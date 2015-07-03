@@ -1,3 +1,5 @@
+# pylint: disable=W0613,R,C
+
 import os
 import time
 import subprocess

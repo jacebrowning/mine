@@ -3,6 +3,7 @@
 """Command-line interface."""
 
 import sys
+import time
 import argparse
 
 from . import CLI, VERSION, DESCRIPTION
@@ -34,6 +35,8 @@ def main(args=None):
     # Build main parser
     parser = argparse.ArgumentParser(prog=CLI, description=DESCRIPTION,
                                      **shared)
+    parser.add_argument('-d', '--daemon', metavar='DELAY', nargs='?', const=60,
+                        type=int, help="run continuously with delay [seconds]")
     parser.add_argument('-f', '--file', help="custom settings file path")
     subs = parser.add_subparsers(help="", dest='command', metavar="<command>")
 
@@ -45,7 +48,7 @@ def main(args=None):
                      help="computer to queue for launch (default: current)")
 
     # Build clean parser
-    info = "clean up configuration and remove conflicted files"
+    info = "display and delete conflicted files"
     sub = subs.add_parser('clean', description=info.capitalize() + '.',
                           help=info, **shared)
     sub.add_argument('-f', '--force', action='store_true',
@@ -53,7 +56,7 @@ def main(args=None):
 
     # Parse arguments
     args = parser.parse_args(args=args)
-    kwargs = {'switch': None}
+    kwargs = {'delay': args.daemon}
     if args.command == 'switch':
         kwargs['switch'] = args.name if args.name else True
     elif args.command == 'clean':
@@ -81,11 +84,19 @@ def main(args=None):
         sys.exit(1)
 
 
-def run(path=None, cleanup=True, delete=False, force=False, switch=None):
+def run(path=None, cleanup=True, delay=None,
+        switch=None,
+        delete=False, force=False):
     """Run the program.
 
     :param path: custom settings file path
+    :param cleanup: remove unused items from the config
+    :param delay: number of seconds to delay before repeating
+
     :param switch: computer name to queue for launch
+
+    :param delete: attempt to delete conflicted files
+    :param force: actually delete conflicted files
 
     """
     manager = get_manager()
@@ -93,7 +104,7 @@ def run(path=None, cleanup=True, delete=False, force=False, switch=None):
     path = path or services.find_config_path(root=root)
 
     data = Data()
-    yorm.sync(data, path, auto=False)
+    yorm.sync(data, path)
 
     config = data.config
     status = data.status
@@ -114,10 +125,14 @@ def run(path=None, cleanup=True, delete=False, force=False, switch=None):
     if switch:
         queue(config, status, switch)
 
-    launch(config, status, computer, manager)
-    update(config, status, computer, manager)
+    while True:
+        launch(config, status, computer, manager)
+        update(config, status, computer, manager)
 
-    yorm.update_file(data)
+        if delay is None:
+            break
+        log.info("delaying for %s seconds...", delay)
+        time.sleep(delay)
 
     return True
 

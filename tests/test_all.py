@@ -5,8 +5,8 @@ import os
 import pytest
 import subprocess
 import logging
-from mine import common
-from mine.test.conftest import FILES
+
+import yorm
 
 from mine import cli
 from mine.application import Application
@@ -15,10 +15,10 @@ from mine.status import State, Status, ProgramStatus
 from mine.config import ProgramConfig
 from mine.data import Data
 
-import yorm
+from .conftest import FILES
 
 
-log = common.logger(__name__)
+log = logging.getLogger(__name__)
 
 
 @pytest.mark.integration

@@ -1,0 +1,28 @@
+config:
+  applications:
+  - name: slack
+    versions:
+      linux: null
+      mac: 'Slack.app'
+      windows: null
+  - name: iphoto
+    versions:
+      linux: null
+      mac: iPhoto
+      windows: null
+  computers:
+  - address: AA:BB:CC:DD:EE:FF
+    hostname: Jaces-MacBook
+    name: macbook
+  - address: ''
+    hostname: ''
+    name: macbook-pro
+status:
+  applications:
+  - application: itunes
+    computers:
+    - computer: macbook-pro
+      timestamp:
+        started: 444
+        stopped: null
+  counter: 499

@@ -1,6 +1,7 @@
 """Data structures for application information."""
 
 from . import common
+from .base import NameMixin
 
 import yorm
 
@@ -24,7 +25,7 @@ class Versions(yorm.converters.AttributeDictionary):
 @yorm.attr(name=yorm.converters.String)
 @yorm.attr(queued=yorm.converters.Boolean)
 @yorm.attr(versions=Versions)
-class Application(yorm.converters.AttributeDictionary):
+class Application(NameMixin, yorm.converters.AttributeDictionary):
 
     """A dictionary of application information."""
 
@@ -33,18 +34,6 @@ class Application(yorm.converters.AttributeDictionary):
         self.name = name
         self.queued = queued
         self.versions = Versions()
-
-    def __str__(self):
-        return str(self.name)
-
-    def __eq__(self, other):
-        return str(self).lower() == str(other).lower()
-
-    def __ne__(self, other):
-        return not self == other
-
-    def __lt__(self, other):
-        return str(self).lower() < str(other).lower()
 
 
 @yorm.attr(all=Application)

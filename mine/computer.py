@@ -7,6 +7,7 @@ import socket
 import yorm
 
 from . import common
+from .base import NameMixin
 
 log = common.logger(__name__)
 
@@ -14,7 +15,7 @@ log = common.logger(__name__)
 @yorm.attr(name=yorm.converters.String)
 @yorm.attr(hostname=yorm.converters.String)
 @yorm.attr(address=yorm.converters.String)
-class Computer(yorm.converters.AttributeDictionary):
+class Computer(NameMixin, yorm.converters.AttributeDictionary):
 
     """A dictionary of identifying computer information."""
 
@@ -23,18 +24,6 @@ class Computer(yorm.converters.AttributeDictionary):
         self.name = name
         self.address = address or self.get_address()
         self.hostname = hostname or self.get_hostname()
-
-    def __str__(self):
-        return str(self.name)
-
-    def __eq__(self, other):
-        return str(self).lower() == str(other).lower()
-
-    def __ne__(self, other):
-        return not self == other
-
-    def __lt__(self, other):
-        return str(self).lower() < str(other).lower()
 
     @staticmethod
     def get_address(node=None):

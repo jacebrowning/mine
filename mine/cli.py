@@ -126,15 +126,15 @@ def run(path=None, cleanup=True, delay=None,
         data.queue(config, status, switch)
 
     while True:
-        services.delete_conflicts(root, config_only=True, force=True)
-
         data.launch(config, status, computer, manager)
         data.update(config, status, computer, manager)
 
         if delay is None:
             break
+
         log.info("delaying for %s seconds...", delay)
         time.sleep(delay)
+        services.delete_conflicts(root, config_only=True, force=True)
 
     return True
 

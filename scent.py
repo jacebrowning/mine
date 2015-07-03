@@ -37,7 +37,8 @@ def python_tests(*args):
 
         print("")
         print("$ %s" % ' '.join(command))
-        failure = subprocess.call(command)
+        os.environ['TEST_IDE'] = '1'
+        failure = subprocess.call(command, env=os.environ)
 
         if failure:
             if notify and title:

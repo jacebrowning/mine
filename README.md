@@ -6,7 +6,7 @@
 [![PyPI Version](http://img.shields.io/pypi/v/mine.svg)](https://pypi.python.org/pypi/mine)
 [![PyPI Downloads](http://img.shields.io/pypi/dm/mine.svg)](https://pypi.python.org/pypi/mine)
 
-`mine` lets you syncronize application data using Dropbox.
+This is a program that lets you syncronize application data using Dropbox.
 
 It automatically starts and stops programs that would otherwise fight over data in a shared folder and ensures only one instance is running.  Many applications work fine when their data is stored in Dropbox, but some programs overwrite databases:
 

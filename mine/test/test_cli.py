@@ -99,6 +99,15 @@ class TestClean:
                                          delete=True, force=True)
 
 
+class TestEdit:
+
+    @patch('mine.cli.run')
+    def test_edit(self, mock_run):
+        cli.main(['edit'])
+        mock_run.assert_called_once_with(path=None, delay=None,
+                                         edit=True,)
+
+
 def _mock_run(*args, **kwargs):
     """Placeholder logic for logging tests."""
     logging.debug(args)

@@ -54,6 +54,11 @@ def main(args=None):
     sub.add_argument('-f', '--force', action='store_true',
                      help="actually delete the conflicted files")
 
+    # Build edit parser
+    info = "launch the settings file for editing"
+    sub = subs.add_parser('edit', description=info.capitalize() + '.',
+                          help=info, **shared)
+
     # Parse arguments
     args = parser.parse_args(args=args)
     kwargs = {'delay': args.daemon}
@@ -62,6 +67,8 @@ def main(args=None):
     elif args.command == 'clean':
         kwargs['delete'] = True
         kwargs['force'] = args.force
+    elif args.command == 'edit':
+        kwargs['edit'] = True
 
     # Configure logging
     common.configure_logging(args.verbose)
@@ -86,6 +93,7 @@ def main(args=None):
 
 def run(path=None, cleanup=True, delay=None,
         switch=None,
+        edit=False,
         delete=False, force=False):
     """Run the program.
 
@@ -94,6 +102,8 @@ def run(path=None, cleanup=True, delay=None,
     :param delay: number of seconds to delay before repeating
 
     :param switch: computer name to queue for launch
+
+    :param edit: launch the configuration file for editing
 
     :param delete: attempt to delete conflicted files
     :param force: actually delete conflicted files
@@ -115,6 +125,8 @@ def run(path=None, cleanup=True, delay=None,
 
     if cleanup:
         data.clean(config, status)
+    if edit:
+        return manager.launch(path)
     if delete:
         return services.delete_conflicts(root, force=force)
 

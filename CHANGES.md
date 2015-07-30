@@ -3,6 +3,7 @@
 ## 0.2 (dev)
 
 - Added '--daemon' option to run continuously.
+- Added 'edit' command to launch the settings file.
 
 ## 0.1.2 (2015/05/17)
 

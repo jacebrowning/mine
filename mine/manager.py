@@ -6,6 +6,7 @@ import time
 import glob
 import platform
 import functools
+import subprocess
 
 import psutil
 
@@ -88,6 +89,11 @@ class BaseManager(metaclass=abc.ABCMeta):  # pragma: no cover (abstract)
         """Stop an application on the current computer."""
         raise NotImplementedError
 
+    @abc.abstractmethod
+    def launch(self, path):
+        """Open a file for editing."""
+        raise NotImplementedError
+
 
 class LinuxManager(BaseManager):  # pragma: no cover (manual)
 
@@ -126,6 +132,10 @@ class LinuxManager(BaseManager):  # pragma: no cover (manual)
                         return process
             except psutil.AccessDenied:
                 pass  # the process is likely owned by root
+
+    def launch(self, path):
+        log.info("opening %s...", path)
+        return subprocess.call(['xdg-open', path]) == 0
 
 
 class MacManager(BaseManager):  # pragma: no cover (manual)
@@ -192,6 +202,10 @@ class MacManager(BaseManager):  # pragma: no cover (manual)
         time.sleep(0.1)
         return process
 
+    def launch(self, path):
+        log.info("opening %s...", path)
+        return subprocess.call(['open', path]) == 0
+
 
 class WindowsManager(BaseManager):  # pragma: no cover (manual)
 
@@ -208,6 +222,11 @@ class WindowsManager(BaseManager):  # pragma: no cover (manual)
 
     def stop(self, application):
         pass
+
+    def launch(self, path):
+        log.info("starting %s...", path)
+        os.startfile(path)  # pylint: disable=no-member
+        return True
 
 
 def get_manager(name=None):

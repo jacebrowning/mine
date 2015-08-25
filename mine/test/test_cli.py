@@ -46,11 +46,8 @@ class TestMain:
         assert mock_log.exception.call_count == 1
 
     @pytest.mark.integration
-    def test_path(self, tmpdir):
+    def test_path(self, path):
         """Verify a custom setting file path can be used."""
-        tmpdir.chdir()
-        path = tmpdir.join('custom.ext').strpath
-
         cli.main(['--file', path])
 
         assert os.path.isfile(path)
@@ -65,14 +62,16 @@ class TestMain:
         cli.main(['--daemon', '30'])
         mock_run.assert_called_once_with(path=None, delay=30)
 
+    @pytest.mark.integration
     @patch('mine.cli.CLI', os.path.basename(sys.executable))
-    def test_confirmation_daemon_is_running(self):
-        cli.main([])
+    def test_confirmation_daemon_is_running(self, path):
+        cli.main(['--file', path])
 
+    @pytest.mark.integration
     @patch('mine.cli.CLI', Mock())
-    def test_warning_when_daemon_is_not_running(self):
+    def test_warning_when_daemon_is_not_running(self, path):
         with pytest.raises(SystemExit):
-            cli.main([])
+            cli.main(['--file', path])
 
 
 class TestSwitch:

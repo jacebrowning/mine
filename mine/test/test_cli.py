@@ -2,7 +2,6 @@
 # pylint: disable=R,C
 
 import os
-import sys
 import pytest
 from unittest.mock import Mock, patch
 import logging
@@ -46,6 +45,7 @@ class TestMain:
         assert mock_log.exception.call_count == 1
 
     @pytest.mark.integration
+    @patch('mine.cli.daemon', None)
     def test_path(self, path):
         """Verify a custom setting file path can be used."""
         cli.main(['--file', path])
@@ -63,12 +63,7 @@ class TestMain:
         mock_run.assert_called_once_with(path=None, delay=30)
 
     @pytest.mark.integration
-    @patch('mine.cli.CLI', os.path.basename(sys.executable))
-    def test_confirmation_daemon_is_running(self, path):
-        cli.main(['--file', path])
-
-    @pytest.mark.integration
-    @patch('mine.cli.CLI', Mock())
+    @patch('mine.cli.daemon', Mock())
     def test_warning_when_daemon_is_not_running(self, path):
         with pytest.raises(SystemExit):
             cli.main(['--file', path])

@@ -17,6 +17,7 @@ import yorm
 
 
 log = common.logger(__name__)
+daemon = Application(CLI, filename=CLI)
 
 
 def main(args=None):
@@ -149,8 +150,7 @@ def run(path=None, cleanup=True, delay=None,
         time.sleep(delay)
         services.delete_conflicts(root, config_only=True, force=True)
 
-    daemon = Application(CLI, filename=CLI)
-    if not manager.is_running(daemon):
+    if daemon and not manager.is_running(daemon):
         log.warning("daemon is not running, start it with: %s --daemon &", CLI)
         return False
 

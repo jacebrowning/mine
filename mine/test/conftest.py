@@ -49,3 +49,10 @@ def pytest_runtest_setup(item):
 
     if os.getenv('TEST_IDE') and 'not_ide' in item.keywords:
         pytest.skip("test cannot be run from an IDE")
+
+
+@pytest.fixture
+def path(tmpdir):
+    """Figure to create a temporary settings file path."""
+    tmpdir.chdir()
+    return tmpdir.join('custom.ext').strpath

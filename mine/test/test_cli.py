@@ -2,6 +2,7 @@
 # pylint: disable=R,C
 
 import os
+import sys
 import pytest
 from unittest.mock import Mock, patch
 import logging
@@ -63,6 +64,15 @@ class TestMain:
     def test_daemon_with_specific_delay(self, mock_run):
         cli.main(['--daemon', '30'])
         mock_run.assert_called_once_with(path=None, delay=30)
+
+    @patch('mine.cli.CLI', os.path.basename(sys.executable))
+    def test_confirmation_daemon_is_running(self):
+        cli.main([])
+
+    @patch('mine.cli.CLI', Mock())
+    def test_warning_when_daemon_is_not_running(self):
+        with pytest.raises(SystemExit):
+            cli.main([])
 
 
 class TestSwitch:

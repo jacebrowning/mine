@@ -15,11 +15,11 @@ class Versions(yorm.converters.AttributeDictionary):
 
     """A dictionary of OS-specific application filenames."""
 
-    def __init__(self):
+    def __init__(self, mac=None, windows=None, linux=None):
         super().__init__()
-        self.mac = None
-        self.windows = None
-        self.linux = None
+        self.mac = mac
+        self.windows = windows
+        self.linux = linux
 
 
 @yorm.attr(name=yorm.converters.String)
@@ -29,11 +29,11 @@ class Application(NameMixin, yorm.converters.AttributeDictionary):
 
     """A dictionary of application information."""
 
-    def __init__(self, name, queued=False):
+    def __init__(self, name, queued=False, filename=None):
         super().__init__()
         self.name = name
         self.queued = queued
-        self.versions = Versions()
+        self.versions = Versions(mac=filename, windows=filename, linux=filename)
 
 
 @yorm.attr(all=Application)

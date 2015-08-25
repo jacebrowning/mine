@@ -85,7 +85,7 @@ ci: check test tests
 .PHONY: watch
 watch: depends-dev .clean-test
 	@ rm -rf $(FAILED_FLAG)
-	$(SNIFFER)
+	TEST_IDE=1 $(SNIFFER)
 
 # Development Installation #####################################################
 

@@ -10,6 +10,7 @@ from . import CLI, VERSION, DESCRIPTION
 from . import common
 from . import services
 from .data import Data
+from .application import Application
 from .manager import get_manager
 
 import yorm
@@ -147,6 +148,11 @@ def run(path=None, cleanup=True, delay=None,
         log.info("delaying for %s seconds...", delay)
         time.sleep(delay)
         services.delete_conflicts(root, config_only=True, force=True)
+
+    daemon = Application(CLI, filename=CLI)
+    if not manager.is_running(daemon):
+        log.warning("daemon is not running, start it with: %s --daemon &", CLI)
+        return False
 
     return True
 

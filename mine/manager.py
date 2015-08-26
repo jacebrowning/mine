@@ -107,7 +107,9 @@ class BaseManager(metaclass=abc.ABCMeta):  # pragma: no cover (abstract)
                     parts.extend([p.lower() for p in arg.split(os.sep)])
 
                 if name.lower() in parts:
-                    if process.status() == psutil.STATUS_ZOMBIE:
+                    if process.pid == os.getpid():
+                        log.debug("skipped current process: %s", command)
+                    elif process.status() == psutil.STATUS_ZOMBIE:
                         log.debug("skipped zombie process: %s", command)
                     else:
                         log.debug("found matching process: %s", command)

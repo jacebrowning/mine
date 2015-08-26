@@ -8,6 +8,7 @@ import logging
 
 from mine import cli
 from mine import common
+from mine.application import Application
 
 
 class TestMain:
@@ -63,7 +64,7 @@ class TestMain:
         mock_run.assert_called_once_with(path=None, delay=30)
 
     @pytest.mark.integration
-    @patch('mine.cli.daemon', Mock())
+    @patch('mine.cli.daemon', Application(None))
     def test_warning_when_daemon_is_not_running(self, path):
         with pytest.raises(SystemExit):
             cli.main(['--file', path])

@@ -94,6 +94,30 @@ class BaseManager(metaclass=abc.ABCMeta):  # pragma: no cover (abstract)
         """Open a file for editing."""
         raise NotImplementedError
 
+    @staticmethod
+    def _get_process(name):
+        """Get a process whose executable path contains an app name."""
+        log.debug("searching for exe path containing '%s'...", name)
+
+        for process in psutil.process_iter():
+            try:
+                command = ' '.join(process.cmdline()).lower()
+                parts = []
+                for arg in process.cmdline():
+                    parts.extend([p.lower() for p in arg.split(os.sep)])
+
+                if name.lower() in parts:
+                    if process.status() == psutil.STATUS_ZOMBIE:
+                        log.debug("skipped zombie process: %s", command)
+                    else:
+                        log.debug("found matching process: %s", command)
+                        return process
+
+            except psutil.AccessDenied:
+                pass  # the process is likely owned by root
+
+        return None
+
 
 class LinuxManager(BaseManager):  # pragma: no cover (manual)
 
@@ -117,21 +141,6 @@ class LinuxManager(BaseManager):  # pragma: no cover (manual)
         process = self._get_process(name)
         if process.is_running():
             process.terminate()
-
-    @staticmethod
-    def _get_process(name):
-        """Get a process whose name matches."""
-        for process in psutil.process_iter():
-            try:
-                if name == process.name():
-                    path = process.exe()
-                    if process.status() == psutil.STATUS_ZOMBIE:
-                        log.debug("skipped zombie process: %s", path)
-                    else:
-                        log.debug("found matching process: %s", path)
-                        return process
-            except psutil.AccessDenied:
-                pass  # the process is likely owned by root
 
     def launch(self, path):
         log.info("opening %s...", path)
@@ -177,22 +186,6 @@ class MacManager(BaseManager):  # pragma: no cover (manual)
         if process and process.is_running():
             process.terminate()
             time.sleep(0.1)
-
-    @staticmethod
-    def _get_process(name):
-        """Get a process whose executable path contains an app name."""
-        log.debug("searching for exe path containing '%s'...", name)
-        for process in psutil.process_iter():
-            try:
-                path = process.exe().lower()
-                if name.lower() in path.split(os.sep):
-                    if process.status() == psutil.STATUS_ZOMBIE:
-                        log.debug("skipped zombie process: %s", path)
-                    else:
-                        log.debug("found matching process: %s", path)
-                        return process
-            except psutil.AccessDenied:
-                pass  # the process is likely owned by root
 
     @staticmethod
     def _start_app(path):

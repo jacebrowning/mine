@@ -14,4 +14,4 @@ VERBOSE2_LOGGING_LEVEL = logging.DEBUG
 LOGGING_DATEFMT = "%Y-%m-%d %H:%M"
 
 # 3rd party settings
-YORM_LOGGING_LEVEL = logging.INFO
+YORM_LOGGING_LEVEL = logging.WARNING

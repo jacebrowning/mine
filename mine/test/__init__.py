@@ -1,1 +1,1 @@
-"""Tests for the `mine` package."""
+"""Unit tests for the `mine` package."""

@@ -1,18 +1,30 @@
 sudo: false
+
 language: python
 python:
 - 3.3
 - 3.4
+
+cache: pip
+
+env:
+  global:
+  - RANDOM_SEED=12345
+
 install:
 - pip install coveralls scrutinizer-ocular
+
 before_script:
 - make env
 - make depends-ci
+
 script:
 - make ci
+
 after_success:
 - coveralls
 - ocular
+
 notifications:
   email:
     on_success: never

@@ -6,6 +6,7 @@ import time
 import glob
 import platform
 import functools
+import subprocess
 
 import psutil
 
@@ -88,6 +89,37 @@ class BaseManager(metaclass=abc.ABCMeta):  # pragma: no cover (abstract)
         """Stop an application on the current computer."""
         raise NotImplementedError
 
+    @abc.abstractmethod
+    def launch(self, path):
+        """Open a file for editing."""
+        raise NotImplementedError
+
+    @staticmethod
+    def _get_process(name):
+        """Get a process whose executable path contains an app name."""
+        log.debug("searching for exe path containing '%s'...", name)
+
+        for process in psutil.process_iter():
+            try:
+                command = ' '.join(process.cmdline()).lower()
+                parts = []
+                for arg in process.cmdline():
+                    parts.extend([p.lower() for p in arg.split(os.sep)])
+
+                if name.lower() in parts:
+                    if process.pid == os.getpid():
+                        log.debug("skipped current process: %s", command)
+                    elif process.status() == psutil.STATUS_ZOMBIE:
+                        log.debug("skipped zombie process: %s", command)
+                    else:
+                        log.debug("found matching process: %s", command)
+                        return process
+
+            except psutil.AccessDenied:
+                pass  # the process is likely owned by root
+
+        return None
+
 
 class LinuxManager(BaseManager):  # pragma: no cover (manual)
 
@@ -112,20 +144,9 @@ class LinuxManager(BaseManager):  # pragma: no cover (manual)
         if process.is_running():
             process.terminate()
 
-    @staticmethod
-    def _get_process(name):
-        """Get a process whose name matches."""
-        for process in psutil.process_iter():
-            try:
-                if name == process.name():
-                    path = process.exe()
-                    if process.status() == psutil.STATUS_ZOMBIE:
-                        log.debug("skipped zombie process: %s", path)
-                    else:
-                        log.debug("found matching process: %s", path)
-                        return process
-            except psutil.AccessDenied:
-                pass  # the process is likely owned by root
+    def launch(self, path):
+        log.info("opening %s...", path)
+        return subprocess.call(['xdg-open', path]) == 0
 
 
 class MacManager(BaseManager):  # pragma: no cover (manual)
@@ -169,28 +190,16 @@ class MacManager(BaseManager):  # pragma: no cover (manual)
             time.sleep(0.1)
 
     @staticmethod
-    def _get_process(name):
-        """Get a process whose executable path contains an app name."""
-        log.debug("searching for exe path containing '%s'...", name)
-        for process in psutil.process_iter():
-            try:
-                path = process.exe().lower()
-                if name.lower() in path.split(os.sep):
-                    if process.status() == psutil.STATUS_ZOMBIE:
-                        log.debug("skipped zombie process: %s", path)
-                    else:
-                        log.debug("found matching process: %s", path)
-                        return process
-            except psutil.AccessDenied:
-                pass  # the process is likely owned by root
-
-    @staticmethod
     def _start_app(path):
         """Start an application from it's .app directory."""
         assert os.path.exists(path), path
         process = psutil.Popen(['open', path])
         time.sleep(0.1)
         return process
+
+    def launch(self, path):
+        log.info("opening %s...", path)
+        return subprocess.call(['open', path]) == 0
 
 
 class WindowsManager(BaseManager):  # pragma: no cover (manual)
@@ -208,6 +217,11 @@ class WindowsManager(BaseManager):  # pragma: no cover (manual)
 
     def stop(self, application):
         pass
+
+    def launch(self, path):
+        log.info("starting %s...", path)
+        os.startfile(path)  # pylint: disable=no-member
+        return True
 
 
 def get_manager(name=None):

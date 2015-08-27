@@ -3,11 +3,11 @@
 import sys
 
 __project__ = 'mine'
-__version__ = '0.1.2'
+__version__ = '0.2'
 
 CLI = 'mine'
 VERSION = __project__ + '-' + __version__
-DESCRIPTION = "For applications that haven't learned to share."
+DESCRIPTION = "Shares application state across computers using Dropbox."
 
 PYTHON_VERSION = 3, 3
 

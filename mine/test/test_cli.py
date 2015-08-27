@@ -1,5 +1,5 @@
 """Unit tests for the 'cli' module."""
-# pylint: disable=R0201
+# pylint: disable=R,C
 
 import os
 import pytest
@@ -8,6 +8,7 @@ import logging
 
 from mine import cli
 from mine import common
+from mine.application import Application
 
 
 class TestMain:
@@ -45,14 +46,28 @@ class TestMain:
         assert mock_log.exception.call_count == 1
 
     @pytest.mark.integration
-    def test_path(self, tmpdir):
+    @patch('mine.cli.daemon', None)
+    def test_path(self, path):
         """Verify a custom setting file path can be used."""
-        tmpdir.chdir()
-        path = tmpdir.join('custom.ext').strpath
-
         cli.main(['--file', path])
 
         assert os.path.isfile(path)
+
+    @patch('mine.cli.run')
+    def test_daemon(self, mock_run):
+        cli.main(['--daemon'])
+        mock_run.assert_called_once_with(path=None, delay=60)
+
+    @patch('mine.cli.run')
+    def test_daemon_with_specific_delay(self, mock_run):
+        cli.main(['--daemon', '30'])
+        mock_run.assert_called_once_with(path=None, delay=30)
+
+    @pytest.mark.integration
+    @patch('mine.cli.daemon', Application(None))
+    def test_warning_when_daemon_is_not_running(self, path):
+        with pytest.raises(SystemExit):
+            cli.main(['--file', path])
 
 
 class TestSwitch:
@@ -63,13 +78,39 @@ class TestSwitch:
     def test_switch(self, mock_run):
         """Verify a the current computer can be queued."""
         cli.main(['switch'])
-        mock_run.assert_called_once_with(path=None, switch=True)
+        mock_run.assert_called_once_with(path=None, delay=None,
+                                         switch=True)
 
     @patch('mine.cli.run')
     def test_switch_specific(self, mock_run):
         """Verify a specific computer can be queued."""
         cli.main(['switch', 'foobar'])
-        mock_run.assert_called_once_with(path=None, switch='foobar')
+        mock_run.assert_called_once_with(path=None, delay=None,
+                                         switch='foobar')
+
+
+class TestClean:
+
+    @patch('mine.cli.run')
+    def test_clean(self, mock_run):
+        cli.main(['clean'])
+        mock_run.assert_called_once_with(path=None, delay=None,
+                                         delete=True, force=False)
+
+    @patch('mine.cli.run')
+    def test_clean_with_force(self, mock_run):
+        cli.main(['clean', '--force'])
+        mock_run.assert_called_once_with(path=None, delay=None,
+                                         delete=True, force=True)
+
+
+class TestEdit:
+
+    @patch('mine.cli.run')
+    def test_edit(self, mock_run):
+        cli.main(['edit'])
+        mock_run.assert_called_once_with(path=None, delay=None,
+                                         edit=True,)
 
 
 def _mock_run(*args, **kwargs):

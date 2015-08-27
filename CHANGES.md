@@ -1,6 +1,6 @@
 # Version History
 
-## 0.2 (dev)
+## 0.2 (2015/08/27)
 
 - Added '--daemon' option to run continuously.
 - Added 'edit' command to launch the settings file.

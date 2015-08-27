@@ -98,3 +98,13 @@ class TestComputers:
         computer = Computer(None, hostname='Jaces-iMac.local')
         name = computers.generate_name(computer)
         assert 'jaces-imac-2' == name
+
+    def test_get_current_by_matching_address(self):
+        computers = Computers([Computer('abc', 'foobar', '00:00:00:00:00:00')])
+        computer = computers.get_current()
+        assert 'abc' == computer.name
+
+    def test_get_current_by_matching_hostname(self):
+        computers = Computers([Computer('abc', 'Sample.local', 'foobar')])
+        computer = computers.get_current()
+        assert 'abc' == computer.name

@@ -78,6 +78,12 @@ class Computers(yorm.converters.SortedList):
                 other.hostname = this.hostname
                 return other
 
+        # Else, search for a matching hostname
+        for other in self:
+            if this.hostname == other.hostname:
+                other.address = this.address
+                return other
+
         # Else, this is a new computer
         this.name = self.generate_name(this)
         log.debug("new computer: %s", this)

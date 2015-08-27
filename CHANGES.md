@@ -1,5 +1,9 @@
 # Version History
 
+## 0.3 (dev)
+
+- TBD
+
 ## 0.2 (2015/08/27)
 
 - Added '--daemon' option to run continuously.

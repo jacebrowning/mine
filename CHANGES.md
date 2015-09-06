@@ -1,5 +1,9 @@
 # Version History
 
+## 0.2.1 (2015/09/05)
+
+- Fixed daemon warning to run using `nohup`
+
 ## 0.2 (2015/08/27)
 
 - Added '--daemon' option to run continuously.

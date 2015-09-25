@@ -3,7 +3,7 @@
 import sys
 
 __project__ = 'mine'
-__version__ = '0.3dev0'
+__version__ = '0.3.dev0'
 
 CLI = 'mine'
 VERSION = "{0} v{1}".format(__project__, __version__)

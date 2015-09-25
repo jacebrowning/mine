@@ -151,7 +151,8 @@ def run(path=None, cleanup=True, delay=None,
         services.delete_conflicts(root, config_only=True, force=True)
 
     if daemon and not manager.is_running(daemon):
-        msg = "daemon is not running, start it with: nohup %s --daemon &"
+        msg = ("daemon is not running, start it with: " + "\n" +
+               "nohup %s --daemon --verbose >> /tmp/mine.log 2>&1 &")
         log.warning(msg, CLI)
         return False
 

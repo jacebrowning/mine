@@ -1,8 +1,8 @@
 # Version History
 
-## 0.3 (dev)
+## 0.3 (unreleased)
 
-- TBD
+- Updated daemon message to use `nohup`.
 
 ## 0.2 (2015/08/27)
 

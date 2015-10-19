@@ -5,6 +5,7 @@
 import sys
 import time
 import argparse
+import subprocess
 
 from . import CLI, VERSION, DESCRIPTION
 from . import common
@@ -150,10 +151,23 @@ def run(path=None, cleanup=True, delay=None,
         time.sleep(delay)
         services.delete_conflicts(root, config_only=True, force=True)
 
+    if delay is None:
+        return _restart_daemon(manager)
+
+    return True
+
+
+def _restart_daemon(manager):
+    cmd = "nohup {} --daemon --verbose >> /tmp/mine.log 2>&1 &".format(CLI)
     if daemon and not manager.is_running(daemon):
-        msg = ("daemon is not running, start it with: " + "\n" +
-               "nohup %s --daemon --verbose >> /tmp/mine.log 2>&1 &")
-        log.warning(msg, CLI)
+        log.warn("daemon is not running, attempting to restart...")
+
+        log.info("$ %s", cmd)
+        subprocess.call(cmd, shell=True)
+        if manager.is_running(daemon):
+            return True
+
+        log.error("manually start daemon: %s", cmd)
         return False
 
     return True

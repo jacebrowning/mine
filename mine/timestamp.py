@@ -10,7 +10,6 @@ log = common.logger(__name__)
 @yorm.attr(started=yorm.converters.Integer)
 @yorm.attr(stopped=yorm.converters.Integer)
 class Timestamp(yorm.converters.AttributeDictionary):
-
     """A dictionary of last start and stop times."""
 
     def __init__(self, started=0, stopped=0):

@@ -66,7 +66,6 @@ def log_stopping(func):  # pragma: no cover (manual)
 
 
 class BaseManager(metaclass=abc.ABCMeta):  # pragma: no cover (abstract)
-
     """Base application manager."""
 
     NAME = FRIENDLY = None
@@ -122,7 +121,6 @@ class BaseManager(metaclass=abc.ABCMeta):  # pragma: no cover (abstract)
 
 
 class LinuxManager(BaseManager):  # pragma: no cover (manual)
-
     """Application manager for Linux."""
 
     NAME = 'Linux'
@@ -150,7 +148,6 @@ class LinuxManager(BaseManager):  # pragma: no cover (manual)
 
 
 class MacManager(BaseManager):  # pragma: no cover (manual)
-
     """Application manager for OS X."""
 
     NAME = 'Darwin'
@@ -203,7 +200,6 @@ class MacManager(BaseManager):  # pragma: no cover (manual)
 
 
 class WindowsManager(BaseManager):  # pragma: no cover (manual)
-
     """Application manager for Windows."""
 
     NAME = 'Windows'

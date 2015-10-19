@@ -2,7 +2,7 @@
 
 ## 0.3 (unreleased)
 
-- Updated daemon message to use `nohup`.
+- Added automatic daemon restart using `nohup`.
 
 ## 0.2 (2015/08/27)
 

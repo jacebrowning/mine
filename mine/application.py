@@ -12,7 +12,6 @@ log = common.logger(__name__)
 @yorm.attr(windows=yorm.converters.NoneString)
 @yorm.attr(linux=yorm.converters.NoneString)
 class Versions(yorm.converters.AttributeDictionary):
-
     """A dictionary of OS-specific application filenames."""
 
     def __init__(self, mac=None, windows=None, linux=None):
@@ -26,7 +25,6 @@ class Versions(yorm.converters.AttributeDictionary):
 @yorm.attr(queued=yorm.converters.Boolean)
 @yorm.attr(versions=Versions)
 class Application(NameMixin, yorm.converters.AttributeDictionary):
-
     """A dictionary of application information."""
 
     def __init__(self, name, queued=False, filename=None):
@@ -38,7 +36,6 @@ class Application(NameMixin, yorm.converters.AttributeDictionary):
 
 @yorm.attr(all=Application)
 class Applications(yorm.converters.SortedList):
-
     """A list of monitored applications."""
 
     def get(self, name):

@@ -13,7 +13,6 @@ log = common.logger(__name__)
 @yorm.attr(config=ProgramConfig)
 @yorm.attr(status=ProgramStatus)
 class Data:
-
     """Primary wrapper for all settings."""
 
     def __init__(self):

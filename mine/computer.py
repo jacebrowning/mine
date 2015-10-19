@@ -16,7 +16,6 @@ log = common.logger(__name__)
 @yorm.attr(hostname=yorm.converters.String)
 @yorm.attr(address=yorm.converters.String)
 class Computer(NameMixin, yorm.converters.AttributeDictionary):
-
     """A dictionary of identifying computer information."""
 
     def __init__(self, name, hostname=None, address=None):
@@ -40,7 +39,6 @@ class Computer(NameMixin, yorm.converters.AttributeDictionary):
 
 @yorm.attr(all=Computer)
 class Computers(yorm.converters.SortedList):
-
     """A list of computers."""
 
     @property

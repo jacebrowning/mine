@@ -14,12 +14,6 @@ log = common.logger(__name__)
 class Versions(yorm.converters.AttributeDictionary):
     """Dictionary of OS-specific application filenames."""
 
-    def __init__(self, mac=None, windows=None, linux=None):
-        super().__init__()
-        self.mac = mac
-        self.windows = windows
-        self.linux = linux
-
 
 @yorm.attr(auto_queue=yorm.converters.Boolean)
 @yorm.attr(single_instance=yorm.converters.Boolean)

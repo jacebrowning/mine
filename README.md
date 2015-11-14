@@ -57,17 +57,21 @@ Create a `mine.yml` in your Dropbox:
 ```
 config:
   applications:
-  - name: Eclipse
-    queued: false
-    versions:
-      linux: eclipse
-      mac: Eclipse.app
-      windows: eclipse.exe
   - name: iTunes
-    queued: true
+    properties:
+      auto_queue: false
+      single_instance: true
     versions:
       linux: null
       mac: iTunes.app
+      windows: iTunes.exe
+  - name: Slack
+    properties:
+      auto_queue: true
+      single_instance: false
+    versions:
+      linux: null
+      mac: Slack.app
       windows: null
   computers:
   - address: 00:11:22:33:44:55
@@ -78,7 +82,9 @@ config:
     name: My MacBook Air
 ```
 
-Include the applications you would like `mine` to manage. The `versions` dictionary identifies the name of the executable on each platform. The `queued` setting indicates it must be closed before another instance can start. Computers are added automatically when `mine` is run.
+Include the applications you would like `mine` to manage. Computers are added automatically when `mine` is run.
+
+The `versions` dictionary identifies the name of the executable on each platform. The `properties.auto_queue` setting indicates `mine` should attempt to launch the application automatically when switching computers. The `properties.single_instance` setting indicates the application must be closed on other computers before another instance can start.
 
 For remote application management, `mine` needs to be started automatically on each of your computers. Cron is good for this:
 

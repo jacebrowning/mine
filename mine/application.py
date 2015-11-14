@@ -1,11 +1,13 @@
 """Data structures for application information."""
 
-from . import common
+import logging
+
 from .base import NameMixin
 
 import yorm
 
-log = common.logger(__name__)
+
+log = logging.getLogger(__name__)
 
 
 @yorm.attr(mac=yorm.converters.NoneString)

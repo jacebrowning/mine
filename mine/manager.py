@@ -7,12 +7,12 @@ import glob
 import platform
 import functools
 import subprocess
+import logging
 
 import psutil
 
-from . import common
 
-log = common.logger(__name__)
+log = logging.getLogger(__name__)
 
 # TODO: delete this after implementing `BaseManager`
 # https://github.com/jacebrowning/mine/issues/8

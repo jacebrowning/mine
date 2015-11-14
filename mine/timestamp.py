@@ -1,10 +1,11 @@
 """Data structures for timestamp information."""
 
-from . import common
+import logging
 
 import yorm
 
-log = common.logger(__name__)
+
+log = logging.getLogger(__name__)
 
 
 @yorm.attr(started=yorm.converters.Integer)

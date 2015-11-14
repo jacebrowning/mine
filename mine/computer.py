@@ -2,14 +2,14 @@
 
 import uuid
 import socket
-
+import logging
 
 import yorm
 
-from . import common
 from .base import NameMixin
 
-log = common.logger(__name__)
+
+log = logging.getLogger(__name__)
 
 
 @yorm.attr(name=yorm.converters.String)

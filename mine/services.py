@@ -3,8 +3,8 @@
 import os
 import re
 import getpass
+import logging
 
-from . import common
 
 ROOTS = (
     r"C:\Users",
@@ -21,7 +21,7 @@ CONFLICT_ANY = CONFLICT_BASE.format(".+")
 CONFLICT_CONFIG = CONFLICT_BASE.format("mine")
 DEPTH = 3  # number of levels to search for the settings file
 
-log = common.logger(__name__)
+log = logging.getLogger(__name__)
 
 
 def find_root(top=None):

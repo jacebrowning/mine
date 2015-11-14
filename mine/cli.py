@@ -6,6 +6,7 @@ import sys
 import time
 import argparse
 import subprocess
+import logging
 
 from . import CLI, VERSION, DESCRIPTION
 from . import common
@@ -17,7 +18,7 @@ from .manager import get_manager
 import yorm
 
 
-log = common.logger(__name__)
+log = logging.getLogger(__name__)
 daemon = Application(CLI, filename=CLI)
 
 
@@ -112,8 +113,6 @@ def run(path=None, cleanup=True, delay=None,
     :param force: actually delete conflicted files
 
     """
-    print("Updating application state...")
-
     manager = get_manager()
     root = services.find_root()
     path = path or services.find_config_path(root=root)
@@ -128,12 +127,12 @@ def run(path=None, cleanup=True, delay=None,
     computer = config.computers.get_current()
     log.info("current computer: %s", computer)
 
-    if cleanup:
-        data.clean(config, status)
     if edit:
         return manager.launch(path)
     if delete:
         return services.delete_conflicts(root, force=force)
+    if log.getEffectiveLevel() >= logging.WARNING:
+        print("Updating application state...")
 
     if switch is True:
         switch = computer
@@ -152,6 +151,9 @@ def run(path=None, cleanup=True, delay=None,
         log.info("delaying for %s seconds...", delay)
         time.sleep(delay)
         services.delete_conflicts(root, config_only=True, force=True)
+
+    if cleanup:
+        data.clean(config, status)
 
     if delay is None:
         return _restart_daemon(manager)

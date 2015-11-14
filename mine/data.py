@@ -1,13 +1,14 @@
 """Data structures that combine all program data."""
 
+import logging
+
 import yorm
 
-from . import common
 from .config import ProgramConfig
 from .status import ProgramStatus
 
 
-log = common.logger(__name__)
+log = logging.getLogger(__name__)
 
 
 @yorm.attr(config=ProgramConfig)

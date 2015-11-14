@@ -18,7 +18,7 @@ watch_paths = ['mine/', 'tests/']
 @file_validator
 def py_files(filename):
     return all((filename.endswith('.py'),
-               not os.path.basename(filename).startswith('.')))
+                not os.path.basename(filename).startswith('.')))
 
 
 @runnable

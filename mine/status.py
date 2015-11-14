@@ -49,7 +49,7 @@ def log_stopping(func):
 @yorm.attr(computer=yorm.converters.String)
 @yorm.attr(timestamp=Timestamp)
 class State(yorm.converters.AttributeDictionary):
-    """A dictionary of computer state."""
+    """Dictionary of computer state."""
 
     def __init__(self, name):
         super().__init__()
@@ -65,14 +65,14 @@ class State(yorm.converters.AttributeDictionary):
 
 @yorm.attr(all=State)
 class StateList(yorm.converters.SortedList):
-    """A list of computer states for an application."""
+    """List of computer states for an application."""
 
 
 @yorm.attr(application=yorm.converters.String)
 @yorm.attr(computers=StateList)
 @yorm.attr(next=yorm.converters.NoneString)
 class Status(yorm.converters.AttributeDictionary):
-    """A dictionary of computers using an application."""
+    """Dictionary of computers using an application."""
 
     def __init__(self, name):
         super().__init__()
@@ -89,13 +89,13 @@ class Status(yorm.converters.AttributeDictionary):
 
 @yorm.attr(all=Status)
 class StatusList(yorm.converters.SortedList):
-    """A list of application statuses."""
+    """List of application statuses."""
 
 
 @yorm.attr(applications=StatusList)
 @yorm.attr(counter=yorm.converters.Integer)
 class ProgramStatus(yorm.converters.AttributeDictionary):
-    """A dictionary of current program status."""
+    """Dictionary of current program status."""
 
     def __init__(self):
         super().__init__()

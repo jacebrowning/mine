@@ -12,7 +12,7 @@ log = common.logger(__name__)
 @yorm.attr(windows=yorm.converters.NoneString)
 @yorm.attr(linux=yorm.converters.NoneString)
 class Versions(yorm.converters.AttributeDictionary):
-    """A dictionary of OS-specific application filenames."""
+    """Dictionary of OS-specific application filenames."""
 
     def __init__(self, mac=None, windows=None, linux=None):
         super().__init__()
@@ -21,22 +21,37 @@ class Versions(yorm.converters.AttributeDictionary):
         self.linux = linux
 
 
+@yorm.attr(auto_queue=yorm.converters.Boolean)
+@yorm.attr(single_instance=yorm.converters.Boolean)
+class Properties(yorm.converters.AttributeDictionary):
+    """Dictionary of application management settings."""
+
+
 @yorm.attr(name=yorm.converters.String)
-@yorm.attr(queued=yorm.converters.Boolean)
+@yorm.attr(properties=Properties)
 @yorm.attr(versions=Versions)
 class Application(NameMixin, yorm.converters.AttributeDictionary):
-    """A dictionary of application information."""
+    """Dictionary of application information."""
 
-    def __init__(self, name, queued=False, filename=None):
+    # pylint: disable=E1101
+
+    def __init__(self, name, filename=None):
         super().__init__()
         self.name = name
-        self.queued = queued
         self.versions = Versions(mac=filename, windows=filename, linux=filename)
+
+    @property
+    def auto_queue(self):
+        return self.properties.auto_queue
+
+    @property
+    def no_wait(self):
+        return not self.properties.single_instance
 
 
 @yorm.attr(all=Application)
 class Applications(yorm.converters.SortedList):
-    """A list of monitored applications."""
+    """List of monitored applications."""
 
     def get(self, name):
         """Get the application with the given name."""

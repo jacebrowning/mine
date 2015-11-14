@@ -164,19 +164,21 @@ class MacManager(BaseManager):  # pragma: no cover (manual)
     @log_starting
     def start(self, application):
         name = application.versions.mac
-        if os.path.exists(name):
-            path = name
-        else:
-            path = os.path.join('/Applications', name)
-            if not os.path.exists(path):
-                pattern = os.path.join("/Applications/*", name)
-                log.debug("glob pattern: %s", pattern)
-                paths = glob.glob(pattern)
-                for path in paths:
-                    log.debug("match: %s", path)
-                assert paths, "not found: {}".format(application)
+        path = None
+        for base in (".",
+                     "~/Applications",
+                     "/Applications",
+                     "/Applications/*"):
+            pattern = os.path.expanduser(os.path.join(base, name))
+            log.debug("glob pattern: %s", pattern)
+            paths = glob.glob(pattern)
+            if paths:
                 path = paths[0]
-        self._start_app(path)
+                log.debug("match: %s", path)
+                break
+        else:
+            assert path, "not found: {}".format(application)
+        return self._start_app(path)
 
     @log_stopping
     def stop(self, application):

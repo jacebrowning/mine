@@ -41,8 +41,9 @@ class Data:
         """Queue applications for launch."""
         log.info("queuing applications for launch...")
         for application in config.applications:
-            log.debug("queuing %s on %s...", application, computer)
-            status.queue(application, computer)
+            if application.auto_queue:
+                log.debug("queuing %s on %s...", application, computer)
+                status.queue(application, computer)
 
     @staticmethod
     def launch(config, status, computer, manager):
@@ -54,7 +55,7 @@ class Data:
                 show_queued(application, app_status.next)
                 if app_status.next == computer:
                     latest = status.get_latest(application)
-                    if latest in (computer, None) or not application.queued:
+                    if latest in (computer, None) or application.no_wait:
                         if not manager.is_running(application):
                             manager.start(application)
                         app_status.next = None

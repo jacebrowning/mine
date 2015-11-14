@@ -26,30 +26,30 @@ class Data:
     @staticmethod
     def clean(config, status):
         """Remove undefined applications and computers."""
-        log.info("cleaning up applications and computers...")
+        log.info("Cleaning up applications and computers...")
         for appstatus in status.applications.copy():
             if not config.applications.find(appstatus.application):
                 status.applications.remove(appstatus)
-                log.info("removed application: %s", appstatus)
+                log.info("Removed application: %s", appstatus)
             else:
                 for computerstate in appstatus.computers.copy():
                     if not config.computers.find(computerstate.computer):
                         appstatus.computers.remove(computerstate)
-                        log.info("removed computer: %s", computerstate)
+                        log.info("Removed computer: %s", computerstate)
 
     @staticmethod
     def queue(config, status, computer):
         """Queue applications for launch."""
-        log.info("queuing applications for launch...")
+        log.info("Queuing applications for launch...")
         for application in config.applications:
             if application.auto_queue:
-                log.debug("queuing %s on %s...", application, computer)
+                log.debug("Queuing %s on %s...", application, computer)
                 status.queue(application, computer)
 
     @staticmethod
     def launch(config, status, computer, manager):
         """Launch applications that have been queued."""
-        log.info("launching queued applications...")
+        log.info("Launching queued applications...")
         for app_status in status.applications:
             if app_status.next:
                 application = config.applications.get(app_status.application)
@@ -68,7 +68,7 @@ class Data:
     @staticmethod
     def update(config, status, computer, manager):
         """Update each application's status."""
-        log.info("recording application status...")
+        log.info("Recording application status...")
         for application in config.applications:
             if manager.is_running(application):
                 latest = status.get_latest(application)

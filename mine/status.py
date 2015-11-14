@@ -28,7 +28,7 @@ def log_starting(func):
     @functools.wraps(func)
     def wrapped(self, application, computer):
         """Wrapped method to log that an application is started."""
-        log.debug("marking %s as started on %s...", application, computer)
+        log.debug("Marking %s as started on %s...", application, computer)
         result = func(self, application, computer)
         log.debug("%s marked as started on: %s", application, computer)
         return result
@@ -40,7 +40,7 @@ def log_stopping(func):
     @functools.wraps(func)
     def wrapped(self, application, computer):
         """Wrapped method to log that an application is stopped."""
-        log.debug("marking %s as stopped on %s...", application, computer)
+        log.debug("Marking %s as stopped on %s...", application, computer)
         result = func(self, application, computer)
         log.debug("%s marked as stopped on: %s", application, computer)
         return result

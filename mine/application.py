@@ -57,7 +57,7 @@ class Applications(yorm.converters.SortedList):
 
     def find(self, name):
         """Find the application with the given name, else None."""
-        log.debug("finding application for '%s'...", name)
+        log.debug("Finding application for '%s'...", name)
         for application in self:
             if application == name:
                 return application

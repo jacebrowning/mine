@@ -79,7 +79,7 @@ def main(args=None):
 
     # Run the program
     try:
-        log.debug("running main command...")
+        log.debug("Running main command...")
         success = run(path=args.file, **kwargs)
     except KeyboardInterrupt:
         msg = "command canceled"
@@ -89,9 +89,9 @@ def main(args=None):
             log.debug(msg)
         success = False
     if success:
-        log.debug("command succeeded")
+        log.debug("Command succeeded")
     else:
-        log.debug("command failed")
+        log.debug("Command failed")
         sys.exit(1)
 
 
@@ -123,9 +123,9 @@ def run(path=None, cleanup=True, delay=None,
     config = data.config
     status = data.status
 
-    log.info("identifying current computer...")
+    log.info("Identifying current computer...")
     computer = config.computers.get_current()
-    log.info("current computer: %s", computer)
+    log.info("Current computer: %s", computer)
 
     if edit:
         return manager.launch(path)
@@ -148,7 +148,7 @@ def run(path=None, cleanup=True, delay=None,
         if delay is None:
             break
 
-        log.info("delaying for %s seconds...", delay)
+        log.info("Delaying for %s seconds...", delay)
         time.sleep(delay)
         services.delete_conflicts(root, config_only=True, force=True)
 
@@ -164,14 +164,14 @@ def run(path=None, cleanup=True, delay=None,
 def _restart_daemon(manager):
     cmd = "nohup {} --daemon --verbose >> /tmp/mine.log 2>&1 &".format(CLI)
     if daemon and not manager.is_running(daemon):
-        log.warn("daemon is not running, attempting to restart...")
+        log.warn("Daemon is not running, attempting to restart...")
 
         log.info("$ %s", cmd)
         subprocess.call(cmd, shell=True)
         if manager.is_running(daemon):
             return True
 
-        log.error("manually start daemon: %s", cmd)
+        log.error("Manually start daemon: %s", cmd)
         return False
 
     return True

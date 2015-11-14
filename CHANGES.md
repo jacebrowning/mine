@@ -1,10 +1,11 @@
 # Version History
 
-## 0.3 (unreleased)
+## 0.3 (2015/11/14)
 
 - Added automatic daemon restart using `nohup`.
 - Moved `queued` to setting `properties.single_instance`.
 - Added `properties.auto_queue` to filter active applications.
+
 ## 0.2.1 (2015/09/05)
 
 - Fixed daemon warning to run using `nohup`

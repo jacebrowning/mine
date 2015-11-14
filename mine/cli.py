@@ -5,6 +5,8 @@
 import sys
 import time
 import argparse
+import subprocess
+import logging
 
 from . import CLI, VERSION, DESCRIPTION
 from . import common
@@ -16,7 +18,7 @@ from .manager import get_manager
 import yorm
 
 
-log = common.logger(__name__)
+log = logging.getLogger(__name__)
 daemon = Application(CLI, filename=CLI)
 
 
@@ -77,7 +79,7 @@ def main(args=None):
 
     # Run the program
     try:
-        log.debug("running main command...")
+        log.debug("Running main command...")
         success = run(path=args.file, **kwargs)
     except KeyboardInterrupt:
         msg = "command canceled"
@@ -87,9 +89,9 @@ def main(args=None):
             log.debug(msg)
         success = False
     if success:
-        log.debug("command succeeded")
+        log.debug("Command succeeded")
     else:
-        log.debug("command failed")
+        log.debug("Command failed")
         sys.exit(1)
 
 
@@ -121,16 +123,16 @@ def run(path=None, cleanup=True, delay=None,
     config = data.config
     status = data.status
 
-    log.info("identifying current computer...")
+    log.info("Identifying current computer...")
     computer = config.computers.get_current()
-    log.info("current computer: %s", computer)
+    log.info("Current computer: %s", computer)
 
-    if cleanup:
-        data.clean(config, status)
     if edit:
         return manager.launch(path)
     if delete:
         return services.delete_conflicts(root, force=force)
+    if log.getEffectiveLevel() >= logging.WARNING:
+        print("Updating application state...")
 
     if switch is True:
         switch = computer
@@ -146,13 +148,30 @@ def run(path=None, cleanup=True, delay=None,
         if delay is None:
             break
 
-        log.info("delaying for %s seconds...", delay)
+        log.info("Delaying for %s seconds...", delay)
         time.sleep(delay)
         services.delete_conflicts(root, config_only=True, force=True)
 
+    if cleanup:
+        data.clean(config, status)
+
+    if delay is None:
+        return _restart_daemon(manager)
+
+    return True
+
+
+def _restart_daemon(manager):
+    cmd = "nohup {} --daemon --verbose >> /tmp/mine.log 2>&1 &".format(CLI)
     if daemon and not manager.is_running(daemon):
-        msg = "daemon is not running, start it with: nohup %s --daemon &"
-        log.warning(msg, CLI)
+        log.warn("Daemon is not running, attempting to restart...")
+
+        log.info("$ %s", cmd)
+        subprocess.call(cmd, shell=True)
+        if manager.is_running(daemon):
+            return True
+
+        log.error("Manually start daemon: %s", cmd)
         return False
 
     return True

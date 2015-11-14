@@ -2,7 +2,6 @@
 
 
 class NameMixin:
-
     """Mixin class for objects identified by their name."""
 
     def __str__(self):

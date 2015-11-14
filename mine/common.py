@@ -13,7 +13,6 @@ verbosity = 0
 
 
 class HelpFormatter(argparse.HelpFormatter):
-
     """Command-line help text formatter with wider help text."""
 
     def __init__(self, *args, **kwargs):
@@ -21,7 +20,6 @@ class HelpFormatter(argparse.HelpFormatter):
 
 
 class WarningFormatter(logging.Formatter):
-
     """Logging formatter that displays verbose formatting for WARNING+."""
 
     def __init__(self, default_format, verbose_format, *args, **kwargs):
@@ -79,7 +77,7 @@ def configure_logging(count=0):
     # Warn about excessive verbosity
     global verbosity
     if count > MAX_VERBOSITY:
-        msg = "maximum verbosity level is {}".format(MAX_VERBOSITY)
+        msg = "Maximum verbosity level is {}".format(MAX_VERBOSITY)
         logging.warn(msg)
         verbosity = MAX_VERBOSITY
     else:

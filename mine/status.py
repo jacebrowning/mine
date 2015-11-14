@@ -1,13 +1,14 @@
 """Data structures for application/computer status."""
 
 import functools
-
-from . import common
-from .timestamp import Timestamp
+import logging
 
 import yorm
 
-log = common.logger(__name__)
+from .timestamp import Timestamp
+
+
+log = logging.getLogger(__name__)
 
 
 def log_running(func):
@@ -27,7 +28,7 @@ def log_starting(func):
     @functools.wraps(func)
     def wrapped(self, application, computer):
         """Wrapped method to log that an application is started."""
-        log.debug("marking %s as started on %s...", application, computer)
+        log.debug("Marking %s as started on %s...", application, computer)
         result = func(self, application, computer)
         log.debug("%s marked as started on: %s", application, computer)
         return result
@@ -39,7 +40,7 @@ def log_stopping(func):
     @functools.wraps(func)
     def wrapped(self, application, computer):
         """Wrapped method to log that an application is stopped."""
-        log.debug("marking %s as stopped on %s...", application, computer)
+        log.debug("Marking %s as stopped on %s...", application, computer)
         result = func(self, application, computer)
         log.debug("%s marked as stopped on: %s", application, computer)
         return result
@@ -49,8 +50,7 @@ def log_stopping(func):
 @yorm.attr(computer=yorm.converters.String)
 @yorm.attr(timestamp=Timestamp)
 class State(yorm.converters.AttributeDictionary):
-
-    """A dictionary of computer state."""
+    """Dictionary of computer state."""
 
     def __init__(self, name):
         super().__init__()
@@ -66,16 +66,14 @@ class State(yorm.converters.AttributeDictionary):
 
 @yorm.attr(all=State)
 class StateList(yorm.converters.SortedList):
-
-    """A list of computer states for an application."""
+    """List of computer states for an application."""
 
 
 @yorm.attr(application=yorm.converters.String)
 @yorm.attr(computers=StateList)
 @yorm.attr(next=yorm.converters.NoneString)
 class Status(yorm.converters.AttributeDictionary):
-
-    """A dictionary of computers using an application."""
+    """Dictionary of computers using an application."""
 
     def __init__(self, name):
         super().__init__()
@@ -92,15 +90,13 @@ class Status(yorm.converters.AttributeDictionary):
 
 @yorm.attr(all=Status)
 class StatusList(yorm.converters.SortedList):
-
-    """A list of application statuses."""
+    """List of application statuses."""
 
 
 @yorm.attr(applications=StatusList)
 @yorm.attr(counter=yorm.converters.Integer)
 class ProgramStatus(yorm.converters.AttributeDictionary):
-
-    """A dictionary of current program status."""
+    """Dictionary of current program status."""
 
     def __init__(self):
         super().__init__()

@@ -9,7 +9,7 @@ PYTHON_MAJOR ?= 3
 PYTHON_MINOR ?= 4
 
 # Test settings
-UNIT_TEST_COVERAGE := 81
+UNIT_TEST_COVERAGE := 80
 INTEGRATION_TEST_COVERAGE := 62
 COMBINED_TEST_COVERAGE := 91
 
@@ -172,10 +172,7 @@ pep8: depends-ci
 
 .PHONY: pep257
 pep257: depends-ci
-# D102: docstring missing (checked by PyLint)
-# D202: No blank lines allowed *after* function docstring (personal preference)
-# D203: 1 blank line required before class (deprecated warning)
-	$(PEP257) $(PACKAGE) tests --ignore=D102,D202,D203
+	$(PEP257) $(PACKAGE) tests
 
 .PHONY: pylint
 pylint: depends-ci

@@ -1,13 +1,17 @@
 config:
   applications:
   - name: iphoto
-    queued: false
+    properties:
+      auto_queue: false
+      single_instance: false
     versions:
       linux: null
       mac: iPhoto
       windows: null
   - name: itunes
-    queued: false
+    properties:
+      auto_queue: false
+      single_instance: false
     versions:
       linux: null
       mac: ''

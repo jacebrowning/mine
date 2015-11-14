@@ -112,6 +112,8 @@ def run(path=None, cleanup=True, delay=None,
     :param force: actually delete conflicted files
 
     """
+    print("Updating application state...")
+
     manager = get_manager()
     root = services.find_root()
     path = path or services.find_config_path(root=root)

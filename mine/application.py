@@ -8,9 +8,9 @@ import yorm
 log = common.logger(__name__)
 
 
-@yorm.attr(mac=yorm.converters.NoneString)
-@yorm.attr(windows=yorm.converters.NoneString)
-@yorm.attr(linux=yorm.converters.NoneString)
+@yorm.attr(mac=yorm.converters.NullableString)
+@yorm.attr(windows=yorm.converters.NullableString)
+@yorm.attr(linux=yorm.converters.NullableString)
 class Versions(yorm.converters.AttributeDictionary):
     """Dictionary of OS-specific application filenames."""
 

@@ -9,7 +9,7 @@ PYTHON_MAJOR ?= 3
 PYTHON_MINOR ?= 4
 
 # Test settings
-UNIT_TEST_COVERAGE := 80
+UNIT_TEST_COVERAGE := 79
 INTEGRATION_TEST_COVERAGE := 62
 COMBINED_TEST_COVERAGE := 91
 
@@ -107,7 +107,7 @@ depends: depends-ci depends-dev
 .PHONY: depends-ci
 depends-ci: env Makefile $(DEPENDS_CI_FLAG)
 $(DEPENDS_CI_FLAG): Makefile
-	$(PIP) install --upgrade pep8 pep257 pylint coverage pytest pytest-cov pytest-random pytest-runfailed pytest-capturelog
+	$(PIP) install --upgrade pep8 pep257 pylint coverage pytest pytest-describe pytest-cov pytest-random pytest-runfailed pytest-capturelog
 	@ touch $(DEPENDS_CI_FLAG)  # flag to indicate dependencies are installed
 
 .PHONY: depends-dev

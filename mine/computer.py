@@ -84,6 +84,7 @@ class Computers(yorm.converters.SortedList):
 
         # Else, this is a new computer
         this.name = self.generate_name(this)
+        assert this.name != 'localhost'
         log.debug("New computer: %s", this)
         self.append(this)
         return this

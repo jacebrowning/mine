@@ -1,11 +1,10 @@
-"""Integration tests for the `mine` package."""
-# pylint: disable=W0613,R0201
+# pylint: disable=misplaced-comparison-constant,no-self-use
 
 import os
-import pytest
 import subprocess
 import logging
 
+import pytest
 import yorm
 
 from mine import cli
@@ -23,7 +22,6 @@ log = logging.getLogger(__name__)
 
 @pytest.mark.integration
 class TestFiles:
-
     """Integration tests for creating files."""
 
     def test_data(self):
@@ -172,7 +170,7 @@ class TestProcesses:
         """Determine if the sample application is running."""
         return self._process and self._process.poll() is None
 
-    def teardown_method(self, method):
+    def teardown_method(self, _):
         """Stop the sample application and clean up the file."""
         self._stop_application()
         if os.path.exists(self.path):

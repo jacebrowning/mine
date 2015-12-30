@@ -39,7 +39,7 @@ and some just don't make sense to keep running on all your computers:
 `mine` can be installed with pip:
 
 ```
-$ pip3 install mine
+$ pip install mine
 ```
 
 or directly from the source code:
@@ -47,7 +47,7 @@ or directly from the source code:
 ```
 $ git clone https://github.com/jacebrowning/mine.git
 $ cd mine
-$ python3 setup.py install
+$ python setup.py install
 ```
 
 ## Setup

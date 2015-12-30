@@ -8,14 +8,14 @@ import argparse
 import subprocess
 import logging
 
+import yorm
+
 from . import CLI, VERSION, DESCRIPTION
 from . import common
 from . import services
 from .data import Data
 from .application import Application
 from .manager import get_manager
-
-import yorm
 
 
 log = logging.getLogger(__name__)
@@ -150,6 +150,11 @@ def run(path=None, cleanup=True, delay=None,
 
         log.info("Delaying for %s seconds...", delay)
         time.sleep(delay)
+
+        log.info("waiting for changes...")
+        while not data.modified:
+            time.sleep(1)
+
         services.delete_conflicts(root, config_only=True, force=True)
 
     if cleanup:
@@ -164,7 +169,7 @@ def run(path=None, cleanup=True, delay=None,
 def _restart_daemon(manager):
     cmd = "nohup {} --daemon --verbose >> /tmp/mine.log 2>&1 &".format(CLI)
     if daemon and not manager.is_running(daemon):
-        log.warn("Daemon is not running, attempting to restart...")
+        log.warning("Daemon is not running, attempting to restart...")
 
         log.info("$ %s", cmd)
         subprocess.call(cmd, shell=True)

@@ -1,8 +1,8 @@
-"""Unit tests for the `status` module."""
-# pylint: disable=R0201,W0201,W0613
+# pylint: disable=misplaced-comparison-constant,no-self-use,attribute-defined-outside-init
+
+from unittest.mock import Mock
 
 import pytest
-from unittest.mock import Mock
 
 from mine.status import State, Status, ProgramStatus
 from mine.application import Application
@@ -77,7 +77,7 @@ class TestProgramStatus:
 
     """Unit tests for the program status class."""
 
-    def setup_method(self, method):
+    def setup_method(self, _):
         """Create an empty program status for all tests."""
         self.status = ProgramStatus()
         self.application = Application('my-application')

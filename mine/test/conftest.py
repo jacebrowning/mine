@@ -1,9 +1,9 @@
 """Unit test configuration file."""
-# pylint:disable=E1101
 
 import os
-import pytest
 import platform
+
+import pytest
 import yorm
 
 ENV = 'TEST_INTEGRATION'  # environment variable to enable integration tests

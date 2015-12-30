@@ -1,10 +1,10 @@
-"""Unit tests for the 'cli' module."""
-# pylint: disable=R,C
+# pylint: disable=misplaced-comparison-constant,no-self-use
 
 import os
-import pytest
 from unittest.mock import Mock, patch
 import logging
+
+import pytest
 
 from mine import cli
 from mine import common

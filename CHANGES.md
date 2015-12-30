@@ -1,5 +1,9 @@
 # Version History
 
+## 0.4 (2015/12/30)
+
+- Added file watching to update program state faster.
+
 ## 0.3 (2015/11/14)
 
 - Added automatic daemon restart using `nohup`.
@@ -22,4 +26,3 @@
 ## 0.1.1 (2015/03/19)
 
  - Initial release.
-

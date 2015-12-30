@@ -1,5 +1,4 @@
-"""Unit tests for the `application` module."""
-# pylint: disable=R0201
+# pylint: disable=misplaced-comparison-constant,no-self-use
 
 import pytest
 

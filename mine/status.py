@@ -7,7 +7,6 @@ import yorm
 
 from .timestamp import Timestamp
 
-
 log = logging.getLogger(__name__)
 
 
@@ -71,7 +70,7 @@ class StateList(yorm.converters.SortedList):
 
 @yorm.attr(application=yorm.converters.String)
 @yorm.attr(computers=StateList)
-@yorm.attr(next=yorm.converters.NoneString)
+@yorm.attr(next=yorm.converters.NullableString)
 class Status(yorm.converters.AttributeDictionary):
     """Dictionary of computers using an application."""
 

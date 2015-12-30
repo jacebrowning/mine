@@ -19,9 +19,16 @@ class Data:
     def __init__(self):
         self.config = ProgramConfig()
         self.status = ProgramStatus()
+        self._last_counter = self.status.counter
 
     def __repr__(self):
         return "settings"
+
+    @property
+    def modified(self):
+        changed = self.status.counter != self._last_counter
+        self._last_counter = self.status.counter
+        return changed
 
     @staticmethod
     def clean(config, status):

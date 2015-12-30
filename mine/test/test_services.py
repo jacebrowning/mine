@@ -1,10 +1,9 @@
-"""Unit tests for the `services` module."""
-# pylint: disable=R0201,C0111
-
-import pytest
-from unittest.mock import patch, Mock
+# pylint: disable=misplaced-comparison-constant,no-self-use
 
 import os
+from unittest.mock import patch, Mock
+
+import pytest
 
 from mine import services
 

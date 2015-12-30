@@ -1,13 +1,13 @@
 """Data structures for application/computer status."""
 
 import functools
+import logging
 
 import yorm
 
-from . import common
 from .timestamp import Timestamp
 
-log = common.logger(__name__)
+log = logging.getLogger(__name__)
 
 
 def log_running(func):
@@ -27,7 +27,7 @@ def log_starting(func):
     @functools.wraps(func)
     def wrapped(self, application, computer):
         """Wrapped method to log that an application is started."""
-        log.debug("marking %s as started on %s...", application, computer)
+        log.debug("Marking %s as started on %s...", application, computer)
         result = func(self, application, computer)
         log.debug("%s marked as started on: %s", application, computer)
         return result
@@ -39,7 +39,7 @@ def log_stopping(func):
     @functools.wraps(func)
     def wrapped(self, application, computer):
         """Wrapped method to log that an application is stopped."""
-        log.debug("marking %s as stopped on %s...", application, computer)
+        log.debug("Marking %s as stopped on %s...", application, computer)
         result = func(self, application, computer)
         log.debug("%s marked as stopped on: %s", application, computer)
         return result

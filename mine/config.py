@@ -1,12 +1,14 @@
 """Data structures for all settings."""
 
+import logging
+
 import yorm
 
-from . import common
 from .application import Applications
 from .computer import Computers
 
-log = common.logger(__name__)
+
+log = logging.getLogger(__name__)
 
 
 @yorm.attr(applications=Applications)

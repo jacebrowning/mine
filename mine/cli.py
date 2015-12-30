@@ -6,6 +6,7 @@ import sys
 import time
 import argparse
 import subprocess
+import logging
 
 import yorm
 
@@ -17,7 +18,7 @@ from .application import Application
 from .manager import get_manager
 
 
-log = common.logger(__name__)
+log = logging.getLogger(__name__)
 daemon = Application(CLI, filename=CLI)
 
 
@@ -78,7 +79,7 @@ def main(args=None):
 
     # Run the program
     try:
-        log.debug("running main command...")
+        log.debug("Running main command...")
         success = run(path=args.file, **kwargs)
     except KeyboardInterrupt:
         msg = "command canceled"
@@ -88,9 +89,9 @@ def main(args=None):
             log.debug(msg)
         success = False
     if success:
-        log.debug("command succeeded")
+        log.debug("Command succeeded")
     else:
-        log.debug("command failed")
+        log.debug("Command failed")
         sys.exit(1)
 
 
@@ -112,8 +113,6 @@ def run(path=None, cleanup=True, delay=None,
     :param force: actually delete conflicted files
 
     """
-    print("Updating application state...")
-
     manager = get_manager()
     root = services.find_root()
     path = path or services.find_config_path(root=root)
@@ -124,16 +123,16 @@ def run(path=None, cleanup=True, delay=None,
     config = data.config
     status = data.status
 
-    log.info("identifying current computer...")
+    log.info("Identifying current computer...")
     computer = config.computers.get_current()
-    log.info("current computer: %s", computer)
+    log.info("Current computer: %s", computer)
 
-    if cleanup:
-        data.clean(config, status)
     if edit:
         return manager.launch(path)
     if delete:
         return services.delete_conflicts(root, force=force)
+    if log.getEffectiveLevel() >= logging.WARNING:
+        print("Updating application state...")
 
     if switch is True:
         switch = computer
@@ -149,7 +148,7 @@ def run(path=None, cleanup=True, delay=None,
         if delay is None:
             break
 
-        log.info("delaying for %s seconds...", delay)
+        log.info("Delaying for %s seconds...", delay)
         time.sleep(delay)
 
         log.info("waiting for changes...")
@@ -157,6 +156,9 @@ def run(path=None, cleanup=True, delay=None,
             time.sleep(1)
 
         services.delete_conflicts(root, config_only=True, force=True)
+
+    if cleanup:
+        data.clean(config, status)
 
     if delay is None:
         return _restart_daemon(manager)
@@ -167,14 +169,14 @@ def run(path=None, cleanup=True, delay=None,
 def _restart_daemon(manager):
     cmd = "nohup {} --daemon --verbose >> /tmp/mine.log 2>&1 &".format(CLI)
     if daemon and not manager.is_running(daemon):
-        log.warning("daemon is not running, attempting to restart...")
+        log.warning("Daemon is not running, attempting to restart...")
 
         log.info("$ %s", cmd)
         subprocess.call(cmd, shell=True)
         if manager.is_running(daemon):
             return True
 
-        log.error("manually start daemon: %s", cmd)
+        log.error("Manually start daemon: %s", cmd)
         return False
 
     return True

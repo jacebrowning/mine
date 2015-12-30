@@ -226,13 +226,10 @@ def get_manager(name=None):
     """Return an application manager for the current operating system."""
     log.info("detecting the current system...")
     name = name or platform.system()
-    if name == WindowsManager.NAME:
-        manager = WindowsManager()
-    elif name == MacManager.NAME:
-        manager = MacManager()
-    else:
-        assert name == LinuxManager.NAME
-        manager = LinuxManager()
-
+    manager = {
+        WindowsManager.NAME: WindowsManager,
+        MacManager.NAME: MacManager,
+        LinuxManager.NAME: LinuxManager,
+    }[name]()
     log.info("current system: %s", manager)
     return manager

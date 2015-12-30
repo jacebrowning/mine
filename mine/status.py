@@ -2,10 +2,10 @@
 
 import functools
 
+import yorm
+
 from . import common
 from .timestamp import Timestamp
-
-import yorm
 
 log = common.logger(__name__)
 

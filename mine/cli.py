@@ -7,14 +7,14 @@ import time
 import argparse
 import subprocess
 
+import yorm
+
 from . import CLI, VERSION, DESCRIPTION
 from . import common
 from . import services
 from .data import Data
 from .application import Application
 from .manager import get_manager
-
-import yorm
 
 
 log = common.logger(__name__)
@@ -162,7 +162,7 @@ def run(path=None, cleanup=True, delay=None,
 def _restart_daemon(manager):
     cmd = "nohup {} --daemon --verbose >> /tmp/mine.log 2>&1 &".format(CLI)
     if daemon and not manager.is_running(daemon):
-        log.warn("daemon is not running, attempting to restart...")
+        log.warning("daemon is not running, attempting to restart...")
 
         log.info("$ %s", cmd)
         subprocess.call(cmd, shell=True)

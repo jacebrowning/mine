@@ -1,9 +1,9 @@
 """Data structures for application information."""
 
+import yorm
+
 from . import common
 from .base import NameMixin
-
-import yorm
 
 log = common.logger(__name__)
 

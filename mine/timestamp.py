@@ -1,8 +1,8 @@
 """Data structures for timestamp information."""
 
-from . import common
-
 import yorm
+
+from . import common
 
 log = common.logger(__name__)
 
@@ -24,7 +24,7 @@ class Timestamp(yorm.converters.AttributeDictionary):
         return self.latest == other.latest
 
     def __ne__(self, other):
-        return not self == other
+        return not self.__eq__(other)
 
     def __lt__(self, other):
         return self.latest < other.latest

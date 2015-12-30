@@ -11,5 +11,5 @@ DESCRIPTION = "Shares application state across computers using Dropbox."
 
 PYTHON_VERSION = 3, 3
 
-if not sys.version_info >= PYTHON_VERSION:  # pragma: no cover (manual test)
+if sys.version_info < PYTHON_VERSION:  # pragma: no cover (manual test)
     exit("Python {}.{}+ is required.".format(*PYTHON_VERSION))

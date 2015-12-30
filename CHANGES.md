@@ -1,11 +1,14 @@
 # Version History
 
-## 0.3 (unreleased)
+## 0.4 (2015/12/30)
+
+- Added file watching to update program state faster.
+
+## 0.3 (2015/12/14)
 
 - Added automatic daemon restart using `nohup`.
 - Moved `queued` to setting `properties.single_instance`.
 - Added `properties.auto_queue` to filter active applications.
-- Added file watching to update program state faster.
 
 ## 0.2 (2015/08/27)
 

@@ -151,6 +151,11 @@ def run(path=None, cleanup=True, delay=None,
 
         log.info("delaying for %s seconds...", delay)
         time.sleep(delay)
+
+        log.info("waiting for changes...")
+        while not data.modified:
+            time.sleep(1)
+
         services.delete_conflicts(root, config_only=True, force=True)
 
     if delay is None:

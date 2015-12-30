@@ -7,12 +7,12 @@ import glob
 import platform
 import functools
 import subprocess
+import logging
 
 import psutil
 
-from . import common
 
-log = common.logger(__name__)
+log = logging.getLogger(__name__)
 
 # TODO: delete this after implementing `BaseManager`
 # https://github.com/jacebrowning/mine/issues/8
@@ -26,14 +26,14 @@ def log_running(func):  # pragma: no cover (manual)
     @functools.wraps(func)
     def wrapped(self, application):
         """Wrapped method to log if an application is running."""
-        log.debug("determining if %s is running...", application)
+        log.debug("Determining if %s is running...", application)
         running = func(self, application)
         if running is None:
-            status = "untracked"
+            status = "Untracked"
         elif running:
-            status = "running"
+            status = "Running"
         else:
-            status = "not running"
+            status = "Not running"
         log.info("%s: %s", status, application)
         return running
     return wrapped
@@ -45,9 +45,9 @@ def log_starting(func):  # pragma: no cover (manual)
     @functools.wraps(func)
     def wrapped(self, application):
         """Wrapped method to log that an application is being started."""
-        log.info("starting %s...", application)
+        log.info("Starting %s...", application)
         result = func(self, application)
-        log.info("running: %s", application)
+        log.info("Running: %s", application)
         return result
     return wrapped
 
@@ -58,9 +58,9 @@ def log_stopping(func):  # pragma: no cover (manual)
     @functools.wraps(func)
     def wrapped(self, application):
         """Wrapped method to log that an application is being stopped."""
-        log.info("stopping %s...", application)
+        log.info("Stopping %s...", application)
         result = func(self, application)
-        log.info("not running: %s", application)
+        log.info("Not running: %s", application)
         return result
     return wrapped
 
@@ -96,7 +96,7 @@ class BaseManager(metaclass=abc.ABCMeta):  # pragma: no cover (abstract)
     @staticmethod
     def _get_process(name):
         """Get a process whose executable path contains an app name."""
-        log.debug("searching for exe path containing '%s'...", name)
+        log.debug("Searching for exe path containing '%s'...", name)
 
         for process in psutil.process_iter():
             try:
@@ -107,11 +107,11 @@ class BaseManager(metaclass=abc.ABCMeta):  # pragma: no cover (abstract)
 
                 if name.lower() in parts:
                     if process.pid == os.getpid():
-                        log.debug("skipped current process: %s", command)
+                        log.debug("Skipped current process: %s", command)
                     elif process.status() == psutil.STATUS_ZOMBIE:
-                        log.debug("skipped zombie process: %s", command)
+                        log.debug("Skipped zombie process: %s", command)
                     else:
-                        log.debug("found matching process: %s", command)
+                        log.debug("Found matching process: %s", command)
                         return process
 
             except psutil.AccessDenied:
@@ -143,7 +143,7 @@ class LinuxManager(BaseManager):  # pragma: no cover (manual)
             process.terminate()
 
     def launch(self, path):
-        log.info("opening %s...", path)
+        log.info("Opening %s...", path)
         return subprocess.call(['xdg-open', path]) == 0
 
 
@@ -170,14 +170,14 @@ class MacManager(BaseManager):  # pragma: no cover (manual)
                      "/Applications",
                      "/Applications/*"):
             pattern = os.path.expanduser(os.path.join(base, name))
-            log.debug("glob pattern: %s", pattern)
+            log.debug("Glob pattern: %s", pattern)
             paths = glob.glob(pattern)
             if paths:
                 path = paths[0]
-                log.debug("match: %s", path)
+                log.debug("Match: %s", path)
                 break
         else:
-            assert path, "not found: {}".format(application)
+            assert path, "Not found: {}".format(application)
         return self._start_app(path)
 
     @log_stopping
@@ -224,12 +224,12 @@ class WindowsManager(BaseManager):  # pragma: no cover (manual)
 
 def get_manager(name=None):
     """Return an application manager for the current operating system."""
-    log.info("detecting the current system...")
+    log.info("Detecting the current system...")
     name = name or platform.system()
     manager = {
         WindowsManager.NAME: WindowsManager,
         MacManager.NAME: MacManager,
         LinuxManager.NAME: LinuxManager,
     }[name]()
-    log.info("current system: %s", manager)
+    log.info("Current system: %s", manager)
     return manager

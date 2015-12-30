@@ -2,6 +2,7 @@
 
 import logging
 
+
 # Logging settings
 DEFAULT_LOGGING_FORMAT = "%(message)s"
 LEVELED_LOGGING_FORMAT = "%(levelname)s: %(message)s"

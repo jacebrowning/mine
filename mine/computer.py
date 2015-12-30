@@ -2,14 +2,14 @@
 
 import uuid
 import socket
-
+import logging
 
 import yorm
 
-from . import common
 from .base import NameMixin
 
-log = common.logger(__name__)
+
+log = logging.getLogger(__name__)
 
 
 @yorm.attr(name=yorm.converters.String)
@@ -54,14 +54,14 @@ class Computers(yorm.converters.SortedList):
 
     def find(self, name):
         """Find the computer with the given name, else None."""
-        log.debug("finding computer for '%s'...", name)
+        log.debug("Finding computer for '%s'...", name)
         for computer in self:
             if computer == name:
                 return computer
 
     def match(self, partial):
         """Find a computer with a similar name."""
-        log.debug("finding computer similar to '%s'...", partial)
+        log.debug("Finding computer similar to '%s'...", partial)
         for computer in self:
             if partial.lower() in computer.name.lower():
                 return computer
@@ -85,7 +85,7 @@ class Computers(yorm.converters.SortedList):
         # Else, this is a new computer
         this.name = self.generate_name(this)
         assert this.name != 'localhost'
-        log.debug("new computer: %s", this)
+        log.debug("New computer: %s", this)
         self.append(this)
         return this
 

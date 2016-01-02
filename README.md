@@ -86,11 +86,6 @@ Include the applications you would like `mine` to manage. Computers are added au
 
 The `versions` dictionary identifies the name of the executable on each platform. The `properties.auto_queue` setting indicates `mine` should attempt to launch the application automatically when switching computers. The `properties.single_instance` setting indicates the application must be closed on other computers before another instance can start.
 
-For remote application management, `mine` needs to be started automatically on each of your computers. Cron is good for this:
-
-1. Find the full path to `mine` with `$ which mine`
-2. Add a `crontab` schedule with `$ crontab -e`: `@reboot /path/to/mine --daemon --verbose >> /tmp/mine.log 2>&1 &`
-
 # Basic Usage
 
 To synchronize the current computer's state:

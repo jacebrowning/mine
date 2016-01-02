@@ -26,7 +26,7 @@ log = logging.getLogger(__name__)
 
 def find_root(top=None):
     """Get the root of the shared directory."""
-    top = top or _default_top()
+    top = top or os.path.expanduser('~')
 
     log.debug("Looking for sharing service in '%s'...", top)
     for directory in os.listdir(top):
@@ -62,19 +62,6 @@ def find_config_path(top=None, root=None):
             return path
 
     raise EnvironmentError("No '{}' file found".format(CONFIG))
-
-
-def _default_top():
-    """Get the default search path."""
-    username = getpass.getuser()
-    log.debug("Looking for home directory...")
-    for root in ROOTS:
-        dirpath = os.path.join(root, username)
-        if os.path.isdir(dirpath):  # pragma: no cover - manual test
-            log.debug("Found home directory: %s", dirpath)
-            return dirpath
-
-    raise EnvironmentError("No home directory found for '{}'".format(username))
 
 
 def delete_conflicts(root=None, config_only=False, force=False):

@@ -45,7 +45,7 @@ def find_root(top=None):
 def find_config_path(top=None, root=None):
     """Get the path to the settings file."""
     log.info("Looking for settings file...")
-    top = top or _default_top()
+    top = top or os.path.expanduser('~')
     root = root or find_root(top=top)
 
     log.debug("Looking for '%s' in '%s'...", CONFIG, root)

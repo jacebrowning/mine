@@ -54,12 +54,6 @@ class TestFindConfigPath:
         with pytest.raises(OSError):
             services.find_config_path(tmpdir.strpath)
 
-    @patch('os.path.isdir', Mock(return_value=False))
-    def test_find_no_home(self):
-        """Verify an error occurs when no home directory is found."""
-        with pytest.raises(EnvironmentError):
-            services.find_config_path()
-
     def test_find_no_share(self):
         """Verify an error occurs when no service directory is found."""
         with pytest.raises(EnvironmentError):

@@ -12,10 +12,10 @@ from .base import NameMixin
 log = logging.getLogger(__name__)
 
 
-@yorm.attr(name=yorm.converters.String)
-@yorm.attr(hostname=yorm.converters.String)
-@yorm.attr(address=yorm.converters.String)
-class Computer(NameMixin, yorm.converters.AttributeDictionary):
+@yorm.attr(name=yorm.types.String)
+@yorm.attr(hostname=yorm.types.String)
+@yorm.attr(address=yorm.types.String)
+class Computer(NameMixin, yorm.types.AttributeDictionary):
     """A dictionary of identifying computer information."""
 
     def __init__(self, name, hostname=None, address=None):
@@ -38,7 +38,7 @@ class Computer(NameMixin, yorm.converters.AttributeDictionary):
 
 
 @yorm.attr(all=Computer)
-class Computers(yorm.converters.SortedList):
+class Computers(yorm.types.SortedList):
     """A list of computers."""
 
     @property

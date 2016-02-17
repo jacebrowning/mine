@@ -8,9 +8,9 @@ import yorm
 log = logging.getLogger(__name__)
 
 
-@yorm.attr(started=yorm.converters.Integer)
-@yorm.attr(stopped=yorm.converters.Integer)
-class Timestamp(yorm.converters.AttributeDictionary):
+@yorm.attr(started=yorm.types.Integer)
+@yorm.attr(stopped=yorm.types.Integer)
+class Timestamp(yorm.types.AttributeDictionary):
     """Dictionary of last start and stop times."""
 
     def __init__(self, started=0, stopped=0):

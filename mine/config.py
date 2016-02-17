@@ -13,7 +13,7 @@ log = logging.getLogger(__name__)
 
 @yorm.attr(applications=Applications)
 @yorm.attr(computers=Computers)
-class ProgramConfig(yorm.converters.AttributeDictionary):
+class ProgramConfig(yorm.types.AttributeDictionary):
     """Dictionary of program configuration settings."""
 
     def __init__(self):

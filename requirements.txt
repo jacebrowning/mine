@@ -1,2 +1,2 @@
-YORM == 0.6.dev4
+YORM == 0.6.dev7
 psutil ~= 2.1

@@ -10,23 +10,23 @@ from .base import NameMixin
 log = logging.getLogger(__name__)
 
 
-@yorm.attr(mac=yorm.converters.NullableString)
-@yorm.attr(windows=yorm.converters.NullableString)
-@yorm.attr(linux=yorm.converters.NullableString)
-class Versions(yorm.converters.AttributeDictionary):
+@yorm.attr(mac=yorm.types.NullableString)
+@yorm.attr(windows=yorm.types.NullableString)
+@yorm.attr(linux=yorm.types.NullableString)
+class Versions(yorm.types.AttributeDictionary):
     """Dictionary of OS-specific application filenames."""
 
 
-@yorm.attr(auto_queue=yorm.converters.Boolean)
-@yorm.attr(single_instance=yorm.converters.Boolean)
-class Properties(yorm.converters.AttributeDictionary):
+@yorm.attr(auto_queue=yorm.types.Boolean)
+@yorm.attr(single_instance=yorm.types.Boolean)
+class Properties(yorm.types.AttributeDictionary):
     """Dictionary of application management settings."""
 
 
-@yorm.attr(name=yorm.converters.String)
+@yorm.attr(name=yorm.types.String)
 @yorm.attr(properties=Properties)
 @yorm.attr(versions=Versions)
-class Application(NameMixin, yorm.converters.AttributeDictionary):
+class Application(NameMixin, yorm.types.AttributeDictionary):
     """Dictionary of application information."""
 
     # pylint: disable=E1101
@@ -46,7 +46,7 @@ class Application(NameMixin, yorm.converters.AttributeDictionary):
 
 
 @yorm.attr(all=Application)
-class Applications(yorm.converters.SortedList):
+class Applications(yorm.types.SortedList):
     """List of monitored applications."""
 
     def get(self, name):

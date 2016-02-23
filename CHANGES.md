@@ -1,5 +1,9 @@
 # Version History
 
+## 0.4.1 (2016/02/23)
+
+- Updated to YORM v0.6.
+
 ## 0.4 (2015/12/30)
 
 - Added file watching to update program state faster.

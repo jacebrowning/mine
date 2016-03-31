@@ -11,8 +11,8 @@ from .computer import Computers
 log = logging.getLogger(__name__)
 
 
-@yorm.attr(applications=Applications)
 @yorm.attr(computers=Computers)
+@yorm.attr(applications=Applications)
 class ProgramConfig(yorm.types.AttributeDictionary):
     """Dictionary of program configuration settings."""
 

@@ -1,5 +1,9 @@
 # Version History
 
+## 0.4.2 (2016/03/30)
+
+- Updated to YORM v0.7.2.
+
 ## 0.4.1 (2016/02/23)
 
 - Updated to YORM v0.6.

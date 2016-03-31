@@ -8,7 +8,7 @@
 [![PyPI Version](http://img.shields.io/pypi/v/mine.svg)](https://pypi.python.org/pypi/mine)
 [![PyPI Downloads](http://img.shields.io/pypi/dm/mine.svg)](https://pypi.python.org/pypi/mine)
 
-This is a program that lets you synchronize application data using Dropbox.
+This program lets you synchronize application data using Dropbox.
 
 It automatically starts and stops programs that would otherwise fight over data in a shared folder and ensures only one instance is running.  Many applications work fine when their data is stored in Dropbox, but some programs overwrite databases:
 
@@ -56,30 +56,30 @@ Create a `mine.yml` in your Dropbox:
 
 ```
 config:
+  computers:
+  - name: My iMac
+    hostname: My-iMac.local
+    address: 00:11:22:33:44:55
+  - name: My MacBook Air
+    hostname: My-MacBook-Air.local
+    address: AA:BB:CC:DD:EE:FF
   applications:
   - name: iTunes
     properties:
       auto_queue: false
       single_instance: true
     versions:
-      linux: null
       mac: iTunes.app
       windows: iTunes.exe
+      linux: null
   - name: Slack
     properties:
       auto_queue: true
       single_instance: false
     versions:
-      linux: null
       mac: Slack.app
       windows: null
-  computers:
-  - address: 00:11:22:33:44:55
-    hostname: My-iMac.local
-    name: My iMac
-  - address: AA:BB:CC:DD:EE:FF
-    hostname: My-MacBook-Air.local
-    name: My MacBook Air
+      linux: null
 ```
 
 Include the applications you would like `mine` to manage. Computers are added automatically when `mine` is run.

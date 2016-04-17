@@ -7,7 +7,7 @@ __version__ = '0.4.2'
 
 CLI = 'mine'
 VERSION = "{0} v{1}".format(__project__, __version__)
-DESCRIPTION = "Shares application state across computers using Dropbox."
+DESCRIPTION = "Share application state across computers using Dropbox."
 
 PYTHON_VERSION = 3, 3
 

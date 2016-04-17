@@ -8,7 +8,6 @@ from . import settings
 
 MAX_VERBOSITY = 4
 
-logger = logging.getLogger
 verbosity = 0
 
 

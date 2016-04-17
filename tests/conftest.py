@@ -1,4 +1,4 @@
-"""Integration test configuration file."""
+"""Integration tests configuration file."""
 
 import os
 

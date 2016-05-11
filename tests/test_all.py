@@ -142,7 +142,7 @@ class TestProcesses:
         """Set up initial data file for tests."""
         self.data = Data()
         self.data.config.applications.append(self.application)
-        self.computer = self.data.config.computers.get_current()
+        self.computer = self.data.config.computers.get_current()  # pylint: disable=no-member
         yorm.sync(self.data, self.path)
 
     def _fetch_data(self):

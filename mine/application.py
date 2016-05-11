@@ -31,10 +31,13 @@ class Application(NameMixin, yorm.types.AttributeDictionary):
 
     # pylint: disable=E1101
 
-    def __init__(self, name, filename=None):
+    def __init__(self, name, properties=None, filename=None, versions=None):
         super().__init__()
         self.name = name
-        self.versions = Versions(mac=filename, windows=filename, linux=filename)
+        self.properties = properties or Properties()
+        self.versions = versions or Versions(mac=filename,
+                                             windows=filename,
+                                             linux=filename)
 
     @property
     def auto_queue(self):

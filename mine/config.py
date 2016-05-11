@@ -16,7 +16,7 @@ log = logging.getLogger(__name__)
 class ProgramConfig(yorm.types.AttributeDictionary):
     """Dictionary of program configuration settings."""
 
-    def __init__(self):
+    def __init__(self, applications=None, computers=None):
         super().__init__()
-        self.applications = Applications()
-        self.computers = Computers()
+        self.applications = applications
+        self.computers = computers

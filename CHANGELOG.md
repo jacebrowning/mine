@@ -1,6 +1,6 @@
 # Version History
 
-# 0.5 (unreleased)
+# 0.5 (2016/05/16)
 
 - Added periodic checking to the daemon (regardless of file changes).
 

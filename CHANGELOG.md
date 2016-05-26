@@ -2,7 +2,7 @@
 
 # 0.5 (unreleased)
 
-- TBD
+- Added periodic checking to the daemon (regardless of file changes).
 
 ## 0.4.3 (2016/05/11)
 

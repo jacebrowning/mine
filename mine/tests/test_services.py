@@ -7,7 +7,7 @@ import pytest
 
 from mine import services
 
-from mine.test.conftest import FILES
+from mine.tests.conftest import FILES
 
 
 class TestFindRoot:

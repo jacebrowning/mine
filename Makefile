@@ -1,28 +1,30 @@
 # Project settings
 PROJECT := mine
 PACKAGE := mine
+REPOSITORY := jacebrowning/mine
 SOURCES := Makefile setup.py $(shell find $(PACKAGE) -name '*.py')
-EGG_INFO := $(subst -,_,$(PROJECT)).egg-info
 
 # Python settings
 ifndef TRAVIS
+ifndef APPVEYOR
 	PYTHON_MAJOR ?= 3
 	PYTHON_MINOR ?= 5
+endif
 endif
 
 # System paths
 PLATFORM := $(shell python -c 'import sys; print(sys.platform)')
 ifneq ($(findstring win32, $(PLATFORM)), )
-	WINDOWS := 1
+	WINDOWS := true
 	SYS_PYTHON_DIR := C:\\Python$(PYTHON_MAJOR)$(PYTHON_MINOR)
 	SYS_PYTHON := $(SYS_PYTHON_DIR)\\python.exe
 	# https://bugs.launchpad.net/virtualenv/+bug/449537
 	export TCL_LIBRARY=$(SYS_PYTHON_DIR)\\tcl\\tcl8.5
 else
 	ifneq ($(findstring darwin, $(PLATFORM)), )
-		MAC := 1
+		MAC := true
 	else
-		LINUX := 1
+		LINUX := true
 	endif
 	SYS_PYTHON := python$(PYTHON_MAJOR)
 	ifdef PYTHON_MINOR
@@ -66,7 +68,7 @@ PYTEST := $(BIN_)py.test
 COVERAGE := $(BIN_)coverage
 COVERAGE_SPACE := $(BIN_)coverage.space
 SNIFFER := $(BIN_)sniffer
-HONCHO := $(ACTIVATE) && honcho
+HONCHO := PYTHONPATH=$(PWD) $(ACTIVATE) && $(BIN_)honcho
 
 # Flags for PHONY targets
 INSTALLED_FLAG := $(ENV)/.installed
@@ -81,15 +83,11 @@ ALL_FLAG := $(ENV)/.all
 .PHONY: all
 all: depends doc $(ALL_FLAG)
 $(ALL_FLAG): $(SOURCES)
-	$(MAKE) check
-	touch $(ALL_FLAG)  # flag to indicate all setup steps were successful
+	make check
+	@ touch $@  # flag to indicate all setup steps were successful
 
 .PHONY: ci
-ifdef TRAVIS
-ci: check test tests
-else
-ci: doc check test tests
-endif
+ci: check test
 
 .PHONY: watch
 watch: depends .clean-test
@@ -102,11 +100,12 @@ watch: depends .clean-test
 env: $(PIP) $(INSTALLED_FLAG)
 $(INSTALLED_FLAG): Makefile setup.py requirements.txt
 	VIRTUAL_ENV=$(ENV) $(PYTHON) setup.py develop
-	@ touch $(INSTALLED_FLAG)  # flag to indicate package is installed
+	@ touch $@  # flag to indicate package is installed
 
 $(PIP):
 	$(SYS_PYTHON) -m venv --clear $(ENV)
-	$(PIP) install --upgrade pip setuptools
+	$(PYTHON) -m pip install --upgrade pip setuptools
+
 
 # Tools Installation ###########################################################
 
@@ -117,18 +116,18 @@ depends: depends-ci depends-doc depends-dev
 depends-ci: env Makefile $(DEPENDS_CI_FLAG)
 $(DEPENDS_CI_FLAG): Makefile
 	$(PIP) install --upgrade pep8 pep257 pylint coverage coverage.space pytest pytest-describe pytest-expecter pytest-cov pytest-random
-	@ touch $(DEPENDS_CI_FLAG)  # flag to indicate dependencies are installed
+	@ touch $@  # flag to indicate dependencies are installed
 
 .PHONY: depends-doc
 depends-doc: env Makefile $(DEPENDS_DOC_FLAG)
 $(DEPENDS_DOC_FLAG): Makefile
 	$(PIP) install --upgrade pylint docutils readme pdoc mkdocs pygments
-	@ touch $(DEPENDS_DOC_FLAG)  # flag to indicate dependencies are installed
+	@ touch $@  # flag to indicate dependencies are installed
 
 .PHONY: depends-dev
 depends-dev: env Makefile $(DEPENDS_DEV_FLAG)
 $(DEPENDS_DEV_FLAG): Makefile
-	$(PIP) install --upgrade pip pep8radius wheel sniffer
+	$(PIP) install --upgrade pip pep8radius wheel sniffer honcho
 ifdef WINDOWS
 	$(PIP) install --upgrade pywin32
 else ifdef MAC
@@ -136,7 +135,7 @@ else ifdef MAC
 else ifdef LINUX
 	$(PIP) install --upgrade pyinotify
 endif
-	@ touch $(DEPENDS_DEV_FLAG)  # flag to indicate dependencies are installed
+	@ touch $@  # flag to indicate dependencies are installed
 
 # Documentation ################################################################
 
@@ -166,9 +165,9 @@ README-pypi.html: README.rst
 
 .PHONY: verify-readme
 verify-readme: $(DOCS_FLAG)
-$(DOCS_FLAG): README.rst CHANGES.rst
+$(DOCS_FLAG): README.rst CHANGELOG.rst
 	$(PYTHON) setup.py check --restructuredtext --strict --metadata
-	@ touch $(DOCS_FLAG)  # flag to indicate README has been checked
+	@ touch $@  # flag to indicate README has been checked
 
 .PHONY: uml
 uml: depends-doc docs/*.png
@@ -221,14 +220,18 @@ PYTEST_OPTS_FAILFAST := $(PYTEST_OPTS) --last-failed --exitfirst
 
 FAILURES := .cache/v/cache/lastfailed
 
-.PHONY: test test-unit
-test: test-unit
+.PHONY: test
+test: test-all
+
+.PHONY: test-unit
 test-unit: depends-ci
 	@- mv $(FAILURES) $(FAILURES).bak
 	$(PYTEST) $(PYTEST_OPTS) $(PACKAGE)
 	@- mv $(FAILURES).bak $(FAILURES)
 ifndef TRAVIS
-	$(COVERAGE_SPACE) jacebrowning/mine unit
+ifndef APPVEYOR
+	$(COVERAGE_SPACE) $(REPOSITORY) unit
+endif
 endif
 
 .PHONY: test-int
@@ -236,16 +239,19 @@ test-int: depends-ci
 	@ if test -e $(FAILURES); then $(PYTEST) $(PYTEST_OPTS_FAILFAST) tests; fi
 	$(PYTEST) $(PYTEST_OPTS) tests
 ifndef TRAVIS
-	$(COVERAGE_SPACE) jacebrowning/mine integration
+ifndef APPVEYOR
+	$(COVERAGE_SPACE) $(REPOSITORY) integration
+endif
 endif
 
-.PHONY: tests test-all
-tests: test-all
+.PHONY: test-all
 test-all: depends-ci
 	@ if test -e $(FAILURES); then $(PYTEST) $(PYTEST_OPTS_FAILFAST) $(PACKAGE) tests; fi
 	$(PYTEST) $(PYTEST_OPTS) $(PACKAGE) tests
 ifndef TRAVIS
-	$(COVERAGE_SPACE) jacebrowning/mine overall
+ifndef APPVEYOR
+	$(COVERAGE_SPACE) $(REPOSITORY) overall
+endif
 endif
 
 .PHONY: read-coverage

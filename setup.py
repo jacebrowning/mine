@@ -8,11 +8,11 @@ from mine import __project__, __version__, CLI, DESCRIPTION
 
 try:
     README = open("README.rst").read()
-    CHANGES = open("CHANGES.rst").read()
+    CHANGELOG = open("CHANGELOG.rst").read()
 except IOError:
-    DESCRIPTION = "<placeholder>"
+    LONG_DESCRIPTION = "Coming soon..."
 else:
-    DESCRIPTION = README + '\n' + CHANGES
+    LONG_DESCRIPTION = README + '\n' + CHANGELOG
 
 setuptools.setup(
     name=__project__,
@@ -27,7 +27,7 @@ setuptools.setup(
 
     entry_points={'console_scripts': [CLI + ' = mine.cli:main']},
 
-    long_description=(DESCRIPTION),
+    long_description=LONG_DESCRIPTION,
     license='MIT',
     classifiers=[
         'Development Status :: 4 - Beta',

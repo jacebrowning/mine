@@ -18,5 +18,5 @@ class ProgramConfig(yorm.types.AttributeDictionary):
 
     def __init__(self, applications=None, computers=None):
         super().__init__()
-        self.applications = applications
-        self.computers = computers
+        self.applications = applications or Applications()
+        self.computers = computers or Computers()

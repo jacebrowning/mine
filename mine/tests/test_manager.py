@@ -64,7 +64,6 @@ class TestMacManager:
 
     @pytest.mark.mac_only
     @pytest.mark.not_ide
-    @pytest.mark.integration
     def test_stop_start(self):
         """Verify a process can be stopped and started."""
         application = Application('mail')

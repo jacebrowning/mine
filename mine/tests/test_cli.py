@@ -45,7 +45,6 @@ class TestMain:
             cli.main(['-vvvv'])
         assert mock_log.exception.call_count == 1
 
-    @pytest.mark.integration
     @patch('mine.cli.daemon', None)
     def test_path(self, path):
         """Verify a custom setting file path can be used."""
@@ -63,7 +62,6 @@ class TestMain:
         cli.main(['--daemon', '30'])
         mock_run.assert_called_once_with(path=None, delay=30)
 
-    @pytest.mark.integration
     @patch('mine.cli.daemon', Application(None))
     def test_warning_when_daemon_is_not_running(self, path):
         with pytest.raises(SystemExit):

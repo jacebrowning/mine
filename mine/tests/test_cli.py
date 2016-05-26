@@ -55,12 +55,12 @@ class TestMain:
     @patch('mine.cli.run')
     def test_daemon(self, mock_run):
         cli.main(['--daemon'])
-        mock_run.assert_called_once_with(path=None, delay=60)
+        mock_run.assert_called_once_with(path=None, delay=300)
 
     @patch('mine.cli.run')
     def test_daemon_with_specific_delay(self, mock_run):
-        cli.main(['--daemon', '30'])
-        mock_run.assert_called_once_with(path=None, delay=30)
+        cli.main(['--daemon', '42'])
+        mock_run.assert_called_once_with(path=None, delay=42)
 
     @patch('mine.cli.daemon', Application(None))
     def test_warning_when_daemon_is_not_running(self, path):

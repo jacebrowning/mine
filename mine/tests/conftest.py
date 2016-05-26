@@ -38,16 +38,12 @@ def pytest_configure(config):
 
 def pytest_runtest_setup(item):
     """pytest setup."""
-
     if 'linux_only' in item.keywords and platform.system() != 'Linux':
         pytest.skip("test can only be run on Linux")
     if 'mac_only' in item.keywords and platform.system() != 'Darwin':
         pytest.skip("test can only be run on OS X")
     if 'windows_only' in item.keywords and platform.system() != 'Windows':
         pytest.skip("test can only be run on Windows")
-
-    if os.getenv('TEST_IDE') and 'not_ide' in item.keywords:
-        pytest.skip("test cannot be run from an IDE")
 
 
 @pytest.fixture

@@ -39,7 +39,7 @@ def main(args=None):
     # Build main parser
     parser = argparse.ArgumentParser(prog=CLI, description=DESCRIPTION,
                                      **shared)
-    parser.add_argument('-d', '--daemon', metavar='DELAY', nargs='?', const=60,
+    parser.add_argument('-d', '--daemon', metavar='DELAY', nargs='?', const=300,
                         type=int, help="run continuously with delay [seconds]")
     parser.add_argument('-f', '--file', help="custom settings file path")
     subs = parser.add_subparsers(help="", dest='command', metavar="<command>")
@@ -148,12 +148,15 @@ def run(path=None, cleanup=True, delay=None,
         if delay is None:
             break
 
-        log.info("Delaying for %s seconds...", delay)
+        log.info("Delaying %s seconds for files to sync...", delay)
         time.sleep(delay)
 
-        log.info("waiting for changes...")
-        while not data.modified:
-            time.sleep(1)
+        step = 1
+        elapsed = 0
+        log.info("Waiting %s seconds for status changes...", delay)
+        while elapsed < delay and not data.modified:
+            time.sleep(step)
+            elapsed += step
 
         services.delete_conflicts(root, config_only=True, force=True)
 

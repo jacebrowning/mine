@@ -11,12 +11,12 @@ from .computer import Computers
 log = logging.getLogger(__name__)
 
 
-@yorm.attr(applications=Applications)
 @yorm.attr(computers=Computers)
+@yorm.attr(applications=Applications)
 class ProgramConfig(yorm.types.AttributeDictionary):
     """Dictionary of program configuration settings."""
 
-    def __init__(self):
+    def __init__(self, applications=None, computers=None):
         super().__init__()
-        self.applications = Applications()
-        self.computers = Computers()
+        self.applications = applications or Applications()
+        self.computers = computers or Computers()

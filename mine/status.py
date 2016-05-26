@@ -51,10 +51,10 @@ def log_stopping(func):
 class State(yorm.types.AttributeDictionary):
     """Dictionary of computer state."""
 
-    def __init__(self, name):
+    def __init__(self, computer, timestamp=None):
         super().__init__()
-        self.computer = name
-        self.timestamp = Timestamp()
+        self.computer = computer
+        self.timestamp = timestamp or Timestamp()
 
     def __str__(self):
         return str(self.computer)
@@ -74,11 +74,11 @@ class StateList(yorm.types.SortedList):
 class Status(yorm.types.AttributeDictionary):
     """Dictionary of computers using an application."""
 
-    def __init__(self, name):
+    def __init__(self, application, computers=None, next=None):  # pylint: disable=redefined-builtin
         super().__init__()
-        self.application = name
-        self.computers = StateList()
-        self.next = None
+        self.application = application
+        self.computers = computers or StateList()
+        self.next = next
 
     def __str__(self):
         return str(self.application)
@@ -97,10 +97,10 @@ class StatusList(yorm.types.SortedList):
 class ProgramStatus(yorm.types.AttributeDictionary):
     """Dictionary of current program status."""
 
-    def __init__(self):
+    def __init__(self, applications=None, counter=0):
         super().__init__()
-        self.applications = StatusList()
-        self.counter = 0
+        self.applications = applications or StatusList()
+        self.counter = counter
 
     def find(self, application):
         """Return the application status for an application."""

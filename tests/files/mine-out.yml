@@ -1,28 +1,28 @@
 config:
+  computers:
+  - name: macbook
+    hostname: Jaces-MacBook
+    address: AA:BB:CC:DD:EE:FF
+  - name: macbook-pro
+    hostname: Jaces-MacBook-2
+    address: 11:22:33:44:55:66
   applications:
   - name: iphoto
     properties:
       auto_queue: false
       single_instance: false
     versions:
-      linux: null
       mac: iPhoto
       windows: null
+      linux: null
   - name: itunes
     properties:
       auto_queue: false
       single_instance: false
     versions:
-      linux: null
       mac: ''
       windows: iTunes.exe
-  computers:
-  - address: AA:BB:CC:DD:EE:FF
-    hostname: Jaces-MacBook
-    name: macbook
-  - address: 11:22:33:44:55:66
-    hostname: Jaces-MacBook-2
-    name: macbook-pro
+      linux: null
 status:
   applications:
   - application: itunes

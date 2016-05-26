@@ -6,13 +6,13 @@ import setuptools
 
 from mine import __project__, __version__, CLI, DESCRIPTION
 
-import os
-if os.path.exists('README.rst'):
-    README = open('README.rst').read()
+try:
+    README = open("README.rst").read()
+    CHANGELOG = open("CHANGELOG.rst").read()
+except IOError:
+    LONG_DESCRIPTION = "Coming soon..."
 else:
-    README = ""  # a placeholder, readme is generated on release
-CHANGES = open('CHANGES.md').read()
-
+    LONG_DESCRIPTION = README + '\n' + CHANGELOG
 
 setuptools.setup(
     name=__project__,
@@ -27,7 +27,7 @@ setuptools.setup(
 
     entry_points={'console_scripts': [CLI + ' = mine.cli:main']},
 
-    long_description=(README + '\n' + CHANGES),
+    long_description=LONG_DESCRIPTION,
     license='MIT',
     classifiers=[
         'Development Status :: 4 - Beta',
@@ -46,5 +46,5 @@ setuptools.setup(
         'Topic :: Utilities',
     ],
 
-    install_requires=open('requirements.txt').readlines(),
+    install_requires=open("requirements.txt").readlines(),
 )

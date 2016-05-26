@@ -1,5 +1,17 @@
 # Version History
 
+# 0.5 (2016/05/16)
+
+- Added periodic checking to the daemon (regardless of file changes).
+
+## 0.4.3 (2016/05/11)
+
+- Fixed `__init__` warnings with YORM v0.8.1.
+
+## 0.4.2 (2016/03/30)
+
+- Updated to YORM v0.7.2.
+
 ## 0.4.1 (2016/02/23)
 
 - Updated to YORM v0.6.

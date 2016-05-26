@@ -4,7 +4,6 @@ import os
 import subprocess
 import logging
 
-import pytest
 import yorm
 
 from mine import cli
@@ -20,7 +19,6 @@ from .conftest import FILES
 log = logging.getLogger(__name__)
 
 
-@pytest.mark.integration
 class TestFiles:
     """Integration tests for creating files."""
 
@@ -119,9 +117,7 @@ class TestFiles:
             assert False
 
 
-@pytest.mark.integration
 class TestProcesses:
-
     """Integration tests for tracking and stopping processes."""
 
     NAME = "example application"
@@ -142,7 +138,7 @@ class TestProcesses:
         """Set up initial data file for tests."""
         self.data = Data()
         self.data.config.applications.append(self.application)
-        self.computer = self.data.config.computers.get_current()
+        self.computer = self.data.config.computers.get_current()  # pylint: disable=no-member
         yorm.sync(self.data, self.path)
 
     def _fetch_data(self):
@@ -176,9 +172,8 @@ class TestProcesses:
         if os.path.exists(self.path):
             os.remove(self.path)
 
-    def test_case_1(self, caplog):
+    def test_case_1(self):
         """Verify a newly running remote application takes over."""
-        caplog.setLevel(logging.DEBUG)
 
         # Arrange
 
@@ -214,9 +209,8 @@ class TestProcesses:
         assert not data.status.is_running(self.application, self.computer)
         assert data.status.is_running(self.application, computer)
 
-    def test_case_2(self, caplog):
+    def test_case_2(self):
         """Verify a newly running local application takes over."""
-        caplog.setLevel(logging.DEBUG)
 
         # Arrange
 
@@ -245,9 +239,8 @@ class TestProcesses:
         assert data.status.is_running(self.application, self.computer)
         assert data.status.is_running(self.application, computer)
 
-    def test_case_3(self, caplog):
+    def test_case_3(self):
         """Verify an already running local application is ignored."""
-        caplog.setLevel(logging.DEBUG)
 
         # Arrange
 
@@ -272,9 +265,8 @@ class TestProcesses:
         assert 1 == data.status.counter
         assert data.status.is_running(self.application, self.computer)
 
-    def test_case_4(self, caplog):
+    def test_case_4(self):
         """Verify a newly stopped local application is noted."""
-        caplog.setLevel(logging.DEBUG)
 
         # Arrange
 
@@ -299,9 +291,8 @@ class TestProcesses:
         assert 2 == data.status.counter
         assert not data.status.is_running(self.application, self.computer)
 
-    def test_case_5(self, caplog):
+    def test_case_5(self):
         """Verify an already stopped local application is ignored."""
-        caplog.setLevel(logging.DEBUG)
 
         # Arrange
 

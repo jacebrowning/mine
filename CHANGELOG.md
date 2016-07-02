@@ -1,6 +1,6 @@
 # Version History
 
-# 0.6 (unreleased)
+# 0.6 (2016/07/02)
 
 - Added a `close` command to close all locally running applications.
 

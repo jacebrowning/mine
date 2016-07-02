@@ -4,6 +4,7 @@ import logging
 
 import yorm
 
+from .computer import PLACEHOLDER
 from .config import ProgramConfig
 from .status import ProgramStatus
 
@@ -58,7 +59,7 @@ class Data:
         """Launch applications that have been queued."""
         log.info("Launching queued applications...")
         for app_status in status.applications:
-            if app_status.next:
+            if app_status.next and app_status.next != PLACEHOLDER:
                 application = config.applications.get(app_status.application)
                 show_queued(application, app_status.next)
                 if app_status.next == computer:

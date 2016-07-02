@@ -37,6 +37,9 @@ class Computer(NameMixin, yorm.types.AttributeDictionary):
         return socket.gethostname()
 
 
+PLACEHOLDER = Computer('<none>', '<none>', '<none>')
+
+
 @yorm.attr(all=Computer)
 class Computers(yorm.types.SortedList):
     """A list of computers."""

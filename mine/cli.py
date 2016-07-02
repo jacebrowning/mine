@@ -14,6 +14,7 @@ from . import CLI, VERSION, DESCRIPTION
 from . import common
 from . import services
 from .data import Data
+from .computer import PLACEHOLDER
 from .application import Application
 from .manager import get_manager
 
@@ -51,6 +52,16 @@ def main(args=None):
     sub.add_argument('name', nargs='?',
                      help="computer to queue for launch (default: current)")
 
+    # Build close parser
+    info = "close applications on this computer"
+    sub = subs.add_parser('close', description=info.capitalize() + '.',
+                          help=info, **shared)
+
+    # Build edit parser
+    info = "launch the settings file for editing"
+    sub = subs.add_parser('edit', description=info.capitalize() + '.',
+                          help=info, **shared)
+
     # Build clean parser
     info = "display and delete conflicted files"
     sub = subs.add_parser('clean', description=info.capitalize() + '.',
@@ -58,21 +69,18 @@ def main(args=None):
     sub.add_argument('-f', '--force', action='store_true',
                      help="actually delete the conflicted files")
 
-    # Build edit parser
-    info = "launch the settings file for editing"
-    sub = subs.add_parser('edit', description=info.capitalize() + '.',
-                          help=info, **shared)
-
     # Parse arguments
     args = parser.parse_args(args=args)
     kwargs = {'delay': args.daemon}
     if args.command == 'switch':
         kwargs['switch'] = args.name if args.name else True
+    elif args.command == 'close':
+        kwargs['switch'] = False
+    elif args.command == 'edit':
+        kwargs['edit'] = True
     elif args.command == 'clean':
         kwargs['delete'] = True
         kwargs['force'] = args.force
-    elif args.command == 'edit':
-        kwargs['edit'] = True
 
     # Configure logging
     common.configure_logging(args.verbose)
@@ -136,6 +144,8 @@ def run(path=None, cleanup=True, delay=None,
 
     if switch is True:
         switch = computer
+    elif switch is False:
+        switch = PLACEHOLDER
     elif switch:
         switch = config.computers.match(switch)
     if switch:

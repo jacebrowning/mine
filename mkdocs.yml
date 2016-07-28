@@ -2,13 +2,12 @@ site_name: mine
 site_description: Share application state across computers using Dropbox.
 site_author: Jace Browning
 repo_url: https://github.com/jacebrowning/mine
-# google_analytics: ['XX-XXXXXXXX-XX', 'auto']
 
-theme: mkdocs
+theme: readthedocs
 
 pages:
 - Home: index.md
 - About:
-  - 'Release Notes': about/changelog.md
+  - Release Notes: about/changelog.md
   - Contributing: about/contributing.md
   - License: about/license.md

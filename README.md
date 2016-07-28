@@ -1,5 +1,3 @@
-# mine
-
 >...for applications that haven't learned to share.
 
 [![Build Status](http://img.shields.io/travis/jacebrowning/mine/master.svg)](https://travis-ci.org/jacebrowning/mine)
@@ -7,6 +5,8 @@
 [![Scrutinizer Code Quality](http://img.shields.io/scrutinizer/g/jacebrowning/mine.svg)](https://scrutinizer-ci.com/g/jacebrowning/mine/?branch=master)
 [![PyPI Version](http://img.shields.io/pypi/v/mine.svg)](https://pypi.python.org/pypi/mine)
 [![PyPI Downloads](http://img.shields.io/pypi/dm/mine.svg)](https://pypi.python.org/pypi/mine)
+
+# Overview
 
 This program lets you synchronize application data using Dropbox.
 
@@ -28,7 +28,7 @@ and some just don't make sense to keep running on all your computers:
 * HipChat
 * etc.
 
-# Getting Started
+# Setup
 
 ## Requirements
 
@@ -50,7 +50,7 @@ $ cd mine
 $ python setup.py install
 ```
 
-## Setup
+## Configuration
 
 Create a `mine.yml` in your Dropbox:
 
@@ -86,7 +86,7 @@ Include the applications you would like `mine` to manage. Computers are added au
 
 The `versions` dictionary identifies the name of the executable on each platform. The `properties.auto_queue` setting indicates `mine` should attempt to launch the application automatically when switching computers. The `properties.single_instance` setting indicates the application must be closed on other computers before another instance can start.
 
-# Basic Usage
+# Usage
 
 To synchronize the current computer's state:
 

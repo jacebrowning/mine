@@ -135,7 +135,7 @@ def run(path=None, cleanup=True, delay=None,
     log.info("Current computer: %s", computer)
 
     if edit:
-        return manager.launch(path)
+        return manager.launch_queued_applications(path)
     if delete:
         return services.delete_conflicts(root, force=force)
     if log.getEffectiveLevel() >= logging.WARNING:
@@ -144,15 +144,15 @@ def run(path=None, cleanup=True, delay=None,
     if switch is True:
         switch = computer
     elif switch is False:
-        data.close(config, manager)
+        data.close_all_applications(config, manager)
     elif switch:
         switch = config.computers.match(switch)
     if switch:
-        data.queue(config, status, switch)
+        data.queue_all_applications(config, status, switch)
 
     while True:
-        data.launch(config, status, computer, manager)
-        data.update(config, status, computer, manager)
+        data.launch_queued_applications(config, status, computer, manager)
+        data.update_status(config, status, computer, manager)
 
         if delay is None:
             break
@@ -170,7 +170,7 @@ def run(path=None, cleanup=True, delay=None,
         services.delete_conflicts(root, config_only=True, force=True)
 
     if cleanup:
-        data.clean(config, status)
+        data.prune_status(config, status)
 
     if delay is None:
         return _restart_daemon(manager)

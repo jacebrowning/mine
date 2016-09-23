@@ -17,7 +17,6 @@ log = logging.getLogger(__name__)
 # TODO: delete this after implementing `BaseManager`
 # https://github.com/jacebrowning/mine/issues/8
 # https://github.com/jacebrowning/mine/issues/9
-# pylint: disable=R0903,W0223,E0110
 
 
 # TODO: enable coverage when a Linux test is implemented

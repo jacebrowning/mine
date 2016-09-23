@@ -29,8 +29,6 @@ class Properties(yorm.types.AttributeDictionary):
 class Application(NameMixin, yorm.types.AttributeDictionary):
     """Dictionary of application information."""
 
-    # pylint: disable=E1101
-
     def __init__(self, name, properties=None, filename=None, versions=None):
         super().__init__()
         self.name = name

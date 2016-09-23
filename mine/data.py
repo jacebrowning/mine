@@ -4,7 +4,6 @@ import logging
 
 import yorm
 
-from .computer import PLACEHOLDER
 from .config import ProgramConfig
 from .status import ProgramStatus
 
@@ -59,7 +58,7 @@ class Data:
         """Launch applications that have been queued."""
         log.info("Launching queued applications...")
         for app_status in status.applications:
-            if app_status.next and app_status.next != PLACEHOLDER:
+            if app_status.next:
                 application = config.applications.get(app_status.application)
                 show_queued(application, app_status.next)
                 if app_status.next == computer:
@@ -72,6 +71,13 @@ class Data:
                         show_waiting(application, latest)
                 elif manager.is_running(application):
                     manager.stop(application)
+
+    @staticmethod
+    def close(config, manager):
+        """Close all applications running on this computer."""
+        log.info("Closing all applications on this computer...")
+        for application in config.applications:
+            manager.stop(application)
 
     @staticmethod
     def update(config, status, computer, manager):

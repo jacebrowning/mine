@@ -14,7 +14,6 @@ from . import CLI, VERSION, DESCRIPTION
 from . import common
 from . import services
 from .data import Data
-from .computer import PLACEHOLDER
 from .application import Application
 from .manager import get_manager
 
@@ -145,7 +144,7 @@ def run(path=None, cleanup=True, delay=None,
     if switch is True:
         switch = computer
     elif switch is False:
-        switch = PLACEHOLDER
+        data.close(config, manager)
     elif switch:
         switch = config.computers.match(switch)
     if switch:

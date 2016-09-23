@@ -186,14 +186,14 @@ class MacManager(BaseManager):  # pragma: no cover (manual)
         process = self._get_process(name)
         if process and process.is_running():
             process.terminate()
-            time.sleep(0.1)
+            time.sleep(5)
 
     @staticmethod
     def _start_app(path):
         """Start an application from it's .app directory."""
         assert os.path.exists(path), path
         process = psutil.Popen(['open', path])
-        time.sleep(0.1)
+        time.sleep(1)
         return process
 
     def launch(self, path):

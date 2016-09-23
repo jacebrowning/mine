@@ -17,7 +17,6 @@ log = logging.getLogger(__name__)
 # TODO: delete this after implementing `BaseManager`
 # https://github.com/jacebrowning/mine/issues/8
 # https://github.com/jacebrowning/mine/issues/9
-# pylint: disable=R0903,W0223,E0110
 
 
 # TODO: enable coverage when a Linux test is implemented
@@ -186,14 +185,14 @@ class MacManager(BaseManager):  # pragma: no cover (manual)
         process = self._get_process(name)
         if process and process.is_running():
             process.terminate()
-            time.sleep(0.1)
+            time.sleep(5)
 
     @staticmethod
     def _start_app(path):
         """Start an application from it's .app directory."""
         assert os.path.exists(path), path
         process = psutil.Popen(['open', path])
-        time.sleep(0.1)
+        time.sleep(1)
         return process
 
     def launch(self, path):

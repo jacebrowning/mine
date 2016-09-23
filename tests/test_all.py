@@ -184,7 +184,6 @@ class TestProcesses:
         status = self.data.status
         status.start(self.application, self.computer)
         self.data.status = status
-        assert 1 == self.data.status.counter
         assert self.data.status.is_running(self.application, self.computer)
 
         # manually mark the application as running on a remote computer
@@ -192,7 +191,6 @@ class TestProcesses:
         status = self.data.status
         status.start(self.application, computer)
         self.data.status = status
-        assert 2 == self.data.status.counter
         assert self.data.status.is_running(self.application, computer)
 
         # Act
@@ -205,7 +203,6 @@ class TestProcesses:
         assert not self._is_application_running()
         # verify the application is marked as running remotely
         data = self._fetch_data()
-        assert 3 == data.status.counter
         assert not data.status.is_running(self.application, self.computer)
         assert data.status.is_running(self.application, computer)
 
@@ -221,7 +218,6 @@ class TestProcesses:
         status = self.data.status
         status.start(self.application, computer)
         self.data.status = status
-        assert 1 == self.data.status.counter
         assert self.data.status.is_running(self.application, computer)
 
         # start the application
@@ -235,7 +231,6 @@ class TestProcesses:
         assert self._is_application_running()
 
         data = self._fetch_data()
-        assert 2 == data.status.counter
         assert data.status.is_running(self.application, self.computer)
         assert data.status.is_running(self.application, computer)
 
@@ -249,7 +244,6 @@ class TestProcesses:
         status = self.data.status
         status.start(self.application, self.computer)
         self.data.status = status
-        assert 1 == self.data.status.counter
 
         self._start_application()
 
@@ -262,7 +256,6 @@ class TestProcesses:
         assert self._is_application_running()
 
         data = self._fetch_data()
-        assert 1 == data.status.counter
         assert data.status.is_running(self.application, self.computer)
 
     def test_case_4(self):
@@ -275,7 +268,6 @@ class TestProcesses:
         status = self.data.status
         status.start(self.application, self.computer)
         self.data.status = status
-        assert 1 == self.data.status.counter
 
         self._stop_application()
 
@@ -288,7 +280,6 @@ class TestProcesses:
         assert not self._is_application_running()
 
         data = self._fetch_data()
-        assert 2 == data.status.counter
         assert not data.status.is_running(self.application, self.computer)
 
     def test_case_5(self):
@@ -309,5 +300,4 @@ class TestProcesses:
         assert not self._is_application_running()
 
         data = self._fetch_data()
-        assert 0 == data.status.counter
         assert not data.status.is_running(self.application, self.computer)

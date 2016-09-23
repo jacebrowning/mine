@@ -1,10 +1,15 @@
-# Version History
+# Revision History
 
-# 0.6 (2016/07/02)
+## 0.6.1 (2016/09/23)
+
+- Added a delay to ensure all applications close.
+- Fixed cleanup of unused applications and computers.
+
+## 0.6 (2016/07/02)
 
 - Added a `close` command to close all locally running applications.
 
-# 0.5 (2016/05/16)
+## 0.5 (2016/05/16)
 
 - Added periodic checking to the daemon (regardless of file changes).
 

@@ -1,1 +1,1 @@
-"""Integration tests for the `mine` package."""
+"""Integration tests for the package."""

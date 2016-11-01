@@ -1,5 +1,9 @@
 # Revision History
 
+## 1.0 (2016/11/01)
+
+- Initial stable release.
+
 ## 0.6.1 (2016/09/23)
 
 - Added a delay to ensure all applications close.

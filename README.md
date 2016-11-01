@@ -36,15 +36,15 @@ and some just don't make sense to keep running on all your computers:
 
 ## Installation
 
-`mine` can be installed with pip:
+Install mine with pip:
 
-```
+```sh
 $ pip install mine
 ```
 
 or directly from the source code:
 
-```
+```sh
 $ git clone https://github.com/jacebrowning/mine.git
 $ cd mine
 $ python setup.py install
@@ -54,7 +54,7 @@ $ python setup.py install
 
 Create a `mine.yml` in your Dropbox:
 
-```
+```yaml
 config:
   computers:
   - name: My iMac
@@ -90,24 +90,24 @@ The `versions` dictionary identifies the name of the executable on each platform
 
 To synchronize the current computer's state:
 
-```
+```sh
 $ mine
 ```
 
 To close applications on remote computers and start them locally:
 
-```
+```sh
 $ mine switch
 ```
 
 To close applications locally an start them on another computer:
 
-```
+```sh
 $ mine switch <name>
 ```
 
 To delete conflicted files in your Dropbox:
 
-```
+```sh
 $ mine clean
 ```

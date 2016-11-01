@@ -1,10 +1,9 @@
 # pylint: disable=misplaced-comparison-constant,no-self-use
 
-from mine.config import ProgramConfig
+from mine.models import ProgramConfig
 
 
 class TestProgramConfig:
-
     """Unit tests for the program configuration class."""
 
     def test_init(self):

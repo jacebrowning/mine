@@ -7,11 +7,8 @@ import logging
 import yorm
 
 from mine import cli
-from mine.application import Application
-from mine.computer import Computer
-from mine.status import State, Status, ProgramStatus
-from mine.config import ProgramConfig
-from mine.data import Data
+from mine.models import (Application, Computer, Data, ProgramConfig,
+                         State, Status, ProgramStatus)
 
 from .conftest import FILES
 

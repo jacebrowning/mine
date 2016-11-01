@@ -2,11 +2,10 @@
 
 import pytest
 
-from mine.application import Application, Applications
+from mine.models import Application, Applications
 
 
 class TestApplication:
-
     """Unit tests for the application class."""
 
     app1 = Application('iTunes')
@@ -40,7 +39,6 @@ class TestApplication:
 
 
 class TestApplications:
-
     """Unit tests for lists of applications."""
 
     apps = Applications([TestApplication.app1, TestApplication.app2])

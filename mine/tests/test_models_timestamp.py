@@ -2,11 +2,10 @@
 
 import pytest
 
-from mine.timestamp import Timestamp
+from mine.models import Timestamp
 
 
 class TestTimestamp:
-
     """Unit tests for the timestamp class."""
 
     none = Timestamp()

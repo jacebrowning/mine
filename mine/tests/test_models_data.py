@@ -2,7 +2,7 @@
 
 import pytest
 
-from mine.data import Data
+from mine.models import Data
 
 
 def describe_data():

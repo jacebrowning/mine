@@ -8,11 +8,10 @@ import pytest
 
 from mine import cli
 from mine import common
-from mine.application import Application
+from mine.models import Application
 
 
 class TestMain:
-
     """Unit tests for the `main` function."""
 
     @patch('mine.cli.run', Mock(return_value=True))
@@ -69,7 +68,6 @@ class TestMain:
 
 
 class TestSwitch:
-
     """Unit tests for the `switch` function."""
 
     @patch('mine.cli.run')
@@ -122,7 +120,6 @@ def _mock_run(*args, **kwargs):
 
 @patch('mine.cli.run', _mock_run)
 class TestLogging:
-
     """Integration tests for the Doorstop CLI logging."""
 
     arg_verbosity = [

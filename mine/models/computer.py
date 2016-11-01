@@ -6,7 +6,7 @@ import logging
 
 import yorm
 
-from .base import NameMixin
+from ._bases import NameMixin
 
 
 log = logging.getLogger(__name__)

@@ -3,11 +3,10 @@
 import pytest
 
 from mine.manager import get_manager, LinuxManager, MacManager, WindowsManager
-from mine.application import Application
+from mine.models import Application
 
 
 class TestLinuxManager:
-
     """Unit tests for the Linux manager class."""
 
     manager = get_manager('Linux')
@@ -35,7 +34,6 @@ class TestLinuxManager:
 
 
 class TestMacManager:
-
     """Unit tests for the Mac manager class."""
 
     manager = get_manager('Darwin')
@@ -72,7 +70,6 @@ class TestMacManager:
 
 
 class TestWindowsManager:
-
     """Unit tests for the Windows manager class."""
 
     manager = get_manager('Windows')

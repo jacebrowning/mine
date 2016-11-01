@@ -13,9 +13,8 @@ import yorm
 from . import CLI, VERSION, DESCRIPTION
 from . import common
 from . import services
-from .data import Data
-from .application import Application
 from .manager import get_manager
+from .models import Data, Application
 
 
 log = logging.getLogger(__name__)

@@ -54,7 +54,7 @@ $ python setup.py install
 
 Create a `mine.yml` in your Dropbox:
 
-```yml
+```yaml
 config:
   computers:
   - name: My iMac

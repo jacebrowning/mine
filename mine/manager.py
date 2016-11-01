@@ -185,7 +185,6 @@ class MacManager(BaseManager):  # pragma: no cover (manual)
         process = self._get_process(name)
         if process and process.is_running():
             process.terminate()
-            time.sleep(5)
 
     @staticmethod
     def _start_app(path):

@@ -4,12 +4,10 @@ from unittest.mock import Mock
 
 import pytest
 
-from mine.status import State, Status, ProgramStatus
-from mine.application import Application
+from mine.models import State, Status, ProgramStatus, Application
 
 
 class TestState:
-
     """Unit tests for the computer state class."""
 
     state1 = State('computer1')
@@ -42,7 +40,6 @@ class TestState:
 
 
 class TestStatus:
-
     """Unit tests for the application status class."""
 
     status1 = Status('app1')
@@ -74,7 +71,6 @@ class TestStatus:
 
 
 class TestProgramStatus:
-
     """Unit tests for the program status class."""
 
     def setup_method(self, _):

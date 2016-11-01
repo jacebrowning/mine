@@ -4,13 +4,12 @@ from unittest.mock import Mock, patch
 
 import pytest
 
-from mine.computer import Computer, Computers
+from mine.models import Computer, Computers
 
 
 @patch('uuid.getnode', Mock(return_value=0))
 @patch('socket.gethostname', Mock(return_value='Sample.local'))
 class TestComputer:
-
     """Unit tests for the computer classes."""
 
     def test_init(self):
@@ -63,7 +62,6 @@ class TestComputer:
 @patch('uuid.getnode', Mock(return_value=0))
 @patch('socket.gethostname', Mock(return_value='Sample.local'))
 class TestComputers:
-
     """Unit tests for lists of computers."""
 
     computers = Computers([Computer('abc', 'abc.local', 1),

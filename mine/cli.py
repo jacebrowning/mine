@@ -13,9 +13,8 @@ import yorm
 from . import CLI, VERSION, DESCRIPTION
 from . import common
 from . import services
-from .data import Data
-from .application import Application
 from .manager import get_manager
+from .models import Data, Application
 
 
 log = logging.getLogger(__name__)
@@ -135,7 +134,7 @@ def run(path=None, cleanup=True, delay=None,
     log.info("Current computer: %s", computer)
 
     if edit:
-        return manager.launch_queued_applications(path)
+        return manager.launch(path)
     if delete:
         return services.delete_conflicts(root, force=force)
     if log.getEffectiveLevel() >= logging.WARNING:

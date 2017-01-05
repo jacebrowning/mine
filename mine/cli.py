@@ -118,7 +118,7 @@ def run(path=None, cleanup=True, delay=None,
     :param delete: attempt to delete conflicted files
     :param force: actually delete conflicted files
 
-    """
+    """  # pylint: disable=too-many-branches
     manager = get_manager()
     root = services.find_root()
     path = path or services.find_config_path(root=root)
@@ -146,7 +146,10 @@ def run(path=None, cleanup=True, delay=None,
         data.close_all_applications(config, manager)
     elif switch:
         switch = config.computers.match(switch)
+
     if switch:
+        if switch != computer:
+            data.close_all_applications(config, manager)
         data.queue_all_applications(config, status, switch)
 
     while True:

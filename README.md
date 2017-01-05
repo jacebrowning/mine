@@ -100,7 +100,13 @@ To close applications on remote computers and start them locally:
 $ mine switch
 ```
 
-To close applications locally an start them on another computer:
+To close applications running locally:
+
+```sh
+$ mine close
+```
+
+To close applications locally and start them on another computer:
 
 ```sh
 $ mine switch <name>

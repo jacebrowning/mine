@@ -9,7 +9,7 @@ MODULES := $(shell find $(PACKAGES) -name '*.py') $(CONFIG)
 # Python settings
 ifndef TRAVIS
 	PYTHON_MAJOR ?= 3
-	PYTHON_MINOR ?= 5
+	PYTHON_MINOR ?= 6
 endif
 
 # System paths

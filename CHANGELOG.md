@@ -1,5 +1,9 @@
 # Revision History
 
+## 1.1 (2017/01/07)
+
+- Updated `switch` to close all locally running applications.
+
 ## 1.0 (2016/11/01)
 
 - Initial stable release.

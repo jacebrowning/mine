@@ -4,6 +4,8 @@ import os
 import re
 import logging
 
+from .models.application import Application, Versions
+
 
 ROOTS = (
     r"C:\Users",
@@ -19,6 +21,10 @@ CONFLICT_BASE = r"{} \(.+'s conflicted copy \d+-\d+-\d+.*\).*"
 CONFLICT_ANY = CONFLICT_BASE.format(".+")
 CONFLICT_CONFIG = CONFLICT_BASE.format("mine")
 DEPTH = 3  # number of levels to search for the settings file
+APPLICATION = Application("Dropbox", versions=Versions(
+    mac="Dropbox.app",
+    windows="Dropbox.exe",
+    linux="dropbox"))
 
 log = logging.getLogger(__name__)
 

@@ -120,6 +120,9 @@ def run(path=None, cleanup=True, delay=None,
 
     """  # pylint: disable=too-many-branches
     manager = get_manager()
+    if not manager.is_running(services.APPLICATION):
+        manager.start(services.APPLICATION)
+
     root = services.find_root()
     path = path or services.find_config_path(root=root)
 

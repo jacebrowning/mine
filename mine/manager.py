@@ -122,7 +122,7 @@ class BaseManager(metaclass=abc.ABCMeta):  # pragma: no cover (abstract)
 
             log.debug("Found matching process: %s", command)
             for ignored in cls.IGNORED_APPLICATION_NAMES:
-                if ignored in parts:
+                if ignored.lower() in parts:
                     log.debug("But skipped due to ignored name")
                 else:
                     return process

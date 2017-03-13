@@ -69,6 +69,8 @@ class BaseManager(metaclass=abc.ABCMeta):  # pragma: no cover (abstract)
 
     NAME = FRIENDLY = None
 
+    IGNORED_APPLICATION_NAMES = []
+
     def __str__(self):
         return self.FRIENDLY
 
@@ -92,8 +94,8 @@ class BaseManager(metaclass=abc.ABCMeta):  # pragma: no cover (abstract)
         """Open a file for editing."""
         raise NotImplementedError
 
-    @staticmethod
-    def _get_process(name):
+    @classmethod
+    def _get_process(cls, name):
         """Get a process whose executable path contains an app name."""
         log.debug("Searching for exe path containing '%s'...", name)
 
@@ -103,18 +105,27 @@ class BaseManager(metaclass=abc.ABCMeta):  # pragma: no cover (abstract)
                 parts = []
                 for arg in process.cmdline():
                     parts.extend([p.lower() for p in arg.split(os.sep)])
-
-                if name.lower() in parts:
-                    if process.pid == os.getpid():
-                        log.debug("Skipped current process: %s", command)
-                    elif process.status() == psutil.STATUS_ZOMBIE:
-                        log.debug("Skipped zombie process: %s", command)
-                    else:
-                        log.debug("Found matching process: %s", command)
-                        return process
-
             except psutil.AccessDenied:
-                pass  # the process is likely owned by root
+                continue  # the process is likely owned by root
+
+            if name.lower() not in parts:
+                continue
+
+            if process.pid == os.getpid():
+                log.debug("Skipped current process: %s", command)
+                continue
+
+            if process.status() == psutil.STATUS_ZOMBIE:
+                log.debug("Skipped zombie process: %s", command)
+                continue
+
+            log.debug("Found matching process: %s", command)
+            for ignored in cls.IGNORED_APPLICATION_NAMES:
+                if ignored.lower() in parts:
+                    log.debug("But skipped due to ignored name")
+                    break
+            else:
+                return process
 
         return None
 
@@ -151,6 +162,10 @@ class MacManager(BaseManager):  # pragma: no cover (manual)
 
     NAME = 'Darwin'
     FRIENDLY = 'Mac'
+
+    IGNORED_APPLICATION_NAMES = [
+        "iTunesHelper.app",
+    ]
 
     @log_running
     def is_running(self, application):

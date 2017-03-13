@@ -40,7 +40,8 @@ class Timestamp(yorm.types.AttributeDictionary):
         """Determine if the timestamps indicate current activity."""
         if not self.started:
             return False
-        elif not self.stopped:
+
+        if not self.stopped:
             return True
-        else:
-            return self.started > self.stopped
+
+        return self.started > self.stopped

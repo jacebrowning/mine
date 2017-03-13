@@ -69,8 +69,7 @@ class BaseManager(metaclass=abc.ABCMeta):  # pragma: no cover (abstract)
 
     NAME = FRIENDLY = None
 
-    IGNORED_APPLICATION_NAMES = [
-    ]
+    IGNORED_APPLICATION_NAMES = []
 
     def __str__(self):
         return self.FRIENDLY
@@ -124,8 +123,9 @@ class BaseManager(metaclass=abc.ABCMeta):  # pragma: no cover (abstract)
             for ignored in cls.IGNORED_APPLICATION_NAMES:
                 if ignored.lower() in parts:
                     log.debug("But skipped due to ignored name")
-                else:
-                    return process
+                    break
+            else:
+                return process
 
         return None
 

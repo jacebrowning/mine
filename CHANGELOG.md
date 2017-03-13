@@ -1,5 +1,9 @@
 # Revision History
 
+## 1.3 (2017/03/13)
+
+- Ignored conflicting program name ("iTunes Helper.app").
+
 ## 1.2 (2017/02/13)
 
 - Restart Dropbox automatically.

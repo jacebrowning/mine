@@ -13,8 +13,8 @@ config:
       single_instance: false
     versions:
       mac: iPhoto
-      windows: null
-      linux: null
+      windows:
+      linux:
   - name: itunes
     properties:
       auto_queue: false
@@ -22,7 +22,7 @@ config:
     versions:
       mac: ''
       windows: iTunes.exe
-      linux: null
+      linux:
 status:
   applications:
   - application: itunes
@@ -31,5 +31,5 @@ status:
       timestamp:
         started: 444
         stopped: 0
-    next: null
+    next:
   counter: 499

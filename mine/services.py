@@ -92,5 +92,5 @@ def delete_conflicts(root=None, config_only=False, force=False):
         print("Run again with '--force' to delete these "
               "{} conflict(s)".format(count))
         return False
-    else:
-        return True
+
+    return True

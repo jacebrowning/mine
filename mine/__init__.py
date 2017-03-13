@@ -1,7 +1,7 @@
 """Package for mine."""
 
 __project__ = 'mine'
-__version__ = '1.2'
+__version__ = '1.3'
 
 CLI = 'mine'
 VERSION = '{0} v{1}'.format(__project__, __version__)

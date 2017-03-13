@@ -118,7 +118,7 @@ def run(path=None, cleanup=True, delay=None,
     :param delete: attempt to delete conflicted files
     :param force: actually delete conflicted files
 
-    """  # pylint: disable=too-many-branches
+    """  # pylint: disable=too-many-arguments,too-many-branches
     manager = get_manager()
     if not manager.is_running(services.APPLICATION):
         manager.start(services.APPLICATION)

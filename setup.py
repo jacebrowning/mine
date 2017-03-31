@@ -78,7 +78,7 @@ setuptools.setup(
     ],
 
     install_requires=[
-        "YORM ~= 1.1",
+        "YORM == 1.4.dev5",
         "psutil ~= 2.1",
     ]
 )

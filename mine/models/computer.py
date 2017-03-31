@@ -18,7 +18,7 @@ log = logging.getLogger(__name__)
 class Computer(NameMixin, yorm.types.AttributeDictionary):
     """A dictionary of identifying computer information."""
 
-    def __init__(self, name, hostname=None, address=None):
+    def __init__(self, name=None, hostname=None, address=None):
         super().__init__()
         self.name = name
         self.address = address or self.get_address()

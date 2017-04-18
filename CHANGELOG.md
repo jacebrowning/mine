@@ -1,5 +1,10 @@
 # Revision History
 
+## 1.4 (2017/04/18)
+
+- Added color to display the state of running applications.
+- Dropped support for Python 3.3, 3.4, and 3.5.
+
 ## 1.3 (2017/03/13)
 
 - Ignored conflicting program name ("iTunes Helper.app").

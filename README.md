@@ -32,7 +32,7 @@ and some just don't make sense to keep running on all your computers:
 
 ## Requirements
 
-* Python 3.3+
+* Python 3.6+
 
 ## Installation
 

@@ -279,7 +279,7 @@ class TestProcesses:
         data = self._fetch_data()
         assert not data.status.is_running(self.application, self.computer)
 
-    def test_case_5(self):
+    def test_case_6(self):
         """Verify an already stopped local application is ignored."""
 
         # Arrange

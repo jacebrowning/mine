@@ -68,16 +68,15 @@ setuptools.setup(
         'Operating System :: OS Independent',
         'Programming Language :: Python',
         'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.3',
-        'Programming Language :: Python :: 3.4',
-        'Programming Language :: Python :: 3.5',
+        'Programming Language :: Python :: 3.6',
         'Topic :: System',
         'Topic :: System :: Monitoring',
         'Topic :: Utilities',
     ],
 
     install_requires=[
-        "YORM ~= 1.1",
+        "YORM ~= 1.4",
         "psutil ~= 2.1",
+        "crayons ~= 0.1.2",
     ]
 )

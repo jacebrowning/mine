@@ -140,8 +140,6 @@ def run(path=None, cleanup=True, delay=None,
         return manager.launch(path)
     if delete:
         return services.delete_conflicts(root, force=force)
-    if log.getEffectiveLevel() >= logging.WARNING:
-        print("Updating application state...")
 
     if switch is True:
         switch = computer

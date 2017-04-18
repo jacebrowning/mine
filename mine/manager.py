@@ -28,11 +28,11 @@ def log_running(func):  # pragma: no cover (manual)
         log.debug("Determining if %s is running...", application)
         running = func(self, application)
         if running is None:
-            status = "Untracked"
+            status = "Application untracked"
         elif running:
-            status = "Running"
+            status = "Application running on current machine"
         else:
-            status = "Not running"
+            status = "Application not running on current machine"
         log.info("%s: %s", status, application)
         return running
     return wrapped

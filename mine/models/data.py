@@ -60,7 +60,7 @@ class Data:
         for app_status in status.applications:
             if app_status.next:
                 application = config.applications.get(app_status.application)
-                show_queued(application, app_status.next)
+                print(f"{application} is queued for {app_status.next}")
                 if app_status.next == computer:
                     latest = status.get_latest(application)
                     if latest in (computer, None) or application.no_wait:
@@ -68,7 +68,7 @@ class Data:
                             manager.start(application)
                         app_status.next = None
                     else:
-                        show_waiting(application, latest)
+                        print(f"{application} is still running on {latest}")
                 elif manager.is_running(application):
                     manager.stop(application)
 
@@ -84,52 +84,30 @@ class Data:
         """Update each application's status."""
         log.info("Recording application status...")
         for application in config.applications:
+            latest = status.get_latest(application)
             if manager.is_running(application):
-                latest = status.get_latest(application)
                 if computer != latest:
                     if status.is_running(application, computer):
                         # case 1: application just launched remotely
                         manager.stop(application)
                         status.stop(application, computer)
-                        show_running(application, latest)
-                        show_stopped(application, computer)
+                        print(f"{application} is now running on {computer}")
+                        print(f"{application} is now stopped on {computer}")
                     else:
                         # case 2: application just launched locally
                         status.start(application, computer)
-                        show_running(application, computer)
+                        print(f"{application} is now running on {computer}")
                 else:
                     # case 3: application already running locally
-                    pass
+                    print(f"{application} is running on {computer}")
             else:
                 if status.is_running(application, computer):
                     # case 4: application just closed locally
                     status.stop(application, computer)
-                    show_stopped(application, computer)
-                else:
+                    print(f"{application} is now stopped on {computer}")
+                elif latest:
                     # case 5: application already closed locally
-                    pass
-
-
-def show_queued(application, computer):
-    """Display the state of a queued application."""
-    print("{} is queued for {}".format(application, computer))
-
-
-def show_waiting(application, computer):
-    """Display the old state of a running application."""
-    print("{} is still running on {}".format(application, computer))
-
-
-def show_running(application, computer):
-    """Display the new state of a running application."""
-    print("{} is now running on {}".format(application, computer))
-
-
-def show_started(application, computer):
-    """Display the new state of a started application."""
-    print("{} is now started on {}".format(application, computer))
-
-
-def show_stopped(application, computer):
-    """Display the new state of a stopped application."""
-    print("{} is now stopped on {}".format(application, computer))
+                    print(f"{application} is running on {latest}")
+                else:
+                    # case 6: application is not running
+                    print(f"{application} is not running")

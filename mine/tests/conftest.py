@@ -43,10 +43,3 @@ def pytest_runtest_setup(item):
         pytest.skip("test can only be run on OS X")
     if 'windows_only' in item.keywords and platform.system() != 'Windows':
         pytest.skip("test can only be run on Windows")
-
-
-@pytest.fixture
-def path(tmpdir):
-    """Figure to create a temporary settings file path."""
-    tmpdir.chdir()
-    return tmpdir.join('custom.ext').strpath

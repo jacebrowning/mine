@@ -1,4 +1,4 @@
-# pylint: disable=misplaced-comparison-constant,no-self-use
+# pylint: disable=misplaced-comparison-constant,no-self-use,redefined-outer-name
 
 import os
 from unittest.mock import patch, Mock
@@ -8,6 +8,23 @@ import pytest
 from mine import services
 
 from mine.tests.conftest import FILES
+
+
+@pytest.yield_fixture
+def tmp_dir(tmpdir):
+    cwd = os.getcwd()
+    tmpdir.chdir()
+    yield str(tmpdir)
+    os.chdir(cwd)
+
+
+def touch(*parts):
+    """Create an empty file at the given path."""
+    path = os.path.join(*parts)
+    dirpath = os.path.dirname(path)
+    if not os.path.isdir(dirpath):
+        os.makedirs(dirpath)
+    open(path, 'w').close()
 
 
 class TestFindRoot:
@@ -27,32 +44,29 @@ class TestFindRoot:
 
 class TestFindConfigPath:
 
-    def test_find_dropbox(self, tmpdir):
+    def test_find_dropbox(self, tmp_dir):
         """Verify a settings file can be found in Dropbox."""
-        tmpdir.chdir()
-        _touch('Dropbox', 'mine.yml')
+        touch('Dropbox', 'mine.yml')
 
-        path = services.find_config_path(tmpdir.strpath)
+        path = services.find_config_path(tmp_dir)
 
         assert os.path.isfile(path)
 
-    def test_find_dropbox_personal(self, tmpdir):
+    def test_find_dropbox_personal(self, tmp_dir):
         """Verify a settings file can be found in Dropbox (Personal)."""
-        tmpdir.chdir()
-        _touch('Dropbox (Personal)', 'mine.yml')
+        touch('Dropbox (Personal)', 'mine.yml')
 
-        path = services.find_config_path(tmpdir.strpath)
+        path = services.find_config_path(tmp_dir)
 
         assert os.path.isfile(path)
 
     @patch('mine.services.DEPTH', 2)
-    def test_find_depth(self, tmpdir):
+    def test_find_depth(self, tmp_dir):
         """Verify a settings file is not found below the maximum depth."""
-        tmpdir.chdir()
-        _touch('Dropbox', 'a', 'b', 'mine.yml')
+        touch('Dropbox', 'a', 'b', 'mine.yml')
 
         with pytest.raises(OSError):
-            services.find_config_path(tmpdir.strpath)
+            services.find_config_path(tmp_dir)
 
     def test_find_no_share(self):
         """Verify an error occurs when no service directory is found."""
@@ -65,16 +79,13 @@ class TestFindConfigPath:
 class TestDeleteConflicts:
 
     @staticmethod
-    def _create_conflicts(tmpdir, count=2):
-        tmpdir.chdir()
-        root = str(tmpdir)
-
+    def _create_conflicts(tmp_dir, count=2):
         for index in range(count):
             fmt = "{} (Jace's conflicted copy 2015-03-11).fake"
             filename = fmt.format(index)
-            _touch(root, filename)
+            touch(tmp_dir, filename)
 
-        return root
+        return tmp_dir
 
     def test_fail_when_leftover_conflicts(self, _, tmpdir):
         root = self._create_conflicts(tmpdir)
@@ -103,12 +114,3 @@ class TestDeleteConflicts:
         services.delete_conflicts(root, force=True)
 
         assert 2 == mock_remove.call_count
-
-
-def _touch(*parts):
-    """Create an empty file at the given path."""
-    path = os.path.join(*parts)
-    dirpath = os.path.dirname(path)
-    if not os.path.isdir(dirpath):
-        os.makedirs(dirpath)
-    open(path, 'w').close()

@@ -1,4 +1,4 @@
-# pylint: disable=misplaced-comparison-constant,no-self-use
+# pylint: disable=misplaced-comparison-constant,no-self-use,redefined-outer-name
 
 import os
 from unittest.mock import Mock, patch
@@ -9,6 +9,11 @@ import pytest
 from mine import cli
 from mine import common
 from mine.models import Application
+
+
+@pytest.fixture
+def tmp_path(tmpdir):
+    return tmpdir.join('custom.ext').strpath
 
 
 class TestMain:
@@ -45,11 +50,11 @@ class TestMain:
         assert mock_log.exception.call_count == 1
 
     @patch('mine.cli.daemon', None)
-    def test_path(self, path):
+    def test_path(self, tmp_path):
         """Verify a custom setting file path can be used."""
-        cli.main(['--file', path])
+        cli.main(['--file', tmp_path])
 
-        assert os.path.isfile(path)
+        assert os.path.isfile(tmp_path)
 
     @patch('mine.cli.run')
     def test_daemon(self, mock_run):
@@ -62,9 +67,9 @@ class TestMain:
         mock_run.assert_called_once_with(path=None, delay=42)
 
     @patch('mine.cli.daemon', Application(None))
-    def test_warning_when_daemon_is_not_running(self, path):
+    def test_warning_when_daemon_is_not_running(self, tmp_path):
         with pytest.raises(SystemExit):
-            cli.main(['--file', path])
+            cli.main(['--file', tmp_path])
 
 
 class TestSwitch:

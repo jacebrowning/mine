@@ -88,9 +88,7 @@ def delete_conflicts(root=None, config_only=False, force=False):
                 print(path)
 
     if count and not force:
-        print()
-        print("Run again with '--force' to delete these "
-              "{} conflict(s)".format(count))
+        print(f"\nRun again with '--force' to delete these {count} conflict(s)")
         return False
 
     return True

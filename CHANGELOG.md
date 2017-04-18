@@ -1,5 +1,9 @@
 # Revision History
 
+## 1.4 (2017/04/18)
+
+- Added color to display the state of running applications.
+
 ## 1.3 (2017/03/13)
 
 - Ignored conflicting program name ("iTunes Helper.app").

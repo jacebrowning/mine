@@ -165,6 +165,7 @@ class MacManager(BaseManager):  # pragma: no cover (manual)
 
     IGNORED_APPLICATION_NAMES = [
         "iTunesHelper.app",
+        "slack helper.app",
     ]
 
     @log_running

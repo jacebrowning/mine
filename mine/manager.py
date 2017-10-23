@@ -21,10 +21,8 @@ log = logging.getLogger(__name__)
 
 # TODO: enable coverage when a Linux test is implemented
 def log_running(func):  # pragma: no cover (manual)
-    """Decorator for methods that return application status."""
     @functools.wraps(func)
     def wrapped(self, application):
-        """Wrapped method to log if an application is running."""
         log.debug("Determining if %s is running...", application)
         running = func(self, application)
         if running is None:
@@ -40,10 +38,8 @@ def log_running(func):  # pragma: no cover (manual)
 
 # TODO: enable coverage when a Linux test is implemented
 def log_starting(func):  # pragma: no cover (manual)
-    """Decorator for methods that start an application."""
     @functools.wraps(func)
     def wrapped(self, application):
-        """Wrapped method to log that an application is being started."""
         log.info("Starting %s...", application)
         result = func(self, application)
         log.info("Running: %s", application)
@@ -53,10 +49,8 @@ def log_starting(func):  # pragma: no cover (manual)
 
 # TODO: enable coverage when a Linux test is implemented
 def log_stopping(func):  # pragma: no cover (manual)
-    """Decorator for methods that stop an application."""
     @functools.wraps(func)
     def wrapped(self, application):
-        """Wrapped method to log that an application is being stopped."""
         log.info("Stopping %s...", application)
         result = func(self, application)
         log.info("Not running: %s", application)

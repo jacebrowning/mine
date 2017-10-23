@@ -11,10 +11,8 @@ log = logging.getLogger(__name__)
 
 
 def log_running(func):
-    """Decorator for methods that return application status."""
     @functools.wraps(func)
     def wrapped(self, application, computer):
-        """Wrapped method to log if an application is running."""
         running = func(self, application, computer)
         log.debug("%s marked as %s on: %s",
                   application, "started" if running else "stopped", computer)
@@ -23,10 +21,8 @@ def log_running(func):
 
 
 def log_starting(func):
-    """Decorator for methods that mark an application as started."""
     @functools.wraps(func)
     def wrapped(self, application, computer):
-        """Wrapped method to log that an application is started."""
         log.debug("Marking %s as started on %s...", application, computer)
         result = func(self, application, computer)
         log.debug("%s marked as started on: %s", application, computer)
@@ -35,10 +31,8 @@ def log_starting(func):
 
 
 def log_stopping(func):
-    """Decorator for methods that mark an application as stopped."""
     @functools.wraps(func)
     def wrapped(self, application, computer):
-        """Wrapped method to log that an application is stopped."""
         log.debug("Marking %s as stopped on %s...", application, computer)
         result = func(self, application, computer)
         log.debug("%s marked as stopped on: %s", application, computer)

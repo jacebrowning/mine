@@ -1,6 +1,6 @@
 # Revision History
 
-## 1.5 (unreleased)
+## 1.5 (2017/10/22)
 
 - Ignored conflicting program name ("slack helper.app").
 

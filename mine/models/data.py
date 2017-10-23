@@ -105,7 +105,7 @@ class Data:
                             f"{application} is now running on {computer}"))
                 else:
                     # case 3: application already running locally
-                    print(crayons.magenta(
+                    print(crayons.cyan(
                         f"{application} is running on {computer}"))
             else:
                 if status.is_running(application, computer):
@@ -115,7 +115,7 @@ class Data:
                         f"{application} is now stopped on {computer}"))
                 elif latest:
                     # case 5: application already closed locally
-                    print(crayons.blue(
+                    print(crayons.magenta(
                         f"{application} is running on {latest}"))
                 else:
                     # case 6: application is not running

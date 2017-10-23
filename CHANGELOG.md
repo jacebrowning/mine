@@ -1,5 +1,9 @@
 # Revision History
 
+## 1.5 (2017/10/22)
+
+- Ignored conflicting program name ("slack helper.app").
+
 ## 1.4 (2017/04/18)
 
 - Added color to display the state of running applications.

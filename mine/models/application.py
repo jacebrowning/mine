@@ -63,3 +63,4 @@ class Applications(yorm.types.SortedList):
         for application in self:
             if application == name:
                 return application
+        return None

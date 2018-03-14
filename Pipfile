@@ -2,10 +2,15 @@
 
 url = "https://pypi.python.org/simple"
 verify_ssl = true
+name = "pypi"
 
 [requires]
 
 python_version = "3.6"
+
+[packages]
+
+mine = { path = ".", editable = true }
 
 [dev-packages]
 
@@ -15,16 +20,14 @@ pycodestyle = "~=2.3"
 pydocstyle = "~=2.0"
 
 # Testing
-pytest = "~=3.0.7"
-pytest-describe = "==0.11.0"
-pytest-expecter = "==0.2.2.post6"
-pytest-cov = "*"
+pytest = "~= 3.3"
+pytest-describe = "*"
+pytest-expecter = "~=1.1"
 pytest-random = "*"
-pytest-catchlog = "*"
+pytest-cov = "*"
 
-# Coverage
-coverage = "~=4.0"
-"coverage.space" = "~=0.8"
+# Reports
+"coverage.space" = "*"
 
 # Documentation
 mkdocs = "*"
@@ -40,3 +43,5 @@ twine = "*"
 
 # Tooling
 sniffer = "*"
+pync = {version = "<2.0", sys_platform = "== 'darwin'"}
+MacFSEvents = {version = "*", sys_platform = "== 'darwin'"}

@@ -34,6 +34,13 @@
             "editable": true,
             "path": "."
         },
+        "minilog": {
+            "hashes": [
+                "sha256:8b7b25adf43f4bf970bba9d2d51010b7cff3cd970286a35834f7eea6ca4d818d",
+                "sha256:d4de71f14572b645dbd48f59f2fede020648e0730d61562c8dbf400c0377ffc2"
+            ],
+            "version": "==0.3"
+        },
         "parse": {
             "hashes": [
                 "sha256:8048dde3f5ca07ad7ac7350460952d83b63eaacecdac1b37f45fd74870d849d2"

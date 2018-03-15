@@ -46,6 +46,7 @@ install: $(DEPENDENCIES)
 
 $(DEPENDENCIES):
 	pipenv install --dev
+	pipenv run python setup.py develop
 	@ touch $@
 
 # CHECKS ######################################################################

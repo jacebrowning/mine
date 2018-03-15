@@ -1,13 +1,11 @@
 """Data structures for application/computer status."""
 
 import functools
-import logging
 
 import yorm
+import log
 
 from .timestamp import Timestamp
-
-log = logging.getLogger(__name__)
 
 
 def log_running(func):

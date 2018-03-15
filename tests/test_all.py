@@ -2,18 +2,15 @@
 
 import os
 import subprocess
-import logging
 
 import yorm
+import log
 
 from mine import cli
 from mine.models import (Application, Computer, Data, ProgramConfig,
                          State, Status, ProgramStatus)
 
 from .conftest import FILES
-
-
-log = logging.getLogger(__name__)
 
 
 class TestFiles:

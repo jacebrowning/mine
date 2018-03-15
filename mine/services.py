@@ -2,7 +2,8 @@
 
 import os
 import re
-import logging
+
+import log
 
 from .models.application import Application, Versions
 
@@ -25,8 +26,6 @@ APPLICATION = Application("Dropbox", versions=Versions(
     mac="Dropbox.app",
     windows="Dropbox.exe",
     linux="dropbox"))
-
-log = logging.getLogger(__name__)
 
 
 def find_root(top=None):

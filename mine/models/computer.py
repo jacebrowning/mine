@@ -2,14 +2,11 @@
 
 import uuid
 import socket
-import logging
 
 import yorm
+import log
 
 from ._bases import NameMixin
-
-
-log = logging.getLogger(__name__)
 
 
 @yorm.attr(name=yorm.types.String)
@@ -58,6 +55,7 @@ class Computers(yorm.types.SortedList):
         for computer in self:
             if computer == name:
                 return computer
+        return None
 
     def match(self, partial):
         """Find a computer with a similar name."""
@@ -65,6 +63,7 @@ class Computers(yorm.types.SortedList):
         for computer in self:
             if partial.lower() in computer.name.lower():
                 return computer
+        return None
 
     def get_current(self):
         """Get the current computer's information."""

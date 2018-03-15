@@ -6,9 +6,9 @@ import sys
 import time
 import argparse
 import subprocess
-import logging
 
 import yorm
+import log
 
 from . import CLI, VERSION, DESCRIPTION
 from . import common
@@ -17,7 +17,6 @@ from .manager import get_manager
 from .models import Data, Application
 
 
-log = logging.getLogger(__name__)
 daemon = Application(CLI, filename=CLI)
 
 

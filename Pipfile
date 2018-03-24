@@ -27,7 +27,7 @@ pytest-random = "*"
 pytest-cov = "*"
 
 # Reports
-"coverage.space" = "*"
+coverage-space = "*"
 
 # Documentation
 mkdocs = "*"

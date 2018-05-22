@@ -1,5 +1,9 @@
 # Revision History
 
+## 1.6 (unreleased)
+
+- Ignored conflicting program name ("garcon.appex").
+
 ## 1.5 (2017/10/22)
 
 - Ignored conflicting program name ("slack helper.app").

@@ -64,8 +64,9 @@ class TestComputer:
 class TestComputers:
     """Unit tests for lists of computers."""
 
-    computers = Computers([Computer('abc', 'abc.local', 1),
-                           Computer('def', 'def.local', 2)])
+    computers = Computers(
+        [Computer('abc', 'abc.local', 1), Computer('def', 'def.local', 2)]
+    )
 
     def test_get(self):
         """Verify a computer can be found in a list."""

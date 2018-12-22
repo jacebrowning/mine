@@ -2,8 +2,8 @@
 
 import functools
 
-import yorm
 import log
+import yorm
 
 from .timestamp import Timestamp
 
@@ -12,9 +12,14 @@ def log_running(func):
     @functools.wraps(func)
     def wrapped(self, application, computer):
         running = func(self, application, computer)
-        log.debug("%s marked as %s on: %s",
-                  application, "started" if running else "stopped", computer)
+        log.debug(
+            "%s marked as %s on: %s",
+            application,
+            "started" if running else "stopped",
+            computer,
+        )
         return running
+
     return wrapped
 
 
@@ -25,6 +30,7 @@ def log_starting(func):
         result = func(self, application, computer)
         log.debug("%s marked as started on: %s", application, computer)
         return result
+
     return wrapped
 
 
@@ -35,6 +41,7 @@ def log_stopping(func):
         result = func(self, application, computer)
         log.debug("%s marked as stopped on: %s", application, computer)
         return result
+
     return wrapped
 
 
@@ -66,7 +73,9 @@ class StateList(yorm.types.SortedList):
 class Status(yorm.types.AttributeDictionary):
     """Dictionary of computers using an application."""
 
-    def __init__(self, application=None, computers=None, next=None):  # pylint: disable=redefined-builtin
+    def __init__(
+        self, application=None, computers=None, next=None
+    ):  # pylint: disable=redefined-builtin
         super().__init__()
         self.application = application
         self.computers = computers or StateList()
@@ -111,8 +120,11 @@ class ProgramStatus(yorm.types.AttributeDictionary):
                 states = [s for s in status.computers if s.timestamp.active]
                 if states:
                     states.sort(key=lambda s: s.timestamp, reverse=True)
-                    log.debug("%s marked as started on: %s", application,
-                              ', '.join(str(s) for s in states))
+                    log.debug(
+                        "%s marked as started on: %s",
+                        application,
+                        ', '.join(str(s) for s in states),
+                    )
                     # TODO: consider returning the computer instance?
                     return states[0].computer
 

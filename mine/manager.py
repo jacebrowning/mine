@@ -1,15 +1,15 @@
 """Classes to manage application state."""
 
-import os
 import abc
-import time
-import glob
-import platform
 import functools
+import glob
+import os
+import platform
 import subprocess
+import time
 
-import psutil
 import log
+import psutil
 
 
 # TODO: delete this after implementing `BaseManager`
@@ -31,6 +31,7 @@ def log_running(func):  # pragma: no cover (manual)
             status = "Application not running on current machine"
         log.info("%s: %s", status, application)
         return running
+
     return wrapped
 
 
@@ -42,6 +43,7 @@ def log_starting(func):  # pragma: no cover (manual)
         result = func(self, application)
         log.info("Running: %s", application)
         return result
+
     return wrapped
 
 
@@ -53,6 +55,7 @@ def log_stopping(func):  # pragma: no cover (manual)
         result = func(self, application)
         log.info("Not running: %s", application)
         return result
+
     return wrapped
 
 
@@ -155,11 +158,7 @@ class MacManager(BaseManager):  # pragma: no cover (manual)
     NAME = 'Darwin'
     FRIENDLY = 'Mac'
 
-    IGNORED_APPLICATION_NAMES = [
-        "iTunesHelper.app",
-        "slack helper.app",
-        "garcon.appex",
-    ]
+    IGNORED_APPLICATION_NAMES = ["iTunesHelper.app", "slack helper.app", "garcon.appex"]
 
     @log_running
     def is_running(self, application):
@@ -173,10 +172,7 @@ class MacManager(BaseManager):  # pragma: no cover (manual)
     def start(self, application):
         name = application.versions.mac
         path = None
-        for base in (".",
-                     "~/Applications",
-                     "/Applications",
-                     "/Applications/*"):
+        for base in (".", "~/Applications", "/Applications", "/Applications/*"):
             pattern = os.path.expanduser(os.path.join(base, name))
             log.debug("Glob pattern: %s", pattern)
             paths = glob.glob(pattern)

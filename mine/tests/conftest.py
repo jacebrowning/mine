@@ -3,8 +3,9 @@
 import os
 import platform
 
-import pytest
 import log
+import pytest
+
 
 ENV = 'TEST_INTEGRATION'  # environment variable to enable integration tests
 REASON = "'{0}' variable not set".format(ENV)
@@ -16,8 +17,7 @@ FILES = os.path.join(ROOT, 'files')
 def pytest_configure(config):
     """Disable verbose output when running tests."""
     log.init(
-        level=log.DEBUG,
-        format="[%(levelname)-8s] (%(name)s @%(lineno)4d) %(message)s",
+        level=log.DEBUG, format="[%(levelname)-8s] (%(name)s @%(lineno)4d) %(message)s"
     )
     log.silence('yorm', allow_warning=True)
 

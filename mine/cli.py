@@ -2,19 +2,17 @@
 
 """Command-line interface."""
 
-import sys
-import time
 import argparse
 import subprocess
+import sys
+import time
 
-import yorm
 import log
+import yorm
 
-from . import CLI, VERSION, DESCRIPTION
-from . import common
-from . import services
+from . import CLI, DESCRIPTION, VERSION, common, services
 from .manager import get_manager
-from .models import Data, Application
+from .models import Application, Data
 
 
 daemon = Application(CLI, filename=CLI)
@@ -27,44 +25,65 @@ def main(args=None):
     debug = argparse.ArgumentParser(add_help=False)
     debug.add_argument('-V', '--version', action='version', version=VERSION)
     group = debug.add_mutually_exclusive_group()
-    group.add_argument('-v', '--verbose', action='count', default=0,
-                       help="enable verbose logging")
-    group.add_argument('-q', '--quiet', action='store_const', const=-1,
-                       dest='verbose', help="only display errors and prompts")
-    shared = {'formatter_class': common.HelpFormatter,
-              'parents': [debug]}
+    group.add_argument(
+        '-v', '--verbose', action='count', default=0, help="enable verbose logging"
+    )
+    group.add_argument(
+        '-q',
+        '--quiet',
+        action='store_const',
+        const=-1,
+        dest='verbose',
+        help="only display errors and prompts",
+    )
+    shared = {'formatter_class': common.HelpFormatter, 'parents': [debug]}
 
     # Build main parser
-    parser = argparse.ArgumentParser(prog=CLI, description=DESCRIPTION,
-                                     **shared)
-    parser.add_argument('-d', '--daemon', metavar='DELAY', nargs='?', const=300,
-                        type=int, help="run continuously with delay [seconds]")
+    parser = argparse.ArgumentParser(prog=CLI, description=DESCRIPTION, **shared)
+    parser.add_argument(
+        '-d',
+        '--daemon',
+        metavar='DELAY',
+        nargs='?',
+        const=300,
+        type=int,
+        help="run continuously with delay [seconds]",
+    )
     parser.add_argument('-f', '--file', help="custom settings file path")
     subs = parser.add_subparsers(help="", dest='command', metavar="<command>")
 
     # Build switch parser
     info = "start applications on another computer"
-    sub = subs.add_parser('switch', description=info.capitalize() + '.',
-                          help=info, **shared)
-    sub.add_argument('name', nargs='?',
-                     help="computer to queue for launch (default: current)")
+    sub = subs.add_parser(
+        'switch', description=info.capitalize() + '.', help=info, **shared
+    )
+    sub.add_argument(
+        'name', nargs='?', help="computer to queue for launch (default: current)"
+    )
 
     # Build close parser
     info = "close applications on this computer"
-    sub = subs.add_parser('close', description=info.capitalize() + '.',
-                          help=info, **shared)
+    sub = subs.add_parser(
+        'close', description=info.capitalize() + '.', help=info, **shared
+    )
 
     # Build edit parser
     info = "launch the settings file for editing"
-    sub = subs.add_parser('edit', description=info.capitalize() + '.',
-                          help=info, **shared)
+    sub = subs.add_parser(
+        'edit', description=info.capitalize() + '.', help=info, **shared
+    )
 
     # Build clean parser
     info = "display and delete conflicted files"
-    sub = subs.add_parser('clean', description=info.capitalize() + '.',
-                          help=info, **shared)
-    sub.add_argument('-f', '--force', action='store_true',
-                     help="actually delete the conflicted files")
+    sub = subs.add_parser(
+        'clean', description=info.capitalize() + '.', help=info, **shared
+    )
+    sub.add_argument(
+        '-f',
+        '--force',
+        action='store_true',
+        help="actually delete the conflicted files",
+    )
 
     # Parse arguments
     args = parser.parse_args(args=args)
@@ -100,10 +119,15 @@ def main(args=None):
         sys.exit(1)
 
 
-def run(path=None, cleanup=True, delay=None,
-        switch=None,
-        edit=False,
-        delete=False, force=False):
+def run(
+    path=None,
+    cleanup=True,
+    delay=None,
+    switch=None,
+    edit=False,
+    delete=False,
+    force=False,
+):
     """Run the program.
 
     :param path: custom settings file path

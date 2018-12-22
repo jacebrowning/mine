@@ -1,7 +1,7 @@
 """Data structures for application information."""
 
-import yorm
 import log
+import yorm
 
 from ._bases import NameMixin
 
@@ -25,14 +25,13 @@ class Properties(yorm.types.AttributeDictionary):
 class Application(NameMixin, yorm.types.AttributeDictionary):
     """Dictionary of application information."""
 
-    def __init__(self, name=None, properties=None, versions=None,
-                 filename=None):
+    def __init__(self, name=None, properties=None, versions=None, filename=None):
         super().__init__()
         self.name = name
         self.properties = properties or Properties()
-        self.versions = versions or Versions(mac=filename,
-                                             windows=filename,
-                                             linux=filename)
+        self.versions = versions or Versions(
+            mac=filename, windows=filename, linux=filename
+        )
 
     @property
     def auto_queue(self):

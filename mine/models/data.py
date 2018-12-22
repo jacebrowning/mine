@@ -1,8 +1,8 @@
 """Data structures that combine all program data."""
 
-import yorm
 import crayons
 import log
+import yorm
 
 from .config import ProgramConfig
 from .status import ProgramStatus
@@ -57,8 +57,7 @@ class Data:
         for app_status in status.applications:
             if app_status.next:
                 application = config.applications.get(app_status.application)
-                print(crayons.yellow(
-                    f"{application} is queued for {app_status.next}"))
+                print(crayons.yellow(f"{application} is queued for {app_status.next}"))
                 if app_status.next == computer:
                     latest = status.get_latest(application)
                     if latest in (computer, None) or application.no_wait:
@@ -66,8 +65,11 @@ class Data:
                             manager.start(application)
                         app_status.next = None
                     else:
-                        print(crayons.yellow(
-                            f"{application} is still running on {latest}"))
+                        print(
+                            crayons.yellow(
+                                f"{application} is still running on {latest}"
+                            )
+                        )
                 elif manager.is_running(application):
                     manager.stop(application)
 
@@ -90,30 +92,29 @@ class Data:
                         # case 1: application just launched remotely
                         manager.stop(application)
                         status.stop(application, computer)
-                        print(crayons.green(
-                            f"{application} is now running on {latest}"))
-                        print(crayons.red(
-                            f"{application} is now stopped on {computer}"))
+                        print(
+                            crayons.green(f"{application} is now running on {latest}")
+                        )
+                        print(
+                            crayons.red(f"{application} is now stopped on {computer}")
+                        )
                     else:
                         # case 2: application just launched locally
                         status.start(application, computer)
-                        print(crayons.green(
-                            f"{application} is now running on {computer}"))
+                        print(
+                            crayons.green(f"{application} is now running on {computer}")
+                        )
                 else:
                     # case 3: application already running locally
-                    print(crayons.cyan(
-                        f"{application} is running on {computer}"))
+                    print(crayons.cyan(f"{application} is running on {computer}"))
             else:
                 if status.is_running(application, computer):
                     # case 4: application just closed locally
                     status.stop(application, computer)
-                    print(crayons.red(
-                        f"{application} is now stopped on {computer}"))
+                    print(crayons.red(f"{application} is now stopped on {computer}"))
                 elif latest:
                     # case 5: application already closed locally
-                    print(crayons.magenta(
-                        f"{application} is running on {latest}"))
+                    print(crayons.magenta(f"{application} is running on {latest}"))
                 else:
                     # case 6: application is not running
-                    print(crayons.white(
-                        f"{application} is not running"))
+                    print(crayons.white(f"{application} is not running"))

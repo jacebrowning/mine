@@ -1,8 +1,8 @@
 """Package for mine."""
 
-__project__ = 'mine'
-__version__ = '1.5'
+from pkg_resources import get_distribution
+
 
 CLI = 'mine'
-VERSION = '{0} v{1}'.format(__project__, __version__)
+VERSION = 'mine v{}'.format(get_distribution('mine').version)
 DESCRIPTION = 'Share application state across computers using Dropbox.'

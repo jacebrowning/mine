@@ -2,7 +2,7 @@
 
 import pytest
 
-from mine.manager import get_manager, LinuxManager, MacManager, WindowsManager
+from mine.manager import LinuxManager, MacManager, WindowsManager, get_manager
 from mine.models import Application
 
 

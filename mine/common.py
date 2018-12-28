@@ -15,7 +15,8 @@ class HelpFormatter(argparse.HelpFormatter):
     """Command-line help text formatter with wider help text."""
 
     def __init__(self, *args, **kwargs):
-        super().__init__(*args, max_help_position=40, **kwargs)
+        kwargs['max_help_position'] = 40
+        super().__init__(*args, **kwargs)
 
 
 class WarningFormatter(logging.Formatter):

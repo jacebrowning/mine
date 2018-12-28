@@ -36,10 +36,14 @@ def main(args=None):
         dest='verbose',
         help="only display errors and prompts",
     )
-    shared = {'formatter_class': common.HelpFormatter, 'parents': [debug]}
 
     # Build main parser
-    parser = argparse.ArgumentParser(prog=CLI, description=DESCRIPTION, **shared)
+    parser = argparse.ArgumentParser(
+        prog=CLI,
+        description=DESCRIPTION,
+        formatter_class=common.HelpFormatter,
+        parents=[debug],
+    )
     parser.add_argument(
         '-d',
         '--daemon',
@@ -55,7 +59,11 @@ def main(args=None):
     # Build switch parser
     info = "start applications on another computer"
     sub = subs.add_parser(
-        'switch', description=info.capitalize() + '.', help=info, **shared
+        'switch',
+        description=info.capitalize() + '.',
+        help=info,
+        formatter_class=common.HelpFormatter,
+        parents=[debug],
     )
     sub.add_argument(
         'name', nargs='?', help="computer to queue for launch (default: current)"
@@ -64,19 +72,31 @@ def main(args=None):
     # Build close parser
     info = "close applications on this computer"
     sub = subs.add_parser(
-        'close', description=info.capitalize() + '.', help=info, **shared
+        'close',
+        description=info.capitalize() + '.',
+        help=info,
+        formatter_class=common.HelpFormatter,
+        parents=[debug],
     )
 
     # Build edit parser
     info = "launch the settings file for editing"
     sub = subs.add_parser(
-        'edit', description=info.capitalize() + '.', help=info, **shared
+        'edit',
+        description=info.capitalize() + '.',
+        help=info,
+        formatter_class=common.HelpFormatter,
+        parents=[debug],
     )
 
     # Build clean parser
     info = "display and delete conflicted files"
     sub = subs.add_parser(
-        'clean', description=info.capitalize() + '.', help=info, **shared
+        'clean',
+        description=info.capitalize() + '.',
+        help=info,
+        formatter_class=common.HelpFormatter,
+        parents=[debug],
     )
     sub.add_argument(
         '-f',

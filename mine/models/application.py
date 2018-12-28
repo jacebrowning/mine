@@ -1,37 +1,37 @@
 """Data structures for application information."""
 
+from dataclasses import dataclass
+from typing import List, Optional
+
 import log
-import yorm
 
 from ._bases import NameMixin
 
 
-@yorm.attr(mac=yorm.types.NullableString)
-@yorm.attr(windows=yorm.types.NullableString)
-@yorm.attr(linux=yorm.types.NullableString)
-class Versions(yorm.types.AttributeDictionary):
+@dataclass
+class Versions:
     """Dictionary of OS-specific application filenames."""
 
+    mac: Optional[str] = None
+    windows: Optional[str] = None
+    linux: Optional[str] = None
 
-@yorm.attr(auto_queue=yorm.types.Boolean)
-@yorm.attr(single_instance=yorm.types.Boolean)
-class Properties(yorm.types.AttributeDictionary):
+
+@dataclass
+class Properties:
     """Dictionary of application management settings."""
 
+    auto_queue: bool = True
+    single_instance: bool = True
 
-@yorm.attr(name=yorm.types.String)
-@yorm.attr(properties=Properties)
-@yorm.attr(versions=Versions)
-class Application(NameMixin, yorm.types.AttributeDictionary):
+
+@dataclass
+class Application(NameMixin):
     """Dictionary of application information."""
 
-    def __init__(self, name=None, properties=None, versions=None, filename=None):
-        super().__init__()
-        self.name = name
-        self.properties = properties or Properties()
-        self.versions = versions or Versions(
-            mac=filename, windows=filename, linux=filename
-        )
+    name: str
+    properties: Properties = Properties()
+    versions: Versions = Versions()
 
     @property
     def auto_queue(self):
@@ -40,22 +40,3 @@ class Application(NameMixin, yorm.types.AttributeDictionary):
     @property
     def no_wait(self):
         return not self.properties.single_instance
-
-
-@yorm.attr(all=Application)
-class Applications(yorm.types.SortedList):
-    """List of monitored applications."""
-
-    def get(self, name):
-        """Get the application with the given name."""
-        application = self.find(name)
-        assert application, name
-        return application
-
-    def find(self, name):
-        """Find the application with the given name, else None."""
-        log.debug("Finding application for '%s'...", name)
-        for application in self:
-            if application == name:
-                return application
-        return None

@@ -8,14 +8,13 @@ import sys
 import time
 
 import log
-import yorm
 
 from . import CLI, DESCRIPTION, VERSION, common, services
 from .manager import get_manager
-from .models import Application, Data
+from .models import Application, Data, Versions
 
 
-daemon = Application(CLI, filename=CLI)
+daemon = Application(CLI, versions=Versions(mac=CLI, windows=CLI, linux=CLI))
 
 
 def main(args=None):
@@ -170,13 +169,14 @@ def run(
     path = path or services.find_config_path(root=root)
 
     data = Data()
-    yorm.sync(data, path)
+    # pylint: disable=no-member,protected-access
+    data.datafile._pattern = path  # type: ignore
 
     config = data.config
     status = data.status
 
     log.info("Identifying current computer...")
-    computer = config.computers.get_current()
+    computer = config.get_current_computer()
     log.info("Current computer: %s", computer)
 
     if edit:
@@ -189,7 +189,7 @@ def run(
     elif switch is False:
         data.close_all_applications(config, manager)
     elif switch:
-        switch = config.computers.match(switch)
+        switch = config.match_computer(switch)
 
     if switch:
         if switch != computer:

@@ -33,12 +33,12 @@ classifiers = [
 
 [tool.poetry.dependencies]
 
-python = "^3.6"
+python = "^3.7"
 
-YORM = "^1.4"
+datafiles = "=0.1a9"
 psutil = "^2.1"
 crayons = "~0.1.2"
-minilog = "^0.3"
+minilog = "*"
 
 [tool.poetry.dev-dependencies]
 

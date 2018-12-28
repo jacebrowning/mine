@@ -4,7 +4,6 @@ import os
 import subprocess
 
 import log
-import yorm
 
 from mine import cli
 from mine.models import (

@@ -22,9 +22,8 @@ def pytest_configure(config):
     log.silence('yorm', allow_warning=True)
 
     terminal = config.pluginmanager.getplugin('terminal')
-    base = terminal.TerminalReporter
 
-    class QuietReporter(base):
+    class QuietReporter(terminal.TerminalReporter):  # type: ignore
         """A py.test reporting that only shows dots when running tests."""
 
         def __init__(self, *args, **kwargs):

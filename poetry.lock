@@ -284,10 +284,30 @@ description = "More routines for operating on iterables, beyond itertools"
 name = "more-itertools"
 optional = false
 python-versions = "*"
-version = "4.3.0"
+version = "5.0.0"
 
 [package.dependencies]
 six = ">=1.0.0,<2.0.0"
+
+[[package]]
+category = "dev"
+description = "Optional static typing for Python"
+name = "mypy"
+optional = false
+python-versions = "*"
+version = "0.650"
+
+[package.dependencies]
+mypy-extensions = ">=0.4.0,<0.5.0"
+typed-ast = ">=1.1.0,<1.2.0"
+
+[[package]]
+category = "dev"
+description = "Experimental type system extensions for programs checked with the mypy typechecker."
+name = "mypy-extensions"
+optional = false
+python-versions = "*"
+version = "0.4.1"
 
 [[package]]
 category = "dev"
@@ -560,7 +580,6 @@ version = "5.1.1"
 [[package]]
 category = "dev"
 description = "a fork of Python 2 and 3 ast modules with type comment support"
-marker = "python_version < \"3.7\" and implementation_name == \"cpython\""
 name = "typed-ast"
 optional = false
 python-versions = "*"
@@ -596,7 +615,7 @@ parse = ">=1.8.0,<1.9.0"
 simplejson = ">=3.8,<4.0"
 
 [metadata]
-content-hash = "cdef7f08a7616a71f20c179f79bd3c4bdf4cac61bb87a737b93d579966af74a2"
+content-hash = "82c42061d0e75c50f075d60ccdaa5139c21dd88f25d71e1f7c63066cfd4b5c7a"
 python-versions = "^3.6"
 
 [metadata.hashes]
@@ -629,7 +648,9 @@ markupsafe = ["048ef924c1623740e70204aa7143ec592504045ae4429b59c30054cb31e3c432"
 mccabe = ["ab8a6258860da4b6677da4bd2fe5dc2c659cff31b3ee4f7f5d64e79735b80d42", "dd8d182285a0fe56bace7f45b5e7d1a6ebcbf524e8f3bd87eb0f125271b8831f"]
 minilog = ["a5a533fe0e31a49a766fbb29f16dee0e9c659bbe81cde8147ff67f7304c558df", "e617c3676f2861a2d5020e65e4ae956567dd241ce0b5c8de50a8a40b94e177bc"]
 mkdocs = ["17d34329aad75d5de604b9ed4e31df3a4d235afefdc46ce7b1964fddb2e1e939", "8cc8b38325456b9e942c981a209eaeb1e9f3f77b493ad755bfef889b9c8d356a"]
-more-itertools = ["c187a73da93e7a8acc0001572aebc7e3c69daf7bf6881a2cea10650bd4420092", "c476b5d3a34e12d40130bc2f935028b5f636df8f372dc2c1c01dc19681b2039e", "fcbfeaea0be121980e15bc97b3817b5202ca73d0eae185b4550cbfce2a3ebb3d"]
+more-itertools = ["38a936c0a6d98a38bcc2d03fdaaedaba9f412879461dd2ceff8d37564d6522e4", "c0a5785b1109a6bd7fac76d6837fd1feca158e54e521ccd2ae8bfe393cc9d4fc", "fe7a7cae1ccb57d33952113ff4fa1bc5f879963600ed74918f1236e212ee50b9"]
+mypy = ["12d965c9c4e8a625673aec493162cf390e66de12ef176b1f4821ac00d55f3ab3", "38d5b5f835a81817dcc0af8d155bce4e9aefa03794fe32ed154d6612e83feafa"]
+mypy-extensions = ["37e0e956f41369209a3d5f34580150bcacfabaa57b33a15c0b25f4b5725e0812", "b16cabe759f55e3409a7d231ebd2841378fb0c27a5d1994719e340e4f429ac3e"]
 nose = ["9ff7c6cc443f8c51994b34a667bbcf45afd6d945be7477b52e97516fd17c53ac", "dadcddc0aefbf99eea214e0f1232b94f2fa9bd98fa8353711dacb112bfcbbb2a", "f1bffef9cbc82628f6e7d7b40d7e255aefaa1adb6a1b1d26c69a8b79e6208a98"]
 parse = ["c3cdf6206f22aeebfa00e5b954fcfea13d1b2dc271c75806b6025b94fb490939"]
 pefile = ["4c5b7e2de0c8cb6c504592167acf83115cbbde01fe4a507c16a1422850e86cd6"]

@@ -66,10 +66,8 @@ coveragespace = "*"
 mkdocs = "^1.0"
 pygments = "*"
 
-# Build
-pyinstaller = "*"
-
 # Tooling
+pyinstaller = "*"
 sniffer = "*"
 MacFSEvents = { version = "*", platform = "darwin" }
 pync = { version = "*", platform = "darwin" }

@@ -35,7 +35,7 @@ classifiers = [
 
 python = "^3.7"
 
-datafiles = "=0.1a9"
+datafiles = "=0.2b1"
 psutil = "^2.1"
 crayons = "~0.1.2"
 minilog = "*"

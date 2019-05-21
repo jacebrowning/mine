@@ -1,13 +1,9 @@
 """Data structures for application information."""
 
-import logging
-
+import log
 import yorm
 
 from ._bases import NameMixin
-
-
-log = logging.getLogger(__name__)
 
 
 @yorm.attr(mac=yorm.types.NullableString)
@@ -29,14 +25,13 @@ class Properties(yorm.types.AttributeDictionary):
 class Application(NameMixin, yorm.types.AttributeDictionary):
     """Dictionary of application information."""
 
-    def __init__(self, name=None, properties=None, versions=None,
-                 filename=None):
+    def __init__(self, name=None, properties=None, versions=None, filename=None):
         super().__init__()
         self.name = name
         self.properties = properties or Properties()
-        self.versions = versions or Versions(mac=filename,
-                                             windows=filename,
-                                             linux=filename)
+        self.versions = versions or Versions(
+            mac=filename, windows=filename, linux=filename
+        )
 
     @property
     def auto_queue(self):
@@ -63,3 +58,4 @@ class Applications(yorm.types.SortedList):
         for application in self:
             if application == name:
                 return application
+        return None

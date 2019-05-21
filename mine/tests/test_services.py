@@ -1,12 +1,11 @@
 # pylint: disable=misplaced-comparison-constant,no-self-use,redefined-outer-name
 
 import os
-from unittest.mock import patch, Mock
+from unittest.mock import Mock, patch
 
 import pytest
 
 from mine import services
-
 from mine.tests.conftest import FILES
 
 
@@ -28,7 +27,6 @@ def touch(*parts):
 
 
 class TestFindRoot:
-
     @patch('os.listdir', Mock(return_value=[]))
     @patch('os.getenv', Mock(return_value=True))
     def test_ci_workaround_enabled(self):
@@ -43,7 +41,6 @@ class TestFindRoot:
 
 
 class TestFindConfigPath:
-
     def test_find_dropbox(self, tmp_dir):
         """Verify a settings file can be found in Dropbox."""
         touch('Dropbox', 'mine.yml')
@@ -77,7 +74,6 @@ class TestFindConfigPath:
 
 @patch('os.remove')
 class TestDeleteConflicts:
-
     @staticmethod
     def _create_conflicts(tmp_dir, count=2):
         for index in range(count):

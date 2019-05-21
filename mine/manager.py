@@ -1,18 +1,17 @@
 """Classes to manage application state."""
 
-import os
 import abc
-import time
-import glob
-import platform
 import functools
+import glob
+import os
+import platform
 import subprocess
-import logging
+import time
+from typing import List
 
+import log
 import psutil
 
-
-log = logging.getLogger(__name__)
 
 # TODO: delete this after implementing `BaseManager`
 # https://github.com/jacebrowning/mine/issues/8
@@ -33,6 +32,7 @@ def log_running(func):  # pragma: no cover (manual)
             status = "Application not running on current machine"
         log.info("%s: %s", status, application)
         return running
+
     return wrapped
 
 
@@ -44,6 +44,7 @@ def log_starting(func):  # pragma: no cover (manual)
         result = func(self, application)
         log.info("Running: %s", application)
         return result
+
     return wrapped
 
 
@@ -55,15 +56,16 @@ def log_stopping(func):  # pragma: no cover (manual)
         result = func(self, application)
         log.info("Not running: %s", application)
         return result
+
     return wrapped
 
 
 class BaseManager(metaclass=abc.ABCMeta):  # pragma: no cover (abstract)
     """Base application manager."""
 
-    NAME = FRIENDLY = None
+    NAME = FRIENDLY = ''
 
-    IGNORED_APPLICATION_NAMES = []
+    IGNORED_APPLICATION_NAMES: List[str] = []
 
     def __str__(self):
         return self.FRIENDLY
@@ -157,10 +159,7 @@ class MacManager(BaseManager):  # pragma: no cover (manual)
     NAME = 'Darwin'
     FRIENDLY = 'Mac'
 
-    IGNORED_APPLICATION_NAMES = [
-        "iTunesHelper.app",
-        "slack helper.app",
-    ]
+    IGNORED_APPLICATION_NAMES = ["iTunesHelper.app", "slack helper.app", "garcon.appex"]
 
     @log_running
     def is_running(self, application):
@@ -174,10 +173,7 @@ class MacManager(BaseManager):  # pragma: no cover (manual)
     def start(self, application):
         name = application.versions.mac
         path = None
-        for base in (".",
-                     "~/Applications",
-                     "/Applications",
-                     "/Applications/*"):
+        for base in (".", "~/Applications", "/Applications", "/Applications/*"):
             pattern = os.path.expanduser(os.path.join(base, name))
             log.debug("Glob pattern: %s", pattern)
             paths = glob.glob(pattern)
@@ -225,8 +221,9 @@ class WindowsManager(BaseManager):  # pragma: no cover (manual)
         pass
 
     def launch(self, path):
+        # pylint: disable=no-member
         log.info("starting %s...", path)
-        os.startfile(path)  # pylint: disable=no-member
+        os.startfile(path)  # type: ignore
         return True
 
 
@@ -234,7 +231,7 @@ def get_manager(name=None):
     """Return an application manager for the current operating system."""
     log.info("Detecting the current system...")
     name = name or platform.system()
-    manager = {
+    manager = {  # type: ignore
         WindowsManager.NAME: WindowsManager,
         MacManager.NAME: MacManager,
         LinuxManager.NAME: LinuxManager,

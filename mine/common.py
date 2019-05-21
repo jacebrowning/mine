@@ -3,8 +3,8 @@
 import argparse
 import logging
 
-
 from . import settings
+
 
 MAX_VERBOSITY = 4
 
@@ -15,7 +15,8 @@ class HelpFormatter(argparse.HelpFormatter):
     """Command-line help text formatter with wider help text."""
 
     def __init__(self, *args, **kwargs):
-        super().__init__(*args, max_help_position=40, **kwargs)
+        kwargs['max_help_position'] = 40
+        super().__init__(*args, **kwargs)
 
 
 class WarningFormatter(logging.Formatter):
@@ -68,8 +69,9 @@ def configure_logging(count=0):
     # Set a custom formatter
     logging.basicConfig(level=level)
     logging.captureWarnings(True)
-    formatter = WarningFormatter(default_format, verbose_format,
-                                 datefmt=settings.LOGGING_DATEFMT)
+    formatter = WarningFormatter(
+        default_format, verbose_format, datefmt=settings.LOGGING_DATEFMT
+    )
     logging.root.handlers[0].setFormatter(formatter)
     logging.getLogger('yorm').setLevel(max(level, settings.YORM_LOGGING_LEVEL))
 

@@ -4,7 +4,7 @@ from unittest.mock import Mock
 
 import pytest
 
-from mine.models import State, Status, ProgramStatus, Application
+from mine.models import Application, ProgramStatus, State, Status
 
 
 class TestState:
@@ -16,11 +16,7 @@ class TestState:
     state3 = State('Computer2')
     state4 = State('Computer2')
 
-    str_state = [
-        ("computer1", state1),
-        ("computer2", state2),
-        ("Computer2", state3),
-    ]
+    str_state = [("computer1", state1), ("computer2", state2), ("Computer2", state3)]
 
     @pytest.mark.parametrize("string,state", str_state)
     def test_str(self, string, state):
@@ -47,11 +43,7 @@ class TestStatus:
     status3 = Status('App2')
     status4 = Status('App2')
 
-    str_status = [
-        ("app1", status1),
-        ("app2", status2),
-        ("App2", status3),
-    ]
+    str_status = [("app1", status1), ("app2", status2), ("App2", status3)]
 
     @pytest.mark.parametrize("string,status", str_status)
     def test_str(self, string, status):

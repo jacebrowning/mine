@@ -2,31 +2,23 @@
 
 import os
 import re
-import logging
+
+import log
 
 from .models.application import Application, Versions
 
 
-ROOTS = (
-    r"C:\Users",
-    r"/Users",
-    r"/home",
-)
-SERVICES = (
-    'Dropbox',
-    'Dropbox (Personal)',
-)
+ROOTS = (r"C:\Users", r"/Users", r"/home")
+SERVICES = ('Dropbox', 'Dropbox (Personal)')
 CONFIG = 'mine.yml'
 CONFLICT_BASE = r"{} \(.+'s conflicted copy \d+-\d+-\d+.*\).*"
 CONFLICT_ANY = CONFLICT_BASE.format(".+")
 CONFLICT_CONFIG = CONFLICT_BASE.format("mine")
 DEPTH = 3  # number of levels to search for the settings file
-APPLICATION = Application("Dropbox", versions=Versions(
-    mac="Dropbox.app",
-    windows="Dropbox.exe",
-    linux="dropbox"))
-
-log = logging.getLogger(__name__)
+APPLICATION = Application(
+    "Dropbox",
+    versions=Versions(mac="Dropbox.app", windows="Dropbox.exe", linux="dropbox"),
+)
 
 
 def find_root(top=None):
@@ -44,8 +36,8 @@ def find_root(top=None):
     if os.getenv('CI'):
         log.warning(msg)
         return top
-    else:
-        raise EnvironmentError(msg)
+
+    raise EnvironmentError(msg)
 
 
 def find_config_path(top=None, root=None):
@@ -55,14 +47,13 @@ def find_config_path(top=None, root=None):
     root = root or find_root(top=top)
 
     log.debug("Looking for '%s' in '%s'...", CONFIG, root)
-    for dirpath, dirnames, _, in os.walk(root):
+    for dirpath, dirnames, _ in os.walk(root):
         depth = dirpath.count(os.path.sep) - root.count(os.path.sep)
         if depth >= DEPTH:
             del dirnames[:]
             continue
         path = os.path.join(dirpath, CONFIG)
-        if os.path.isfile(path) and \
-                not os.path.isfile(os.path.join(path, 'setup.py')):
+        if os.path.isfile(path) and not os.path.isfile(os.path.join(path, 'setup.py')):
             log.info("Found settings file: %s", path)
             return path
 

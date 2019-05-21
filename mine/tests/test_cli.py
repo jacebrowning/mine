@@ -1,13 +1,12 @@
 # pylint: disable=misplaced-comparison-constant,no-self-use,redefined-outer-name
 
+import logging
 import os
 from unittest.mock import Mock, patch
-import logging
 
 import pytest
 
-from mine import cli
-from mine import common
+from mine import cli, common
 from mine.models import Application
 
 
@@ -79,39 +78,34 @@ class TestSwitch:
     def test_switch(self, mock_run):
         """Verify a the current computer can be queued."""
         cli.main(['switch'])
-        mock_run.assert_called_once_with(path=None, delay=None,
-                                         switch=True)
+        mock_run.assert_called_once_with(path=None, delay=None, switch=True)
 
     @patch('mine.cli.run')
     def test_switch_specific(self, mock_run):
         """Verify a specific computer can be queued."""
         cli.main(['switch', 'foobar'])
-        mock_run.assert_called_once_with(path=None, delay=None,
-                                         switch='foobar')
+        mock_run.assert_called_once_with(path=None, delay=None, switch='foobar')
 
 
 class TestClean:
-
     @patch('mine.cli.run')
     def test_clean(self, mock_run):
         cli.main(['clean'])
-        mock_run.assert_called_once_with(path=None, delay=None,
-                                         delete=True, force=False)
+        mock_run.assert_called_once_with(
+            path=None, delay=None, delete=True, force=False
+        )
 
     @patch('mine.cli.run')
     def test_clean_with_force(self, mock_run):
         cli.main(['clean', '--force'])
-        mock_run.assert_called_once_with(path=None, delay=None,
-                                         delete=True, force=True)
+        mock_run.assert_called_once_with(path=None, delay=None, delete=True, force=True)
 
 
 class TestEdit:
-
     @patch('mine.cli.run')
     def test_edit(self, mock_run):
         cli.main(['edit'])
-        mock_run.assert_called_once_with(path=None, delay=None,
-                                         edit=True,)
+        mock_run.assert_called_once_with(path=None, delay=None, edit=True)
 
 
 def _mock_run(*args, **kwargs):

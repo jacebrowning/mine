@@ -1,5 +1,16 @@
 [run]
+
 branch = true
+
+data_file = .cache/coverage
+
 omit =
-    */.venv/*
+    .venv/*
     */tests/*
+    */__main__.py
+
+[report]
+
+exclude_lines =
+    pragma: no cover
+    raise NotImplementedError

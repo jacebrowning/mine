@@ -2,18 +2,22 @@
 
 import os
 import subprocess
-import logging
 
+import log
 import yorm
 
 from mine import cli
-from mine.models import (Application, Computer, Data, ProgramConfig,
-                         State, Status, ProgramStatus)
+from mine.models import (
+    Application,
+    Computer,
+    Data,
+    ProgramConfig,
+    ProgramStatus,
+    State,
+    Status,
+)
 
 from .conftest import FILES
-
-
-log = logging.getLogger(__name__)
 
 
 class TestFiles:
@@ -135,7 +139,9 @@ class TestProcesses:
         """Set up initial data file for tests."""
         self.data = Data()
         self.data.config.applications.append(self.application)
-        self.computer = self.data.config.computers.get_current()  # pylint: disable=no-member
+        self.computer = (
+            self.data.config.computers.get_current()
+        )  # pylint: disable=no-member
         yorm.sync(self.data, self.path)
 
     def _fetch_data(self):

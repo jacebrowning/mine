@@ -1,11 +1,3 @@
->...for applications that haven't learned to share.
-
-[![Build Status](https://img.shields.io/travis/jacebrowning/mine/master.svg)](https://travis-ci.org/jacebrowning/mine)
-[![Coverage Status](https://img.shields.io/coveralls/jacebrowning/mine/master.svg)](https://coveralls.io/r/jacebrowning/mine)
-[![Scrutinizer Code Quality](https://img.shields.io/scrutinizer/g/jacebrowning/mine.svg)](https://scrutinizer-ci.com/g/jacebrowning/mine/?branch=master)
-[![PyPI Version](https://img.shields.io/pypi/v/mine.svg)](https://pypi.python.org/pypi/mine)
-[![PyPI Downloads](https://img.shields.io/pypi/dm/mine.svg)](https://pypi.python.org/pypi/mine)
-
 # Overview
 
 This program lets you synchronize application data using Dropbox.
@@ -27,6 +19,11 @@ and some just don't make sense to keep running on all your computers:
 * Slack
 * HipChat
 * etc.
+
+[![Build Status](https://img.shields.io/travis/jacebrowning/mine/master.svg)](https://travis-ci.org/jacebrowning/mine)
+[![Coverage Status](https://img.shields.io/coveralls/jacebrowning/mine/master.svg)](https://coveralls.io/r/jacebrowning/mine)
+[![Scrutinizer Code Quality](https://img.shields.io/scrutinizer/g/jacebrowning/mine.svg)](https://scrutinizer-ci.com/g/jacebrowning/mine/?branch=master)
+[![PyPI Version](https://img.shields.io/pypi/v/mine.svg)](https://pypi.org/project/mine)
 
 # Setup
 

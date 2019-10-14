@@ -1,3 +1,7 @@
+# 1.6.1 (2019-10-14)
+
+- Added support for "/System/Applications" in macOS Catalina.
+
 # 1.6 (2019-05-20)
 
 - Ignored conflicting program name ("garcon.appex").

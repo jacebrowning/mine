@@ -1,7 +1,7 @@
 [tool.poetry]
 
 name = "mine"
-version = "1.6.1"
+version = "1.7b1"
 description = "Share application state across computers using Dropbox."
 
 license = "MIT"

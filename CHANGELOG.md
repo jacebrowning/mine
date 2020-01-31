@@ -1,3 +1,7 @@
+# 1.7 (unreleased)
+
+- Updated search to find common macOS applications before local.
+
 # 1.6.1 (2019-10-14)
 
 - Added support for "/System/Applications" in macOS Catalina.

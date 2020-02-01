@@ -175,10 +175,10 @@ class MacManager(BaseManager):  # pragma: no cover (manual)
         path = None
         for base in (
             ".",
-            "~/Applications",
             "/Applications",
             "/Applications/*",
             "/System/Applications",
+            "~/Applications",
         ):
             pattern = os.path.expanduser(os.path.join(base, name))
             log.debug("Glob pattern: %s", pattern)

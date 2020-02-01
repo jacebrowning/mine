@@ -1,7 +1,7 @@
 [tool.poetry]
 
 name = "mine"
-version = "1.6.1"
+version = "1.7"
 description = "Share application state across computers using Dropbox."
 
 license = "MIT"
@@ -27,6 +27,7 @@ classifiers = [
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3.6",
     "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
     "Topic :: System",
     "Topic :: System :: Monitoring",
     "Topic :: Utilities",
@@ -44,16 +45,16 @@ minilog = "^0.3"
 [tool.poetry.dev-dependencies]
 
 # Formatters
-black = "=19.3b0"
-isort = "=4.3.20"
+black = "=19.10b0"
+isort = "=4.3.21"
 
 # Linters
-mypy = "*"
+mypy = "=0.730"
 pydocstyle = "*"
 pylint = "^2.0"
 
 # Testing
-pytest = "^3.3"
+pytest = "^5.3.5"
 pytest-cov = "*"
 pytest-describe = "*"
 pytest-expecter = "*"
@@ -61,7 +62,7 @@ pytest-random = "*"
 freezegun = "*"
 
 # Reports
-coveragespace = "*"
+coveragespace = "^3.1"
 
 # Documentation
 mkdocs = "^1.0"
@@ -79,7 +80,7 @@ mine = "mine.cli:main"
 
 [tool.black]
 
-target-version = ['py36', 'py37']
+target-version = ["py36", "py37"]
 skip-string-normalization = true
 
 [build-system]

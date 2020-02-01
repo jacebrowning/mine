@@ -1,8 +1,10 @@
 dist: xenial
+
 language: python
 python:
   - 3.6
   - 3.7
+  - 3.8
 
 cache:
   pip: true

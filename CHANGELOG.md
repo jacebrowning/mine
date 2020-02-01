@@ -1,4 +1,4 @@
-# 1.7 (unreleased)
+# 1.7 (2020-02-01)
 
 - Updated search to find common macOS applications before local.
 

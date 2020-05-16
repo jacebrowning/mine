@@ -197,6 +197,7 @@ def run(
         data.queue_all_applications(config, status, switch)
 
     while True:
+        services.delete_conflicts(root, config_only=True, force=True)
         data.launch_queued_applications(config, status, computer, manager)
         data.update_status(config, status, computer, manager)
 
@@ -206,14 +207,16 @@ def run(
         log.info("Delaying %s seconds for files to sync...", delay)
         time.sleep(delay)
 
-        step = 1
+        step = 5
         elapsed = 0
         log.info("Waiting %s seconds for status changes...", delay)
         while elapsed < delay and not data.modified:
             time.sleep(step)
             elapsed += step
 
-        services.delete_conflicts(root, config_only=True, force=True)
+        short_delay = 30
+        log.info("Delaying %s seconds for files to sync...", short_delay)
+        time.sleep(short_delay)
 
     if cleanup:
         data.prune_status(config, status)

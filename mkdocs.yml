@@ -5,12 +5,11 @@ site_author: Jace Browning
 repo_url: https://github.com/jacebrowning/mine
 edit_uri: https://github.com/jacebrowning/mine/edit/jacebrowning/develop/docs
 
-
 theme: readthedocs
 
 nav:
-- Home: index.md
-- About:
-  - Release Notes: about/changelog.md
-  - Contributing: about/contributing.md
-  - License: about/license.md
+  - Home: index.md
+  - About:
+      - Release Notes: about/changelog.md
+      - Contributing: about/contributing.md
+      - License: about/license.md

@@ -1,5 +1,5 @@
 # Project settings
-PROJECT := mine
+PROJECT := Mine
 PACKAGE := mine
 REPOSITORY := jacebrowning/mine
 
@@ -26,6 +26,10 @@ watch: install .clean-test ## Continuously run all CI tasks when files chanage
 .PHONY: run ## Start the program
 run: install
 	poetry run python $(PACKAGE)/__main__.py
+
+.PHONY: ipython ## Launch an IPython session
+ipython: install
+	poetry run ipython --ipython-dir=notebooks
 
 # SYSTEM DEPENDENCIES #########################################################
 
@@ -58,8 +62,8 @@ endif
 
 .PHONY: format
 format: install
-	poetry run isort $(PACKAGES) --recursive --apply
-	poetry run black $(PACKAGES)
+	poetry run isort $(PACKAGES) notebooks --recursive --apply
+	poetry run black $(PACKAGES) notebooks
 	@ echo
 
 .PHONY: check
@@ -77,8 +81,8 @@ RANDOM_SEED ?= $(shell date +%s)
 FAILURES := .cache/v/cache/lastfailed
 
 PYTEST_OPTIONS := --random --random-seed=$(RANDOM_SEED)
-ifdef DISABLE_COVERAGE
-PYTEST_OPTIONS += --no-cov --disable-warnings
+ifndef DISABLE_COVERAGE
+PYTEST_OPTIONS += --cov=$(PACKAGE)
 endif
 PYTEST_RERUN_OPTIONS := --last-failed --exitfirst
 
@@ -127,9 +131,9 @@ $(MKDOCS_INDEX): docs/requirements.txt mkdocs.yml docs/*.md
 	@ cd docs/about && ln -sf ../../LICENSE.md license.md
 	poetry run mkdocs build --clean --strict
 
-# Workaround: https://github.com/rtfd/readthedocs.org/issues/5090
 docs/requirements.txt: poetry.lock
 	@ poetry run pip freeze -qqq | grep mkdocs > $@
+	@ poetry run pip freeze -qqq | grep Pygments >> $@
 
 .PHONY: uml
 uml: install docs/*.png

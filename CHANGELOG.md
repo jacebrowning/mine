@@ -1,3 +1,7 @@
+# 1.8 (2020-05-16)
+
+- Added a delay to the daemon to wait for files to finish synching.
+
 # 1.7 (2020-02-01)
 
 - Updated search to find common macOS applications before local.
@@ -85,4 +89,4 @@
 
 # 0.1.1 (2015-03-19)
 
- - Initial release.
+- Initial release.

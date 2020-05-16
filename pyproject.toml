@@ -1,7 +1,7 @@
 [tool.poetry]
 
 name = "mine"
-version = "1.7"
+version = "1.8"
 description = "Share application state across computers using Dropbox."
 
 license = "MIT"
@@ -73,6 +73,7 @@ pyinstaller = "*"
 sniffer = "*"
 MacFSEvents = { version = "*", platform = "darwin" }
 pync = { version = "*", platform = "darwin" }
+ipython = "^7.12.0"
 
 [tool.poetry.scripts]
 

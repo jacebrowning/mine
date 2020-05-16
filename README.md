@@ -2,23 +2,23 @@
 
 This program lets you synchronize application data using Dropbox.
 
-It automatically starts and stops programs that would otherwise fight over data in a shared folder and ensures only one instance is running.  Many applications work fine when their data is stored in Dropbox, but some programs overwrite databases:
+It automatically starts and stops programs that would otherwise fight over data in a shared folder and ensures only one instance is running. Many applications work fine when their data is stored in Dropbox, but some programs overwrite databases:
 
-* iTunes
-* iPhoto
-* etc.
+- iTunes
+- iPhoto
+- etc.
 
 while others periodically write snapshot data:
 
-* Eclipse
-* Xcode
-* etc.
+- Eclipse
+- Xcode
+- etc.
 
 and some just don't make sense to keep running on all your computers:
 
-* Slack
-* HipChat
-* etc.
+- Slack
+- HipChat
+- etc.
 
 [![Build Status](https://img.shields.io/travis/jacebrowning/mine/master.svg)](https://travis-ci.org/jacebrowning/mine)
 [![Coverage Status](https://img.shields.io/coveralls/jacebrowning/mine/master.svg)](https://coveralls.io/r/jacebrowning/mine)
@@ -29,14 +29,14 @@ and some just don't make sense to keep running on all your computers:
 
 ## Requirements
 
-* Python 3.6+
+- Python 3.6+
 
 ## Installation
 
-Install mine with pip:
+Install `mine` with [pipx](https://pipxproject.github.io/pipx/installation/) (or pip):
 
 ```sh
-$ pip install mine
+$ pipx install mine
 ```
 
 or directly from the source code:
@@ -54,29 +54,29 @@ Create a `mine.yml` in your Dropbox:
 ```yaml
 config:
   computers:
-  - name: My iMac
-    hostname: My-iMac.local
-    address: 00:11:22:33:44:55
-  - name: My MacBook Air
-    hostname: My-MacBook-Air.local
-    address: AA:BB:CC:DD:EE:FF
+    - name: My iMac
+      hostname: My-iMac.local
+      address: 00:11:22:33:44:55
+    - name: My MacBook Air
+      hostname: My-MacBook-Air.local
+      address: AA:BB:CC:DD:EE:FF
   applications:
-  - name: iTunes
-    properties:
-      auto_queue: false
-      single_instance: true
-    versions:
-      mac: iTunes.app
-      windows: iTunes.exe
-      linux: null
-  - name: Slack
-    properties:
-      auto_queue: true
-      single_instance: false
-    versions:
-      mac: Slack.app
-      windows: null
-      linux: null
+    - name: iTunes
+      properties:
+        auto_queue: false
+        single_instance: true
+      versions:
+        mac: iTunes.app
+        windows: iTunes.exe
+        linux: null
+    - name: Slack
+      properties:
+        auto_queue: true
+        single_instance: false
+      versions:
+        mac: Slack.app
+        windows: null
+        linux: null
 ```
 
 Include the applications you would like `mine` to manage. Computers are added automatically when `mine` is run.

@@ -159,7 +159,13 @@ class MacManager(BaseManager):  # pragma: no cover (manual)
     NAME = 'Darwin'
     FRIENDLY = 'Mac'
 
-    IGNORED_APPLICATION_NAMES = ["iTunesHelper.app", "slack helper.app", "garcon.appex"]
+    IGNORED_APPLICATION_NAMES = [
+        "iTunesHelper.app",
+        "slack helper.app",
+        "garcon.appex",
+        "musiccacheextension",
+        "podcastswidget",
+    ]
 
     @log_running
     def is_running(self, application):

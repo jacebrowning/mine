@@ -165,6 +165,7 @@ class MacManager(BaseManager):  # pragma: no cover (manual)
         "garcon.appex",
         "musiccacheextension",
         "podcastswidget",
+        "mailcachedelete",
     ]
 
     @log_running

@@ -20,9 +20,9 @@ and some just don't make sense to keep running on all your computers:
 - HipChat
 - etc.
 
-[![Build Status](https://img.shields.io/travis/jacebrowning/mine/master.svg)](https://travis-ci.org/jacebrowning/mine)
-[![Coverage Status](https://img.shields.io/coveralls/jacebrowning/mine/master.svg)](https://coveralls.io/r/jacebrowning/mine)
-[![Scrutinizer Code Quality](https://img.shields.io/scrutinizer/g/jacebrowning/mine.svg)](https://scrutinizer-ci.com/g/jacebrowning/mine/?branch=master)
+[![Build Status](https://img.shields.io/travis/jacebrowning/mine/main.svg)](https://travis-ci.org/jacebrowning/mine)
+[![Coverage Status](https://img.shields.io/coveralls/jacebrowning/mine/main.svg)](https://coveralls.io/r/jacebrowning/mine)
+[![Scrutinizer Code Quality](https://img.shields.io/scrutinizer/g/jacebrowning/mine.svg)](https://scrutinizer-ci.com/g/jacebrowning/mine/?branch=main)
 [![PyPI Version](https://img.shields.io/pypi/v/mine.svg)](https://pypi.org/project/mine)
 
 # Setup

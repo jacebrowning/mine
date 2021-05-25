@@ -5,7 +5,7 @@ class NameMixin:
     """Mixin class for objects identified by their name."""
 
     def __str__(self):
-        return str(self.name)
+        return str(self.name)  # type: ignore
 
     def __eq__(self, other):
         return str(self).lower() == str(other).lower()

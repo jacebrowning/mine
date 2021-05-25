@@ -129,7 +129,7 @@ class TestProcesses:
     application.versions.windows = 'yes.exe'
 
     computer = None
-    data = None
+    data: Data = None  # type: ignore
 
     path = os.path.join(FILES, 'mine.tmp.yml')
 

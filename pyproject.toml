@@ -1,7 +1,7 @@
 [tool.poetry]
 
 name = "mine"
-version = "1.8.post2"
+version = "2.0b1"
 description = "Share application state across computers using Dropbox."
 
 license = "MIT"
@@ -25,9 +25,10 @@ classifiers = [
     "Operating System :: OS Independent",
     "Programming Language :: Python",
     "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.6",
     "Programming Language :: Python :: 3.7",
     "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
     "Topic :: System",
     "Topic :: System :: Monitoring",
     "Topic :: Utilities",
@@ -35,12 +36,13 @@ classifiers = [
 
 [tool.poetry.dependencies]
 
-python = "^3.6"
+python = "^3.7"
 
 YORM = "^1.4"
 psutil = "^2.1"
 crayons = "~0.1.2"
 minilog = "^0.3"
+universal-startfile = "*"
 
 [tool.poetry.dev-dependencies]
 

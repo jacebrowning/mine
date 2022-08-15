@@ -9,6 +9,7 @@ import time
 
 import log
 import yorm
+from startfile import startfile
 
 from . import CLI, DESCRIPTION, VERSION, common, services
 from .manager import get_manager
@@ -180,7 +181,7 @@ def run(
     log.info("Current computer: %s", computer)
 
     if edit:
-        return manager.launch(path)
+        return startfile(path)
     if delete:
         return services.delete_conflicts(root, force=force)
 

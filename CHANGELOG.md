@@ -1,3 +1,7 @@
+# 2.0 (beta)
+
+- Dropped support for Python 3.6.
+
 # 1.8 (2020-05-16)
 
 - Added a delay to the daemon to wait for files to finish synching.

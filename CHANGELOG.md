@@ -1,4 +1,4 @@
-# 2.0 (beta)
+# 2.0 (2022-08-16)
 
 - Dropped support for Python 3.6.
 

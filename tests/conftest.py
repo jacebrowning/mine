@@ -9,4 +9,4 @@ from mine.tests.conftest import (  # pylint: disable=unused-import
 
 
 ROOT = os.path.dirname(__file__)
-FILES = os.path.join(ROOT, 'files')
+FILES = os.path.join(ROOT, "files")

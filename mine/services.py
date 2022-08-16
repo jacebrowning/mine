@@ -9,8 +9,8 @@ from .models.application import Application, Versions
 
 
 ROOTS = (r"C:\Users", r"/Users", r"/home")
-SERVICES = ('Dropbox', 'Dropbox (Personal)')
-CONFIG = 'mine.yml'
+SERVICES = ("Dropbox", "Dropbox (Personal)")
+CONFIG = "mine.yml"
 CONFLICT_BASE = r"{} \(.+'s conflicted copy \d+-\d+-\d+.*\).*"
 CONFLICT_ANY = CONFLICT_BASE.format(".+")
 CONFLICT_CONFIG = CONFLICT_BASE.format("mine")
@@ -23,7 +23,7 @@ APPLICATION = Application(
 
 def find_root(top=None):
     """Get the root of the shared directory."""
-    top = top or os.path.expanduser('~')
+    top = top or os.path.expanduser("~")
 
     log.debug("Looking for sharing service in '%s'...", top)
     for directory in os.listdir(top):
@@ -33,7 +33,7 @@ def find_root(top=None):
             return path
 
     msg = "no sharing service found"
-    if os.getenv('CI'):
+    if os.getenv("CI"):
         log.warning(msg)
         return top
 
@@ -43,7 +43,7 @@ def find_root(top=None):
 def find_config_path(top=None, root=None):
     """Get the path to the settings file."""
     log.info("Looking for settings file...")
-    top = top or os.path.expanduser('~')
+    top = top or os.path.expanduser("~")
     root = root or find_root(top=top)
 
     log.debug("Looking for '%s' in '%s'...", CONFIG, root)
@@ -53,7 +53,7 @@ def find_config_path(top=None, root=None):
             del dirnames[:]
             continue
         path = os.path.join(dirpath, CONFIG)
-        if os.path.isfile(path) and not os.path.isfile(os.path.join(path, 'setup.py')):
+        if os.path.isfile(path) and not os.path.isfile(os.path.join(path, "setup.py")):
             log.info("Found settings file: %s", path)
             return path
 
@@ -64,7 +64,7 @@ def delete_conflicts(root=None, config_only=False, force=False):
     """Delete all files with conflicted filenames."""
     root = root or find_root()
 
-    log.info("%s conflicted files...", 'Deleting' if force else 'Displaying')
+    log.info("%s conflicted files...", "Deleting" if force else "Displaying")
     pattern = CONFLICT_CONFIG if config_only else CONFLICT_ANY
     log.debug("Pattern: %r", pattern)
     regex = re.compile(pattern)

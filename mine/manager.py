@@ -62,7 +62,7 @@ def log_stopping(func):  # pragma: no cover (manual)
 class BaseManager(metaclass=abc.ABCMeta):  # pragma: no cover (abstract)
     """Base application manager."""
 
-    NAME = FRIENDLY = ''
+    NAME = FRIENDLY = ""
 
     IGNORED_APPLICATION_NAMES: List[str] = []
 
@@ -91,7 +91,7 @@ class BaseManager(metaclass=abc.ABCMeta):  # pragma: no cover (abstract)
 
         for process in psutil.process_iter():
             try:
-                command = ' '.join(process.cmdline()).lower()
+                command = " ".join(process.cmdline()).lower()
                 parts = []
                 for arg in process.cmdline():
                     parts.extend([p.lower() for p in arg.split(os.sep)])
@@ -123,7 +123,7 @@ class BaseManager(metaclass=abc.ABCMeta):  # pragma: no cover (abstract)
 class LinuxManager(BaseManager):  # pragma: no cover (manual)
     """Application manager for Linux."""
 
-    NAME = 'Linux'
+    NAME = "Linux"
     FRIENDLY = NAME
 
     def is_running(self, application):
@@ -146,8 +146,8 @@ class LinuxManager(BaseManager):  # pragma: no cover (manual)
 class MacManager(BaseManager):  # pragma: no cover (manual)
     """Application manager for OS X."""
 
-    NAME = 'Darwin'
-    FRIENDLY = 'Mac'
+    NAME = "Darwin"
+    FRIENDLY = "Mac"
 
     IGNORED_APPLICATION_NAMES = [
         "iTunesHelper.app",
@@ -199,7 +199,7 @@ class MacManager(BaseManager):  # pragma: no cover (manual)
     def _start_app(path):
         """Start an application from it's .app directory."""
         assert os.path.exists(path), path
-        process = psutil.Popen(['open', path])
+        process = psutil.Popen(["open", path])
         time.sleep(1)
         return process
 
@@ -207,7 +207,7 @@ class MacManager(BaseManager):  # pragma: no cover (manual)
 class WindowsManager(BaseManager):  # pragma: no cover (manual)
     """Application manager for Windows."""
 
-    NAME = 'Windows'
+    NAME = "Windows"
     FRIENDLY = NAME
 
     def is_running(self, application):

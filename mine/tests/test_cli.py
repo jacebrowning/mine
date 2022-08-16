@@ -12,18 +12,18 @@ from mine.models import Application
 
 @pytest.fixture
 def tmp_path(tmpdir):
-    return tmpdir.join('custom.ext').strpath
+    return tmpdir.join("custom.ext").strpath
 
 
 class TestMain:
     """Unit tests for the `main` function."""
 
-    @patch('mine.cli.run', Mock(return_value=True))
+    @patch("mine.cli.run", Mock(return_value=True))
     def test_run(self):
         """Verify the CLI can be run."""
         cli.main([])
 
-    @patch('mine.cli.run', Mock(return_value=False))
+    @patch("mine.cli.run", Mock(return_value=False))
     def test_run_fail(self):
         """Verify the CLI can detect errors."""
         with pytest.raises(SystemExit):
@@ -32,79 +32,79 @@ class TestMain:
     def test_help(self):
         """Verify the CLI help text can be displayed."""
         with pytest.raises(SystemExit):
-            cli.main(['--help'])
+            cli.main(["--help"])
 
-    @patch('mine.cli.run', Mock(side_effect=KeyboardInterrupt))
+    @patch("mine.cli.run", Mock(side_effect=KeyboardInterrupt))
     def test_interrupt(self):
         """Verify the CLI can be interrupted."""
         with pytest.raises(SystemExit):
             cli.main([])
 
-    @patch('mine.cli.log')
-    @patch('mine.cli.run', Mock(side_effect=KeyboardInterrupt))
+    @patch("mine.cli.log")
+    @patch("mine.cli.run", Mock(side_effect=KeyboardInterrupt))
     def test_interrupt_verbose(self, mock_log):
         """Verify the CLI can be interrupted (verbose output)."""
         with pytest.raises(SystemExit):
-            cli.main(['-vvvv'])
+            cli.main(["-vvvv"])
         assert mock_log.exception.call_count == 1
 
-    @patch('mine.cli.daemon', None)
+    @patch("mine.cli.daemon", None)
     def test_path(self, tmp_path):
         """Verify a custom setting file path can be used."""
-        cli.main(['--file', tmp_path])
+        cli.main(["--file", tmp_path])
 
         assert os.path.isfile(tmp_path)
 
-    @patch('mine.cli.run')
+    @patch("mine.cli.run")
     def test_daemon(self, mock_run):
-        cli.main(['--daemon'])
+        cli.main(["--daemon"])
         mock_run.assert_called_once_with(path=None, delay=300)
 
-    @patch('mine.cli.run')
+    @patch("mine.cli.run")
     def test_daemon_with_specific_delay(self, mock_run):
-        cli.main(['--daemon', '42'])
+        cli.main(["--daemon", "42"])
         mock_run.assert_called_once_with(path=None, delay=42)
 
-    @patch('mine.cli.daemon', Application(None))
+    @patch("mine.cli.daemon", Application(None))
     def test_warning_when_daemon_is_not_running(self, tmp_path):
         with pytest.raises(SystemExit):
-            cli.main(['--file', tmp_path])
+            cli.main(["--file", tmp_path])
 
 
 class TestSwitch:
     """Unit tests for the `switch` function."""
 
-    @patch('mine.cli.run')
+    @patch("mine.cli.run")
     def test_switch(self, mock_run):
         """Verify a the current computer can be queued."""
-        cli.main(['switch'])
+        cli.main(["switch"])
         mock_run.assert_called_once_with(path=None, delay=None, switch=True)
 
-    @patch('mine.cli.run')
+    @patch("mine.cli.run")
     def test_switch_specific(self, mock_run):
         """Verify a specific computer can be queued."""
-        cli.main(['switch', 'foobar'])
-        mock_run.assert_called_once_with(path=None, delay=None, switch='foobar')
+        cli.main(["switch", "foobar"])
+        mock_run.assert_called_once_with(path=None, delay=None, switch="foobar")
 
 
 class TestClean:
-    @patch('mine.cli.run')
+    @patch("mine.cli.run")
     def test_clean(self, mock_run):
-        cli.main(['clean'])
+        cli.main(["clean"])
         mock_run.assert_called_once_with(
             path=None, delay=None, delete=True, force=False
         )
 
-    @patch('mine.cli.run')
+    @patch("mine.cli.run")
     def test_clean_with_force(self, mock_run):
-        cli.main(['clean', '--force'])
+        cli.main(["clean", "--force"])
         mock_run.assert_called_once_with(path=None, delay=None, delete=True, force=True)
 
 
 class TestEdit:
-    @patch('mine.cli.run')
+    @patch("mine.cli.run")
     def test_edit(self, mock_run):
-        cli.main(['edit'])
+        cli.main(["edit"])
         mock_run.assert_called_once_with(path=None, delay=None, edit=True)
 
 
@@ -117,18 +117,18 @@ def _mock_run(*args, **kwargs):
     return True
 
 
-@patch('mine.cli.run', _mock_run)
+@patch("mine.cli.run", _mock_run)
 class TestLogging:
     """Integration tests for the Doorstop CLI logging."""
 
     arg_verbosity = [
-        ('', 0),
-        ('-v', 1),
-        ('-vv', 2),
-        ('-vvv', 3),
-        ('-vvvv', 4),
-        ('-vvvvv', 4),
-        ('-q', -1),
+        ("", 0),
+        ("-v", 1),
+        ("-vv", 2),
+        ("-vvv", 3),
+        ("-vvvv", 4),
+        ("-vvvvv", 4),
+        ("-q", -1),
     ]
 
     @pytest.mark.parametrize("arg,verbosity", arg_verbosity)

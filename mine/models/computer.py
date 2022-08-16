@@ -26,7 +26,7 @@ class Computer(NameMixin, yorm.types.AttributeDictionary):
         """Get this computer's MAC address."""
         if node is None:
             node = uuid.getnode()
-        return ':'.join(("%012X" % node)[i : i + 2] for i in range(0, 12, 2))
+        return ":".join(("%012X" % node)[i : i + 2] for i in range(0, 12, 2))
 
     @staticmethod
     def get_hostname():
@@ -83,14 +83,14 @@ class Computers(yorm.types.SortedList):
 
         # Else, this is a new computer
         this.name = self.generate_name(this)
-        assert this.name != 'localhost'
+        assert this.name != "localhost"
         log.debug("New computer: %s", this)
         self.append(this)
         return this
 
     def generate_name(self, computer):
         """Generate a new label for a computer."""
-        name = computer.hostname.lower().split('.')[0]
+        name = computer.hostname.lower().split(".")[0]
         copy = 1
         while name in self.names:
             copy += 1

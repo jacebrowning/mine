@@ -123,7 +123,7 @@ class ProgramStatus(yorm.types.AttributeDictionary):
                     log.debug(
                         "%s marked as started on: %s",
                         application,
-                        ', '.join(str(s) for s in states),
+                        ", ".join(str(s) for s in states),
                     )
                     # TODO: consider returning the computer instance?
                     return states[0].computer

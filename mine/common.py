@@ -15,7 +15,7 @@ class HelpFormatter(argparse.HelpFormatter):
     """Command-line help text formatter with wider help text."""
 
     def __init__(self, *args, **kwargs):
-        kwargs['max_help_position'] = 40
+        kwargs["max_help_position"] = 40
         super().__init__(*args, **kwargs)
 
 
@@ -73,7 +73,7 @@ def configure_logging(count=0):
         default_format, verbose_format, datefmt=settings.LOGGING_DATEFMT
     )
     logging.root.handlers[0].setFormatter(formatter)
-    logging.getLogger('yorm').setLevel(max(level, settings.YORM_LOGGING_LEVEL))
+    logging.getLogger("yorm").setLevel(max(level, settings.YORM_LOGGING_LEVEL))
 
     # Warn about excessive verbosity
     global verbosity

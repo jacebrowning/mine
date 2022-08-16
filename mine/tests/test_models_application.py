@@ -8,12 +8,12 @@ from mine.models import Application, Applications
 class TestApplication:
     """Unit tests for the application class."""
 
-    app1 = Application('iTunes')
-    app1.versions.mac = 'iTunes.app'
-    app2 = Application('HipChat')
-    app3 = Application('Sublime Text')
-    app3.versions.linux = 'sublime_text'
-    app4 = Application('hipchat')
+    app1 = Application("iTunes")
+    app1.versions.mac = "iTunes.app"
+    app2 = Application("HipChat")
+    app3 = Application("Sublime Text")
+    app3.versions.linux = "sublime_text"
+    app4 = Application("hipchat")
 
     str_application = [
         ("iTunes", app1),
@@ -45,10 +45,10 @@ class TestApplications:
 
     def test_get(self):
         """Verify an application can be found in a list."""
-        app = self.apps.get('itunes')
-        assert 'iTunes' == app.name
+        app = self.apps.get("itunes")
+        assert "iTunes" == app.name
 
     def test_get_missing(self):
         """Verify an invalid names raise an assertion."""
         with pytest.raises(AssertionError):
-            self.apps.get('fake')
+            self.apps.get("fake")

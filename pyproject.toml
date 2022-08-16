@@ -1,7 +1,7 @@
 [tool.poetry]
 
 name = "mine"
-version = "2.0b1"
+version = "2.0"
 description = "Share application state across computers using Dropbox."
 
 license = "MIT"
@@ -41,7 +41,7 @@ python = "^3.7"
 YORM = "^1.4"
 psutil = "^2.2"
 crayons = "~0.1"
-minilog = "^0.3"
+minilog = "^2.0"
 universal-startfile = "*"
 
 [tool.poetry.dev-dependencies]
@@ -83,10 +83,9 @@ mine = "mine.cli:main"
 
 [tool.black]
 
-target-version = ["py36", "py37"]
-skip-string-normalization = true
+quiet = true
 
 [build-system]
 
-requires = ["poetry>=0.12"]
-build-backend = "poetry.masonry.api"
+requires = ["poetry-core>=1.0"]
+build-backend = "poetry.core.masonry.api"

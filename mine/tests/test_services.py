@@ -23,18 +23,18 @@ def touch(*parts):
     dirpath = os.path.dirname(path)
     if not os.path.isdir(dirpath):
         os.makedirs(dirpath)
-    open(path, 'w').close()
+    open(path, "w").close()
 
 
 class TestFindRoot:
-    @patch('os.listdir', Mock(return_value=[]))
-    @patch('os.getenv', Mock(return_value=True))
+    @patch("os.listdir", Mock(return_value=[]))
+    @patch("os.getenv", Mock(return_value=True))
     def test_ci_workaround_enabled(self):
         root = services.find_root(top="mock/top")
         assert "mock/top" == root
 
-    @patch('os.listdir', Mock(return_value=[]))
-    @patch('os.getenv', Mock(return_value=False))
+    @patch("os.listdir", Mock(return_value=[]))
+    @patch("os.getenv", Mock(return_value=False))
     def test_ci_workaround_disabled(self):
         with pytest.raises(EnvironmentError):
             services.find_root(top="mock/top")
@@ -43,7 +43,7 @@ class TestFindRoot:
 class TestFindConfigPath:
     def test_find_dropbox(self, tmp_dir):
         """Verify a settings file can be found in Dropbox."""
-        touch('Dropbox', 'mine.yml')
+        touch("Dropbox", "mine.yml")
 
         path = services.find_config_path(tmp_dir)
 
@@ -51,16 +51,16 @@ class TestFindConfigPath:
 
     def test_find_dropbox_personal(self, tmp_dir):
         """Verify a settings file can be found in Dropbox (Personal)."""
-        touch('Dropbox (Personal)', 'mine.yml')
+        touch("Dropbox (Personal)", "mine.yml")
 
         path = services.find_config_path(tmp_dir)
 
         assert os.path.isfile(path)
 
-    @patch('mine.services.DEPTH', 2)
+    @patch("mine.services.DEPTH", 2)
     def test_find_depth(self, tmp_dir):
         """Verify a settings file is not found below the maximum depth."""
-        touch('Dropbox', 'a', 'b', 'mine.yml')
+        touch("Dropbox", "a", "b", "mine.yml")
 
         with pytest.raises(OSError):
             services.find_config_path(tmp_dir)
@@ -68,11 +68,11 @@ class TestFindConfigPath:
     def test_find_no_share(self):
         """Verify an error occurs when no service directory is found."""
         with pytest.raises(EnvironmentError):
-            with patch('os.getenv', Mock(return_value=False)):
+            with patch("os.getenv", Mock(return_value=False)):
                 services.find_config_path(FILES)
 
 
-@patch('os.remove')
+@patch("os.remove")
 class TestDeleteConflicts:
     @staticmethod
     def _create_conflicts(tmp_dir, count=2):

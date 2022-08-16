@@ -25,7 +25,7 @@ class TestFiles:
 
     def test_data(self):
         """Verify a sample file is created."""
-        path = os.path.join(FILES, 'mine.yml')
+        path = os.path.join(FILES, "mine.yml")
 
         if os.path.exists(path):
             os.remove(path)
@@ -33,15 +33,15 @@ class TestFiles:
         data = Data()
         yorm.sync(data, path)
 
-        itunes = Application('itunes')
-        itunes.versions.mac = ''
-        itunes.versions.windows = 'iTunes.exe'
+        itunes = Application("itunes")
+        itunes.versions.mac = ""
+        itunes.versions.windows = "iTunes.exe"
 
-        iphoto = Application('iphoto')
-        iphoto.versions.mac = 'iPhoto'
+        iphoto = Application("iphoto")
+        iphoto.versions.mac = "iPhoto"
 
-        mac = Computer('macbook', 'Other.local')
-        mac2 = Computer('macbook-pro')
+        mac = Computer("macbook", "Other.local")
+        mac2 = Computer("macbook-pro")
 
         configuration = ProgramConfig()
         configuration.applications = [itunes, iphoto]
@@ -49,10 +49,10 @@ class TestFiles:
 
         data.config = configuration
 
-        mac_state = State('macbook-pro')
+        mac_state = State("macbook-pro")
         mac_state.timestamp.started = 444
 
-        itunes_status = Status('itunes')
+        itunes_status = Status("itunes")
         itunes_status.computers = [mac_state]
 
         status = ProgramStatus()
@@ -65,7 +65,7 @@ class TestFiles:
 
     def test_data_out(self):
         """Verify a sample file is created."""
-        path = os.path.join(FILES, 'mine-out.yml')
+        path = os.path.join(FILES, "mine-out.yml")
 
         if os.path.exists(path):
             os.remove(path)
@@ -73,15 +73,15 @@ class TestFiles:
         data = Data()
         yorm.sync(data, path)
 
-        itunes = Application('itunes')
-        itunes.versions.mac = ''
-        itunes.versions.windows = 'iTunes.exe'
+        itunes = Application("itunes")
+        itunes.versions.mac = ""
+        itunes.versions.windows = "iTunes.exe"
 
-        iphoto = Application('iphoto')
-        iphoto.versions.mac = 'iPhoto'
+        iphoto = Application("iphoto")
+        iphoto.versions.mac = "iPhoto"
 
-        mac = Computer('macbook', 'Jaces-MacBook', 'AA:BB:CC:DD:EE:FF')
-        mac2 = Computer('macbook-pro', 'Jaces-MacBook-2', '11:22:33:44:55:66')
+        mac = Computer("macbook", "Jaces-MacBook", "AA:BB:CC:DD:EE:FF")
+        mac2 = Computer("macbook-pro", "Jaces-MacBook-2", "11:22:33:44:55:66")
 
         configuration = ProgramConfig()
         configuration.applications = [itunes, iphoto]
@@ -89,10 +89,10 @@ class TestFiles:
 
         data.config = configuration
 
-        mac_state = State('macbook-pro')
+        mac_state = State("macbook-pro")
         mac_state.timestamp.started = 444
 
-        itunes_status = Status('itunes')
+        itunes_status = Status("itunes")
         itunes_status.computers = [mac_state]
 
         status = ProgramStatus()
@@ -105,14 +105,14 @@ class TestFiles:
 
     def test_data_in(self):
         """Verify a sample file is loaded."""
-        path = os.path.join(FILES, 'mine-in.yml')
+        path = os.path.join(FILES, "mine-in.yml")
 
         data = Data()
         yorm.sync(data, path)
 
         assert data.config.applications
         for application in data.config.applications:
-            if application.name == 'slack':
+            if application.name == "slack":
                 break
         else:
             assert False
@@ -124,14 +124,14 @@ class TestProcesses:
     NAME = "example application"
 
     application = Application(NAME)
-    application.versions.linux = 'yes'
-    application.versions.mac = 'yes'
-    application.versions.windows = 'yes.exe'
+    application.versions.linux = "yes"
+    application.versions.mac = "yes"
+    application.versions.windows = "yes.exe"
 
     computer = None
     data: Data = None  # type: ignore
 
-    path = os.path.join(FILES, 'mine.tmp.yml')
+    path = os.path.join(FILES, "mine.tmp.yml")
 
     _process = None
 
@@ -154,7 +154,7 @@ class TestProcesses:
         """Start the example application."""
         if not self._process:
             # TODO: get filename from the application object
-            self._process = subprocess.Popen(['yes'], stdout=subprocess.PIPE)
+            self._process = subprocess.Popen(["yes"], stdout=subprocess.PIPE)
         log.info("%s is started", self.application)
 
     def _stop_application(self):
@@ -190,7 +190,7 @@ class TestProcesses:
         assert self.data.status.is_running(self.application, self.computer)
 
         # manually mark the application as running on a remote computer
-        computer = Computer('other', 'Other.local', 'AA:BB:CC:DD:EE:FF')
+        computer = Computer("other", "Other.local", "AA:BB:CC:DD:EE:FF")
         status = self.data.status
         status.start(self.application, computer)
         self.data.status = status
@@ -217,7 +217,7 @@ class TestProcesses:
         self._store_data()
 
         # manually mark the application as running on a remote computer
-        computer = Computer('other', 'Other.local', 'AA:BB:CC:DD:EE:FF')
+        computer = Computer("other", "Other.local", "AA:BB:CC:DD:EE:FF")
         status = self.data.status
         status.start(self.application, computer)
         self.data.status = status

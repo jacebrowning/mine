@@ -10,11 +10,11 @@ from mine.models import Application, ProgramStatus, State, Status
 class TestState:
     """Unit tests for the computer state class."""
 
-    state1 = State('computer1')
-    state2 = State('computer2')
+    state1 = State("computer1")
+    state2 = State("computer2")
     state2.timestamp.started = 42
-    state3 = State('Computer2')
-    state4 = State('Computer2')
+    state3 = State("Computer2")
+    state4 = State("Computer2")
 
     str_state = [("computer1", state1), ("computer2", state2), ("Computer2", state3)]
 
@@ -38,10 +38,10 @@ class TestState:
 class TestStatus:
     """Unit tests for the application status class."""
 
-    status1 = Status('app1')
-    status2 = Status('app2')
-    status3 = Status('App2')
-    status4 = Status('App2')
+    status1 = Status("app1")
+    status2 = Status("app2")
+    status3 = Status("App2")
+    status4 = Status("App2")
 
     str_status = [("app1", status1), ("app2", status2), ("App2", status3)]
 
@@ -68,13 +68,13 @@ class TestProgramStatus:
     def setup_method(self, _):
         """Create an empty program status for all tests."""
         self.status = ProgramStatus()
-        self.application = Application('my-application')
+        self.application = Application("my-application")
         self.computer = Mock()
-        self.computer.name = 'local'
+        self.computer.name = "local"
         self.computer2 = Mock()
-        self.computer2.name = 'remote'
+        self.computer2.name = "remote"
         self.computer3 = Mock()
-        self.computer3.name = 'remote2'
+        self.computer3.name = "remote2"
 
     def test_get_latest(self):
         """Verify the latest computer can be determined."""

@@ -24,17 +24,17 @@ def main(args=None):
 
     # Shared options
     debug = argparse.ArgumentParser(add_help=False)
-    debug.add_argument('-V', '--version', action='version', version=VERSION)
+    debug.add_argument("-V", "--version", action="version", version=VERSION)
     group = debug.add_mutually_exclusive_group()
     group.add_argument(
-        '-v', '--verbose', action='count', default=0, help="enable verbose logging"
+        "-v", "--verbose", action="count", default=0, help="enable verbose logging"
     )
     group.add_argument(
-        '-q',
-        '--quiet',
-        action='store_const',
+        "-q",
+        "--quiet",
+        action="store_const",
         const=-1,
-        dest='verbose',
+        dest="verbose",
         help="only display errors and prompts",
     )
 
@@ -46,35 +46,35 @@ def main(args=None):
         parents=[debug],
     )
     parser.add_argument(
-        '-d',
-        '--daemon',
-        metavar='DELAY',
-        nargs='?',
+        "-d",
+        "--daemon",
+        metavar="DELAY",
+        nargs="?",
         const=300,
         type=int,
         help="run continuously with delay [seconds]",
     )
-    parser.add_argument('-f', '--file', help="custom settings file path")
-    subs = parser.add_subparsers(help="", dest='command', metavar="<command>")
+    parser.add_argument("-f", "--file", help="custom settings file path")
+    subs = parser.add_subparsers(help="", dest="command", metavar="<command>")
 
     # Build switch parser
     info = "start applications on another computer"
     sub = subs.add_parser(
-        'switch',
-        description=info.capitalize() + '.',
+        "switch",
+        description=info.capitalize() + ".",
         help=info,
         formatter_class=common.HelpFormatter,
         parents=[debug],
     )
     sub.add_argument(
-        'name', nargs='?', help="computer to queue for launch (default: current)"
+        "name", nargs="?", help="computer to queue for launch (default: current)"
     )
 
     # Build close parser
     info = "close applications on this computer"
     sub = subs.add_parser(
-        'close',
-        description=info.capitalize() + '.',
+        "close",
+        description=info.capitalize() + ".",
         help=info,
         formatter_class=common.HelpFormatter,
         parents=[debug],
@@ -83,8 +83,8 @@ def main(args=None):
     # Build edit parser
     info = "launch the settings file for editing"
     sub = subs.add_parser(
-        'edit',
-        description=info.capitalize() + '.',
+        "edit",
+        description=info.capitalize() + ".",
         help=info,
         formatter_class=common.HelpFormatter,
         parents=[debug],
@@ -93,31 +93,31 @@ def main(args=None):
     # Build clean parser
     info = "display and delete conflicted files"
     sub = subs.add_parser(
-        'clean',
-        description=info.capitalize() + '.',
+        "clean",
+        description=info.capitalize() + ".",
         help=info,
         formatter_class=common.HelpFormatter,
         parents=[debug],
     )
     sub.add_argument(
-        '-f',
-        '--force',
-        action='store_true',
+        "-f",
+        "--force",
+        action="store_true",
         help="actually delete the conflicted files",
     )
 
     # Parse arguments
     args = parser.parse_args(args=args)
-    kwargs = {'delay': args.daemon}
-    if args.command == 'switch':
-        kwargs['switch'] = args.name if args.name else True
-    elif args.command == 'close':
-        kwargs['switch'] = False
-    elif args.command == 'edit':
-        kwargs['edit'] = True
-    elif args.command == 'clean':
-        kwargs['delete'] = True
-        kwargs['force'] = args.force
+    kwargs = {"delay": args.daemon}
+    if args.command == "switch":
+        kwargs["switch"] = args.name if args.name else True
+    elif args.command == "close":
+        kwargs["switch"] = False
+    elif args.command == "edit":
+        kwargs["edit"] = True
+    elif args.command == "clean":
+        kwargs["delete"] = True
+        kwargs["force"] = args.force
 
     # Configure logging
     common.configure_logging(args.verbose)
@@ -244,5 +244,5 @@ def _restart_daemon(manager):
     return True
 
 
-if __name__ == '__main__':  # pragma: no cover (manual test)
+if __name__ == "__main__":  # pragma: no cover (manual test)
     main()

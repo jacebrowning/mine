@@ -39,8 +39,8 @@ classifiers = [
 python = "^3.7"
 
 YORM = "^1.4"
-psutil = ">=2.1,<6.0"
-crayons = "~0.1.2"
+psutil = "^2.2"
+crayons = "~0.1"
 minilog = "^0.3"
 universal-startfile = "*"
 

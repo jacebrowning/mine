@@ -63,7 +63,12 @@ class TestComputers:
     """Unit tests for lists of computers."""
 
     computers = Computers(
-        [Computer("abc", "abc.local", 1), Computer("def", "def.local", 2)]
+        [
+            Computer("abc", "abc.local", 1),
+            Computer("def", "def.local", 2),
+            Computer("My iMac", "imac.local", 3),
+            Computer("My Mac", "mac.local", 4),
+        ]
     )
 
     def test_get(self):
@@ -80,6 +85,11 @@ class TestComputers:
         """Verify a similar computer can be found."""
         computer = self.computers.match("AB")
         assert "abc" == computer.name
+
+    def test_match_partial(self):
+        """Verify an exact match is preferred over partial."""
+        computer = self.computers.match("mac")
+        assert "My Mac" == computer.name
 
     def test_generate_name(self):
         """Verify a computer name is generated correctly."""

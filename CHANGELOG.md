@@ -1,3 +1,8 @@
+# 3.0 (2023-04-15)
+
+- Dropped support for Python 3.7.
+- Updated computer matching to prefer exact matches over partials.
+
 # 2.0 (2022-08-16)
 
 - Dropped support for Python 3.6.

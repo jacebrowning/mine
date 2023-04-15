@@ -57,12 +57,15 @@ class Computers(yorm.types.SortedList):
                 return computer
         return None
 
-    def match(self, partial):
+    def match(self, partial: str):
         """Find a computer with a similar name."""
         log.debug("Finding computer similar to '%s'...", partial)
+        matches = []
         for computer in self:
             if partial.lower() in computer.name.lower():
-                return computer
+                matches.append(computer)
+        if matches:
+            return min(matches, key=lambda computer: len(computer.name))
         return None
 
     def get_current(self):

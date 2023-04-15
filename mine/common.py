@@ -5,7 +5,6 @@ import logging
 
 from . import settings
 
-
 MAX_VERBOSITY = 4
 
 verbosity = 0

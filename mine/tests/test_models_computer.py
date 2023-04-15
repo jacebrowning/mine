@@ -1,5 +1,3 @@
-# pylint: disable=misplaced-comparison-constant,no-self-use
-
 from unittest.mock import Mock, patch
 
 import pytest

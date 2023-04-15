@@ -1,5 +1,3 @@
-# pylint: disable=misplaced-comparison-constant,no-self-use
-
 import os
 import subprocess
 

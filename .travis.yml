@@ -1,10 +1,11 @@
-dist: xenial
+dist: jammy
 
 language: python
 python:
-  - 3.7
-  - 3.8
-  - 3.9
+  - "3.8"
+  - "3.9"
+  - "3.10"
+  - "3.11"
 
 cache:
   pip: true
@@ -16,8 +17,7 @@ env:
     - RANDOM_SEED=0
 
 before_install:
-  - curl -sSL https://raw.githubusercontent.com/sdispater/poetry/master/get-poetry.py | python
-  - source $HOME/.poetry/env
+  - curl -sSL https://install.python-poetry.org | python3 -
   - make doctor
 
 install:

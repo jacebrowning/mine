@@ -1,4 +1,4 @@
-# pylint: disable=misplaced-comparison-constant,no-self-use,attribute-defined-outside-init
+# pylint: disable=attribute-defined-outside-init
 
 from unittest.mock import Mock
 

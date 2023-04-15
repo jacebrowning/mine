@@ -1,5 +1,3 @@
-# pylint: disable=misplaced-comparison-constant,no-self-use
-
 from mine.models import ProgramConfig
 
 

@@ -1,5 +1,3 @@
-# pylint: disable=misplaced-comparison-constant,no-self-use
-
 import pytest
 
 from mine.manager import LinuxManager, MacManager, WindowsManager, get_manager

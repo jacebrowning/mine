@@ -1,4 +1,4 @@
-# pylint: disable=misplaced-comparison-constant,unused-variable
+# pylint: disable=unused-variable
 
 import pytest
 

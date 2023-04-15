@@ -1,4 +1,4 @@
-# pylint: disable=misplaced-comparison-constant,no-self-use,redefined-outer-name
+# pylint: disable=redefined-outer-name
 
 import os
 from unittest.mock import Mock, patch
@@ -23,7 +23,7 @@ def touch(*parts):
     dirpath = os.path.dirname(path)
     if not os.path.isdir(dirpath):
         os.makedirs(dirpath)
-    open(path, "w").close()
+    open(path, "w", encoding="utf-8").close()
 
 
 class TestFindRoot:

@@ -7,7 +7,6 @@ import log
 
 from .models.application import Application, Versions
 
-
 ROOTS = (r"C:\Users", r"/Users", r"/home")
 SERVICES = ("Dropbox", "Dropbox (Personal)")
 CONFIG = "mine.yml"

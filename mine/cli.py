@@ -15,7 +15,6 @@ from . import CLI, DESCRIPTION, VERSION, common, services
 from .manager import get_manager
 from .models import Application, Data
 
-
 daemon = Application(CLI, filename=CLI)
 
 

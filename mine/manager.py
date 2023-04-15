@@ -11,7 +11,6 @@ from typing import List
 import log
 import psutil
 
-
 # TODO: delete this after implementing `BaseManager`
 # https://github.com/jacebrowning/mine/issues/8
 # https://github.com/jacebrowning/mine/issues/9
@@ -144,7 +143,7 @@ class LinuxManager(BaseManager):  # pragma: no cover (manual)
 
 
 class MacManager(BaseManager):  # pragma: no cover (manual)
-    """Application manager for OS X."""
+    """Application manager for macOS."""
 
     NAME = "Darwin"
     FRIENDLY = "Mac"
@@ -156,6 +155,8 @@ class MacManager(BaseManager):  # pragma: no cover (manual)
         "musiccacheextension",
         "podcastswidget",
         "mailcachedelete",
+        "com.apple.mail.spotlightindexextension",
+        "mailshortcutsextension",
     ]
 
     @log_running

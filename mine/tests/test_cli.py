@@ -1,4 +1,4 @@
-# pylint: disable=misplaced-comparison-constant,no-self-use,redefined-outer-name
+# pylint: disable=redefined-outer-name
 
 import logging
 import os

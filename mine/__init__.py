@@ -1,7 +1,15 @@
 """Package for mine."""
 
-from pkg_resources import get_distribution
+from importlib.metadata import PackageNotFoundError, version
+
+try:
+    __version__ = version("mine")
+except PackageNotFoundError:
+    __version__ = "(local)"
+
+del PackageNotFoundError
+del version
 
 CLI = "mine"
-VERSION = "mine v{}".format(get_distribution("mine").version)
+VERSION = f"mine v{__version__}"
 DESCRIPTION = "Share application state across computers using Dropbox."

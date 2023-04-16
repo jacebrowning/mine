@@ -9,7 +9,7 @@ from mine import services
 from mine.tests.conftest import FILES
 
 
-@pytest.yield_fixture
+@pytest.fixture
 def tmp_dir(tmpdir):
     cwd = os.getcwd()
     tmpdir.chdir()

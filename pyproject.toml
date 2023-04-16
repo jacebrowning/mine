@@ -1,7 +1,7 @@
 [tool.poetry]
 
 name = "mine"
-version = "3.0"
+version = "3.0.1"
 description = "Share application state across computers using Dropbox."
 
 license = "MIT"
@@ -38,11 +38,11 @@ classifiers = [
 
 python = "^3.8"
 
-YORM = "^1.4"
-psutil = "^2.2"
+YORM = "^1.6"
+psutil = "^4.4"
 crayons = "~0.1"
-minilog = "^2.0"
-universal-startfile = "*"
+minilog = "^2.1"
+universal-startfile = "^0.2"
 
 [tool.poetry.dev-dependencies]
 
@@ -63,7 +63,7 @@ pytest = "^7.1"
 pytest-describe = "^2.0"
 pytest-expecter = "^3.0"
 pytest-random = "*"
-pytest-cov = "^3.0"
+pytest-cov = "^4.0"
 freezegun = "*"
 
 # Reports

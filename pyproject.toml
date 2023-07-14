@@ -47,12 +47,11 @@ universal-startfile = "^0.2"
 [tool.poetry.dev-dependencies]
 
 # Formatters
-black = "^22.1"
-tomli = "*" # missing 'black' dependency
-isort = "^5.10"
+black = "^23.7"
+isort = "^5.12"
 
 # Linters
-mypy = "^1.0"
+mypy = "^1.4"
 pydocstyle = "^6.1"
 pylint = "~2.15"
 wrapt = "*" # missing 'pylint' dependency

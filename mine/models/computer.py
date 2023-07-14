@@ -1,6 +1,10 @@
 """Data structures for computer information."""
 
+import os
+import platform
+import re
 import socket
+import subprocess
 import uuid
 
 import log
@@ -12,14 +16,16 @@ from ._bases import NameMixin
 @yorm.attr(name=yorm.types.String)
 @yorm.attr(hostname=yorm.types.String)
 @yorm.attr(address=yorm.types.String)
+@yorm.attr(serial=yorm.types.String)
 class Computer(NameMixin, yorm.types.AttributeDictionary):
     """A dictionary of identifying computer information."""
 
-    def __init__(self, name=None, hostname=None, address=None):
+    def __init__(self, name=None, hostname=None, address=None, serial=None):
         super().__init__()
         self.name = name
         self.address = address or self.get_address()
         self.hostname = hostname or self.get_hostname()
+        self.serial = serial or self.get_serial()
 
     @staticmethod
     def get_address(node=None):
@@ -32,6 +38,27 @@ class Computer(NameMixin, yorm.types.AttributeDictionary):
     def get_hostname():
         """Get this computer's hostname."""
         return socket.gethostname()
+
+    @staticmethod
+    def get_serial():
+        if os.name == "nt":
+            cmd = "vol C:"
+            output = os.popen(cmd).read()
+            return re.findall("Volume Serial Number is (.+)", output)[0]
+
+        if platform.system() == "Darwin":
+            args = ["/usr/sbin/ioreg", "-l"]
+            output = subprocess.check_output(args).decode("utf-8")
+            serial_number_match = re.search(
+                '"IOPlatformSerialNumber" = "(.*?)"', output
+            )
+            if serial_number_match:
+                return serial_number_match.group(1)
+            return None
+
+        cmd = "/sbin/udevadm info --query=property --name=sda"
+        output = os.popen(cmd).read()
+        return re.findall("ID_SERIAL=(.+)", output)[0]
 
 
 @yorm.attr(all=Computer)
@@ -72,16 +99,22 @@ class Computers(yorm.types.SortedList):
         """Get the current computer's information."""
         this = Computer(None)
 
-        # Search for a matching address
-        for other in self:
-            if this.address == other.address:
-                other.hostname = this.hostname
-                return other
-
-        # Else, search for a matching hostname
+        # Search for a matching hostname
         for other in self:
             if this.hostname == other.hostname:
                 other.address = this.address
+                return other
+
+        # Else, search for a matching serial
+        for other in self:
+            if this.serial and this.serial == other.serial:
+                other.hostname = this.hostname
+                return other
+
+        # Else, search for a matching address
+        for other in self:
+            if this.address == other.address:
+                other.hostname = this.hostname
                 return other
 
         # Else, this is a new computer

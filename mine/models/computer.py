@@ -58,7 +58,10 @@ class Computer(NameMixin, yorm.types.AttributeDictionary):
 
         cmd = "/sbin/udevadm info --query=property --name=sda"
         output = os.popen(cmd).read()
-        return re.findall("ID_SERIAL=(.+)", output)[0]
+        serial_numbers = re.findall("ID_SERIAL=(.+)", output)
+        if serial_numbers:
+            return serial_numbers[0]
+        return None
 
 
 @yorm.attr(all=Computer)

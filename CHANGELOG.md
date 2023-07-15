@@ -1,5 +1,9 @@
 # Release Notes
 
+## 3.1.1 (2023-07-15)
+
+- Updated logic to save missing serial numbers.
+
 ## 3.1 (2023-07-14)
 
 - Use serial numbers as another way to identify computers.

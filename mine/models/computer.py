@@ -103,23 +103,31 @@ class Computers(yorm.types.SortedList):
     def get_current(self):
         """Get the current computer's information."""
         this = Computer(None)
+        log.debug(f"Matching: {this.hostname=} {this.address=} {this.serial=}")
 
         # Search for a matching hostname
         for other in self:
             if this.hostname == other.hostname:
+                log.debug(f"Matched via hostname: {other}")
                 other.address = this.address
+                if this.serial:
+                    other.serial = this.serial
                 return other
 
         # Else, search for a matching serial
         for other in self:
             if this.serial and this.serial == other.serial:
+                log.debug(f"Matched via serial: {other}")
                 other.hostname = this.hostname
                 return other
 
         # Else, search for a matching address
         for other in self:
             if this.address == other.address:
+                log.debug(f"Matched via address: {other}")
                 other.hostname = this.hostname
+                if this.serial:
+                    other.serial = this.serial
                 return other
 
         # Else, this is a new computer

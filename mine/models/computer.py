@@ -48,13 +48,15 @@ class Computer(NameMixin, yorm.types.AttributeDictionary):
 
         if platform.system() == "Darwin":
             args = ["/usr/sbin/ioreg", "-l"]
-            output = subprocess.check_output(args).decode("utf-8")
-            serial_number_match = re.search(
-                '"IOPlatformSerialNumber" = "(.*?)"', output
-            )
-            if serial_number_match:
-                return serial_number_match.group(1)
-            return None
+            try:
+                output = subprocess.check_output(args).decode("utf-8", "ignore")
+                serial_number_match = re.search(
+                    '"IOPlatformSerialNumber" = "(.*?)"', output
+                )
+                if serial_number_match:
+                    return serial_number_match.group(1)
+            except UnicodeDecodeError:
+                return None
 
         cmd = "/sbin/udevadm info --query=property --name=sda"
         output = os.popen(cmd).read()

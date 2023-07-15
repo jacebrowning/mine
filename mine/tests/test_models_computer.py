@@ -38,7 +38,7 @@ class TestComputer:
 
     def test_get_match_none(self):
         """Verify a computer is added when missing."""
-        other = Computer("name", "hostname", "address")
+        other = Computer("name", "hostname", "address", "serial")
         computers = Computers([other])
         this = computers.get_current()
         assert "sample" == this.name

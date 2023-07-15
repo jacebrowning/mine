@@ -1,5 +1,9 @@
 # Release Notes
 
+## 3.1 (2023-07-14)
+
+- Use serial numbers as another way to identify computers.
+
 ## 3.0.1 (2023-04-16)
 
 - Updated dependencies.

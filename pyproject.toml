@@ -39,7 +39,7 @@ classifiers = [
 python = "^3.8"
 
 YORM = "^1.6"
-psutil = "^4.4"
+psutil = ">=4.4,<6.0"
 crayons = "~0.1"
 minilog = "^2.1"
 universal-startfile = "^0.2"

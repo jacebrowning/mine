@@ -1,6 +1,5 @@
 """Data structures for application information."""
 
-import log
 import yorm
 
 from ._bases import NameMixin
@@ -45,17 +44,3 @@ class Application(NameMixin, yorm.types.AttributeDictionary):
 @yorm.attr(all=Application)
 class Applications(yorm.types.SortedList):
     """List of monitored applications."""
-
-    def get(self, name):
-        """Get the application with the given name."""
-        application = self.find(name)
-        assert application, name
-        return application
-
-    def find(self, name):
-        """Find the application with the given name, else None."""
-        log.debug("Finding application for '%s'...", name)
-        for application in self:
-            if application == name:
-                return application
-        return None

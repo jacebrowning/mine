@@ -138,7 +138,7 @@ class TestProcesses:
         self.data = Data()
         self.data.config.applications.append(self.application)
         self.computer = (
-            self.data.config.computers.get_current()
+            self.data.config.get_current_computer()
         )  # pylint: disable=no-member
         yorm.sync(self.data, self.path)
 

@@ -7,7 +7,6 @@ import socket
 import subprocess
 import uuid
 
-import log
 import yorm
 
 from ._bases import NameMixin
@@ -69,81 +68,3 @@ class Computer(NameMixin, yorm.types.AttributeDictionary):
 @yorm.attr(all=Computer)
 class Computers(yorm.types.SortedList):
     """A list of computers."""
-
-    @property
-    def names(self):
-        """Get a list of all computers' labels."""
-        return [c.name for c in self]
-
-    def get(self, name):
-        """Get the computer with the given name."""
-        computer = self.find(name)
-        assert computer, name
-        return computer
-
-    def find(self, name):
-        """Find the computer with the given name, else None."""
-        log.debug("Finding computer for '%s'...", name)
-        for computer in self:
-            if computer == name:
-                return computer
-        return None
-
-    def match(self, partial: str):
-        """Find a computer with a similar name."""
-        log.debug("Finding computer similar to '%s'...", partial)
-        matches = []
-        for computer in self:
-            if partial.lower() in computer.name.lower():
-                matches.append(computer)
-        if matches:
-            return min(matches, key=lambda computer: len(computer.name))
-        return None
-
-    def get_current(self):
-        """Get the current computer's information."""
-        this = Computer(None)
-        log.debug(f"Matching: {this.hostname=} {this.address=} {this.serial=}")
-
-        # Search for a matching hostname
-        for other in self:
-            if this.hostname == other.hostname:
-                log.debug(f"Matched via hostname: {other}")
-                other.address = this.address
-                if this.serial:
-                    other.serial = this.serial
-                return other
-
-        # Else, search for a matching serial
-        for other in self:
-            if this.serial and this.serial == other.serial:
-                log.debug(f"Matched via serial: {other}")
-                other.hostname = this.hostname
-                return other
-
-        # Else, search for a matching address
-        for other in self:
-            if this.address == other.address:
-                log.debug(f"Matched via address: {other}")
-                other.hostname = this.hostname
-                if this.serial:
-                    other.serial = this.serial
-                return other
-
-        # Else, this is a new computer
-        this.name = self.generate_name(this)
-        assert this.name != "localhost"
-        log.debug("New computer: %s", this)
-        self.append(this)
-        return this
-
-    def generate_name(self, computer):
-        """Generate a new label for a computer."""
-        name = computer.hostname.lower().split(".")[0]
-        copy = 1
-        while name in self.names:
-            copy += 1
-            name2 = "{}-{}".format(name, copy)
-            if name2 not in self.names:
-                name = name2
-        return name

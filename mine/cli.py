@@ -12,7 +12,7 @@ import yorm
 from startfile import startfile
 
 from . import CLI, DESCRIPTION, VERSION, common, services
-from .manager import get_manager
+from .manager import BaseManager, get_manager
 from .models import Application, Data
 
 daemon = Application(CLI, filename=CLI)
@@ -176,7 +176,7 @@ def run(
     status = data.status
 
     log.info("Identifying current computer...")
-    computer = config.computers.get_current()
+    computer = config.get_current_computer()
     log.info("Current computer: %s", computer)
 
     if edit:
@@ -189,7 +189,7 @@ def run(
     elif switch is False:
         data.close_all_applications(config, manager)
     elif switch:
-        switch = config.computers.match(switch)
+        switch = config.match_computer(switch)
 
     if switch:
         if switch != computer:
@@ -201,7 +201,7 @@ def run(
         data.launch_queued_applications(config, status, computer, manager)
         data.update_status(config, status, computer, manager)
 
-        if delay is None:
+        if delay is None or delay <= 0:
             break
 
         log.info("Delaying %s seconds for files to sync...", delay)
@@ -227,7 +227,7 @@ def run(
     return True
 
 
-def _restart_daemon(manager):
+def _restart_daemon(manager: BaseManager):
     cmd = "nohup {} --daemon --verbose >> /tmp/mine.log 2>&1 &".format(CLI)
     if daemon and not manager.is_running(daemon):
         log.warning("Daemon is not running, attempting to restart...")

@@ -1,9 +1,10 @@
 """Data structures for application/computer status."""
 
 import functools
+from dataclasses import dataclass, field
+from typing import Optional
 
 import log
-import yorm
 
 from .timestamp import Timestamp
 
@@ -45,15 +46,12 @@ def log_stopping(func):
     return wrapped
 
 
-@yorm.attr(computer=yorm.types.String)
-@yorm.attr(timestamp=Timestamp)
-class State(yorm.types.AttributeDictionary):
+@dataclass
+class State:
     """Dictionary of computer state."""
 
-    def __init__(self, computer=None, timestamp=None):
-        super().__init__()
-        self.computer = computer
-        self.timestamp = timestamp or Timestamp()
+    computer: str
+    timestamp: Timestamp = field(default_factory=Timestamp)
 
     def __str__(self):
         return str(self.computer)
@@ -62,24 +60,13 @@ class State(yorm.types.AttributeDictionary):
         return str(self.computer).lower() < str(other.computer).lower()
 
 
-@yorm.attr(all=State)
-class StateList(yorm.types.SortedList):
-    """List of computer states for an application."""
-
-
-@yorm.attr(application=yorm.types.String)
-@yorm.attr(computers=StateList)
-@yorm.attr(next=yorm.types.NullableString)
-class Status(yorm.types.AttributeDictionary):
+@dataclass
+class Status:
     """Dictionary of computers using an application."""
 
-    def __init__(
-        self, application=None, computers=None, next=None
-    ):  # pylint: disable=redefined-builtin
-        super().__init__()
-        self.application = application
-        self.computers = computers or StateList()
-        self.next = next
+    application: str
+    computers: list[State] = field(default_factory=list)
+    next: Optional[str] = None
 
     def __str__(self):
         return str(self.application)
@@ -88,20 +75,12 @@ class Status(yorm.types.AttributeDictionary):
         return str(self.application).lower() < str(other.application).lower()
 
 
-@yorm.attr(all=Status)
-class StatusList(yorm.types.SortedList):
-    """List of application statuses."""
-
-
-@yorm.attr(applications=StatusList)
-@yorm.attr(counter=yorm.types.Integer)
-class ProgramStatus(yorm.types.AttributeDictionary):
+@dataclass
+class ProgramStatus:
     """Dictionary of current program status."""
 
-    def __init__(self, applications=None, counter=0):
-        super().__init__()
-        self.applications = applications or StatusList()
-        self.counter = counter
+    applications: list[Status] = field(default_factory=list)
+    counter: int = 0
 
     def find(self, application):
         """Return the application status for an application."""

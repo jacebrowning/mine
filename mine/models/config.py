@@ -1,21 +1,19 @@
 """Data structures for all settings."""
 
+from dataclasses import dataclass, field
+
 import log
-import yorm
 
-from .application import Applications
-from .computer import Computer, Computers
+from .application import Application
+from .computer import Computer
 
 
-@yorm.attr(computers=Computers)
-@yorm.attr(applications=Applications)
-class ProgramConfig(yorm.types.AttributeDictionary):
+@dataclass
+class ProgramConfig:
     """Dictionary of program configuration settings."""
 
-    def __init__(self, applications=None, computers=None):
-        super().__init__()
-        self.applications = applications or Applications()
-        self.computers = computers or Computers()
+    computers: list[Computer] = field(default_factory=list)
+    applications: list[Application] = field(default_factory=list)
 
     @property
     def computer_names(self):

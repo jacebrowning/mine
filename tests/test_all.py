@@ -2,7 +2,7 @@ import os
 import subprocess
 
 import log
-import yorm
+from datafiles.model import create_model
 
 from mine import cli
 from mine.models import (
@@ -28,8 +28,7 @@ class TestFiles:
         if os.path.exists(path):
             os.remove(path)
 
-        data = Data()
-        yorm.sync(data, path)
+        data = create_model(Data, pattern=path, defaults=True)()
 
         itunes = Application("itunes")
         itunes.versions.mac = ""
@@ -68,8 +67,7 @@ class TestFiles:
         if os.path.exists(path):
             os.remove(path)
 
-        data = Data()
-        yorm.sync(data, path)
+        data = create_model(Data, pattern=path, defaults=True)()
 
         itunes = Application("itunes")
         itunes.versions.mac = ""
@@ -105,8 +103,7 @@ class TestFiles:
         """Verify a sample file is loaded."""
         path = os.path.join(FILES, "mine-in.yml")
 
-        data = Data()
-        yorm.sync(data, path)
+        data = create_model(Data, pattern=path, defaults=True)()
 
         assert data.config.applications
         for application in data.config.applications:
@@ -140,12 +137,12 @@ class TestProcesses:
         self.computer = (
             self.data.config.get_current_computer()
         )  # pylint: disable=no-member
-        yorm.sync(self.data, self.path)
+        # create_model(self.data, self.path)
 
     def _fetch_data(self):
         """Read the final data file back for verification."""
         data = Data()
-        yorm.sync(data, self.path)
+        # create_model(data, self.path)
         return data
 
     def _start_application(self):

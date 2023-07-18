@@ -1,36 +1,35 @@
 """Data structures for application information."""
 
-import yorm
+from dataclasses import dataclass, field
+from typing import Optional
 
 from ._bases import NameMixin
 
 
-@yorm.attr(mac=yorm.types.NullableString)
-@yorm.attr(windows=yorm.types.NullableString)
-@yorm.attr(linux=yorm.types.NullableString)
-class Versions(yorm.types.AttributeDictionary):
+@dataclass
+class Versions:
     """Dictionary of OS-specific application filenames."""
 
+    mac: Optional[str] = None
+    windows: Optional[str] = None
+    linux: Optional[str] = None
 
-@yorm.attr(auto_queue=yorm.types.Boolean)
-@yorm.attr(single_instance=yorm.types.Boolean)
-class Properties(yorm.types.AttributeDictionary):
+
+@dataclass
+class Properties:
     """Dictionary of application management settings."""
 
+    auto_queue: bool = False
+    single_instance: bool = False
 
-@yorm.attr(name=yorm.types.String)
-@yorm.attr(properties=Properties)
-@yorm.attr(versions=Versions)
-class Application(NameMixin, yorm.types.AttributeDictionary):
+
+@dataclass
+class Application(NameMixin):
     """Dictionary of application information."""
 
-    def __init__(self, name=None, properties=None, versions=None, filename=None):
-        super().__init__()
-        self.name = name
-        self.properties = properties or Properties()
-        self.versions = versions or Versions(
-            mac=filename, windows=filename, linux=filename
-        )
+    name: str
+    properties: Properties = field(default_factory=Properties)
+    versions: Versions = field(default_factory=Versions)
 
     @property
     def auto_queue(self):
@@ -39,8 +38,3 @@ class Application(NameMixin, yorm.types.AttributeDictionary):
     @property
     def no_wait(self):
         return not self.properties.single_instance
-
-
-@yorm.attr(all=Application)
-class Applications(yorm.types.SortedList):
-    """List of monitored applications."""

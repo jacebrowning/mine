@@ -38,7 +38,7 @@ classifiers = [
 
 python = "^3.8"
 
-YORM = "^1.6"
+datafiles = "^2.1.2"
 psutil = ">=4.4,<6.0"
 crayons = "~0.1"
 minilog = "^2.1"
@@ -98,6 +98,8 @@ no_implicit_optional = true
 check_untyped_defs = true
 
 cache_dir = ".cache/mypy/"
+
+plugins = "datafiles.plugins:mypy"
 
 [tool.pytest.ini_options]
 

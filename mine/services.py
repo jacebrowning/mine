@@ -9,7 +9,7 @@ from .models.application import Application, Versions
 
 ROOTS = (r"C:\Users", r"/Users", r"/home")
 SERVICES = ("Dropbox", "Dropbox (Personal)")
-CONFIG = "mine.yml"
+CONFIG = "mine2.yml"  # TODO: Change back to mine.yml after testing
 CONFLICT_BASE = r"{} \(.+'s conflicted copy \d+-\d+-\d+.*\).*"
 CONFLICT_ANY = CONFLICT_BASE.format(".+")
 CONFLICT_CONFIG = CONFLICT_BASE.format("mine")

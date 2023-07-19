@@ -26,8 +26,8 @@ def pytest_configure(config):
 
 def pytest_runtest_setup(item):
     if "linux_only" in item.keywords and platform.system() != "Linux":
-        pytest.skip("test can only be run on Linux")
+        pytest.skip("Test can only be run on Linux")
     if "mac_only" in item.keywords and platform.system() != "Darwin":
-        pytest.skip("test can only be run on OS X")
+        pytest.skip("Test can only be run on macOS")
     if "windows_only" in item.keywords and platform.system() != "Windows":
-        pytest.skip("test can only be run on Windows")
+        pytest.skip("Test can only be run on Windows")

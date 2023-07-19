@@ -60,7 +60,7 @@ Keep all of the above tasks running on change:
 $ make dev
 ```
 
-> In order to have OS X notifications, `brew install terminal-notifier`.
+> In order to have macOS notifications, `brew install terminal-notifier`.
 
 ### Continuous Integration
 

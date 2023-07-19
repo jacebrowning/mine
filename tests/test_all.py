@@ -1,8 +1,8 @@
 import os
 import subprocess
 
+import datafiles
 import log
-import pytest
 from datafiles.model import create_model
 
 from mine import cli
@@ -29,7 +29,7 @@ class TestFiles:
         if os.path.exists(path):
             os.remove(path)
 
-        data = create_model(Data, pattern=path, defaults=True)()
+        data: Data = create_model(Data, pattern=path, defaults=True)()
 
         itunes = Application("itunes")
         itunes.versions.mac = ""
@@ -68,7 +68,7 @@ class TestFiles:
         if os.path.exists(path):
             os.remove(path)
 
-        data = create_model(Data, pattern=path, defaults=True)()
+        data: Data = create_model(Data, pattern=path, defaults=True)()
 
         itunes = Application("itunes")
         itunes.versions.mac = ""
@@ -104,7 +104,7 @@ class TestFiles:
         """Verify a sample file is loaded."""
         path = os.path.join(FILES, "mine-in.yml")
 
-        data = create_model(Data, pattern=path, defaults=True)()
+        data: Data = create_model(Data, pattern=path, defaults=True)()
 
         assert data.config.applications
         for application in data.config.applications:
@@ -114,19 +114,16 @@ class TestFiles:
             assert False
 
 
-@pytest.mark.skip
 class TestProcesses:
     """Integration tests for tracking and stopping processes."""
 
-    NAME = "example application"
-
-    application = Application(NAME)
+    application = Application("Example Application")
     application.versions.linux = "yes"
     application.versions.mac = "yes"
     application.versions.windows = "yes.exe"
 
-    computer = None
-    data: Data = None  # type: ignore
+    computer: Computer
+    data: Data
 
     path = os.path.join(FILES, "mine.tmp.yml")
 
@@ -134,17 +131,13 @@ class TestProcesses:
 
     def _store_data(self):
         """Set up initial data file for tests."""
-        self.data = Data()
+        self.data: Data = create_model(Data, pattern=self.path, defaults=True)()
         self.data.config.applications.append(self.application)
-        self.computer = (
-            self.data.config.get_current_computer()
-        )  # pylint: disable=no-member
-        # create_model(self.data, self.path)
+        self.computer = self.data.config.get_current_computer("This Computer")
 
-    def _fetch_data(self):
+    def _fetch_data(self) -> Data:
         """Read the final data file back for verification."""
-        data = Data()
-        # create_model(data, self.path)
+        data: Data = create_model(Data, pattern=self.path, defaults=True)()
         return data
 
     def _start_application(self):
@@ -152,7 +145,7 @@ class TestProcesses:
         if not self._process:
             # TODO: get filename from the application object
             self._process = subprocess.Popen(["yes"], stdout=subprocess.PIPE)
-        log.info("%s is started", self.application)
+        log.info(f"{self.application} manually started")
 
     def _stop_application(self):
         """Stop the example application."""
@@ -160,7 +153,7 @@ class TestProcesses:
             if self._process.poll() is None:
                 self._process.kill()
             self._process = None
-        log.info("%s is stopped", self.application)
+        log.info(f"{self.application} manually stopped")
 
     def _is_application_running(self):
         """Determine if the sample application is running."""
@@ -181,16 +174,14 @@ class TestProcesses:
 
         # start the application and manually mark it as running
         self._start_application()
-        status = self.data.status
-        status.start(self.application, self.computer)
-        self.data.status = status
+        with datafiles.frozen(self.data):
+            self.data.status.start(self.application, self.computer)
         assert self.data.status.is_running(self.application, self.computer)
 
         # manually mark the application as running on a remote computer
-        computer = Computer("other", "Other.local", "AA:BB:CC:DD:EE:FF")
-        status = self.data.status
-        status.start(self.application, computer)
-        self.data.status = status
+        computer = Computer("Other Computer", "Other.local", "AA:BB:CC:DD:EE:FF")
+        with datafiles.frozen(self.data):
+            self.data.status.start(self.application, computer)
         assert self.data.status.is_running(self.application, computer)
 
         # Act

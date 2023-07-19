@@ -170,7 +170,7 @@ def run(
     root = services.find_root()
     path = path or services.find_config_path(root=root)
 
-    data = create_model(Data, pattern=path, defaults=True)()
+    data: Data = create_model(Data, pattern=path, defaults=True)()
 
     config = data.config
     status = data.status

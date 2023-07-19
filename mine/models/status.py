@@ -108,7 +108,7 @@ class ProgramStatus:
                     # TODO: consider returning the computer instance?
                     return states[0].computer
 
-        log.debug("marked as started on: nothing")
+        log.debug(f"{application} marked as started on: nothing")
         return None
 
     @log_running

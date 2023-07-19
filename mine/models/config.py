@@ -45,9 +45,9 @@ class ProgramConfig:
             return min(matches, key=lambda computer: len(computer.name))
         return None
 
-    def get_current_computer(self):
+    def get_current_computer(self, default_name: str = ""):
         """Get the current computer's information."""
-        this = Computer("")
+        this = Computer("?")
         log.debug(f"Comparing information with {this!r}...")
 
         # Search for a matching hostname
@@ -76,9 +76,9 @@ class ProgramConfig:
                 return other
 
         # Else, this is a new computer
-        this.name = self.generate_computer_name(this)
+        this.name = default_name or self.generate_computer_name(this)
         assert this.name != "localhost"
-        log.debug("New computer: %s", this)
+        log.debug(f"Detected new computer: {this!r}")
         self.computers.append(this)
         return this
 

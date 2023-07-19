@@ -215,6 +215,7 @@ def run(
             time.sleep(step)
             elapsed += step
 
+        print()
         short_delay = 30
         log.info("Delaying %s seconds for files to sync...", short_delay)
         time.sleep(short_delay)

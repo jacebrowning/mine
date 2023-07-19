@@ -13,10 +13,10 @@ class TestProgramConfig:
     config = ProgramConfig(
         applications=[Application("iTunes"), Application("HipChat")],
         computers=[
-            Computer("abc", "abc.local", 1),
-            Computer("def", "def.local", 2),
-            Computer("My iMac", "imac.local", 3),
-            Computer("My Mac", "mac.local", 4),
+            Computer("abc", "abc.local", "1"),
+            Computer("def", "def.local", "2"),
+            Computer("My iMac", "imac.local", "3"),
+            Computer("My Mac", "mac.local", "4"),
         ],
     )
 
@@ -59,15 +59,15 @@ class TestProgramConfig:
     def test_generate_name(self):
         """Verify a computer name is generated correctly."""
         config = ProgramConfig()
-        computer = Computer(None, hostname="Jaces-iMac.local")
-        name = config.generate_name(computer)
+        computer = Computer("", hostname="Jaces-iMac.local")
+        name = config.generate_computer_name(computer)
         assert "jaces-imac" == name
 
     def test_generate_name_duplicates(self):
         """Verify a computer name is generated correctly with duplicates."""
         config = ProgramConfig(computers=[Computer("jaces-imac")])
-        computer = Computer(None, hostname="Jaces-iMac.local")
-        name = config.generate_name(computer)
+        computer = Computer("", hostname="Jaces-iMac.local")
+        name = config.generate_computer_name(computer)
         assert "jaces-imac-2" == name
 
     def test_get_current_computer_by_matching_address(self):

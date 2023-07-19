@@ -22,13 +22,13 @@ class ProgramConfig(yorm.types.AttributeDictionary):
         """Get a list of all computers' labels."""
         return [c.name for c in self.computers]
 
-    def get_computer(self, name):
+    def get_computer(self, name: str):
         """Get the computer with the given name."""
         computer = self.find_computer(name)
         assert computer, name
         return computer
 
-    def find_computer(self, name):
+    def find_computer(self, name: str):
         """Find the computer with the given name, else None."""
         log.debug("Finding computer for '%s'...", name)
         for computer in self.computers:
@@ -49,13 +49,13 @@ class ProgramConfig(yorm.types.AttributeDictionary):
 
     def get_current_computer(self):
         """Get the current computer's information."""
-        this = Computer(None)
-        log.debug(f"Matching: {this.hostname=} {this.address=} {this.serial=}")
+        this = Computer("")
+        log.debug(f"Comparing information with {this!r}...")
 
         # Search for a matching hostname
         for other in self.computers:
             if this.hostname == other.hostname:
-                log.debug(f"Matched via hostname: {other}")
+                log.debug(f"Matched via hostname: {other!r}")
                 other.address = this.address
                 if this.serial:
                     other.serial = this.serial
@@ -64,27 +64,27 @@ class ProgramConfig(yorm.types.AttributeDictionary):
         # Else, search for a matching serial
         for other in self.computers:
             if this.serial and this.serial == other.serial:
-                log.debug(f"Matched via serial: {other}")
+                log.debug(f"Matched via serial: {other!r}")
                 other.hostname = this.hostname
                 return other
 
         # Else, search for a matching address
         for other in self.computers:
             if this.address == other.address:
-                log.debug(f"Matched via address: {other}")
+                log.debug(f"Matched via address: {other!r}")
                 other.hostname = this.hostname
                 if this.serial:
                     other.serial = this.serial
                 return other
 
         # Else, this is a new computer
-        this.name = self.generate_name(this)
+        this.name = self.generate_computer_name(this)
         assert this.name != "localhost"
         log.debug("New computer: %s", this)
         self.computers.append(this)
         return this
 
-    def generate_name(self, computer: Computer):
+    def generate_computer_name(self, computer: Computer):
         """Generate a new label for a computer."""
         name = computer.hostname.lower().split(".")[0]
         copy = 1
@@ -95,15 +95,15 @@ class ProgramConfig(yorm.types.AttributeDictionary):
                 name = name2
         return name
 
-    def get_application(self, name):
+    def get_application(self, name: str):
         """Get the application with the given name."""
         application = self.find_application(name)
         assert application, name
         return application
 
-    def find_application(self, name):
+    def find_application(self, name: str):
         """Find the application with the given name, else None."""
-        log.debug("Finding application for '%s'...", name)
+        log.debug(f"Finding application for {name!r}...")
         for application in self.applications:
             if application == name:
                 return application

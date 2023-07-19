@@ -160,7 +160,7 @@ class ProgramStatus(yorm.types.AttributeDictionary):
                         return
                 break
         else:
-            status = None
+            status = None  # type: ignore
 
         # Status not found, add the application/computer as started
         self.counter += 1
@@ -185,7 +185,7 @@ class ProgramStatus(yorm.types.AttributeDictionary):
                         return
                 break
         else:
-            status = None
+            status = None  # type: ignore
 
         # Status not found, add the application/computer as stopped
         self.counter += 1

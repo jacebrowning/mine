@@ -3,8 +3,6 @@
 from dataclasses import dataclass, field
 from typing import Optional
 
-from ._bases import NameMixin
-
 
 @dataclass
 class Versions:
@@ -24,12 +22,24 @@ class Properties:
 
 
 @dataclass
-class Application(NameMixin):
+class Application:
     """Dictionary of application information."""
 
     name: str
     properties: Properties = field(default_factory=Properties)
     versions: Versions = field(default_factory=Versions)
+
+    def __str__(self):
+        return self.name
+
+    def __eq__(self, other):
+        return str(self).lower() == str(other).lower()
+
+    def __ne__(self, other):
+        return not self.__eq__(other)
+
+    def __lt__(self, other):
+        return str(self).lower() < str(other).lower()
 
     @property
     def auto_queue(self):

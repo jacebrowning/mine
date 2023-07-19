@@ -8,11 +8,9 @@ import subprocess
 import uuid
 from dataclasses import dataclass
 
-from ._bases import NameMixin
-
 
 @dataclass
-class Computer(NameMixin):
+class Computer:
     """A dictionary of identifying computer information."""
 
     name: str
@@ -24,6 +22,18 @@ class Computer(NameMixin):
         self.address = self.address or self.get_address()
         self.hostname = self.hostname or self.get_hostname()
         self.serial = self.serial or self.get_serial()
+
+    def __str__(self):
+        return self.name
+
+    def __eq__(self, other):
+        return str(self).lower() == str(other).lower()
+
+    def __ne__(self, other):
+        return not self.__eq__(other)
+
+    def __lt__(self, other):
+        return str(self).lower() < str(other).lower()
 
     @staticmethod
     def get_address(node=None):

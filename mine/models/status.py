@@ -6,6 +6,8 @@ from typing import Optional
 
 import log
 
+from .application import Application
+from .computer import Computer
 from .timestamp import Timestamp
 
 
@@ -122,13 +124,13 @@ class ProgramStatus:
         # Status not found, assume the application is not running
         return False
 
-    def queue(self, application, computer):
+    def queue(self, application: Application, computer: Computer):
         """Record an application as queued for launch on a computer."""
         status = self.find(application)
         status.next = computer.name
 
     @log_starting
-    def start(self, application, computer):
+    def start(self, application: Application, computer: Computer):
         """Record an application as running on a computer."""
         for status in self.applications:
             if status.application == application.name:
@@ -153,7 +155,7 @@ class ProgramStatus:
             status.computers.append(state)
 
     @log_stopping
-    def stop(self, application, computer):
+    def stop(self, application: Application, computer: Computer):
         """Record an application as no longer running on a computer."""
         for status in self.applications:
             if status.application == application.name:

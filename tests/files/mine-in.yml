@@ -1,28 +1,60 @@
 config:
   applications:
-  - name: slack
-    versions:
-      linux: null
-      mac: 'Slack.app'
-      windows: null
-  - name: iphoto
-    versions:
-      linux: null
-      mac: iPhoto
-      windows: null
+    - name: slack
+      versions:
+        linux:
+        mac: 'Slack.app'
+        windows:
+      properties:
+        auto_queue: false
+        single_instance: false
+    - name: iphoto
+      versions:
+        linux:
+        mac: iPhoto
+        windows:
+      properties:
+        auto_queue: false
+        single_instance: false
+    - name: example application
+      properties:
+        auto_queue: false
+        single_instance: false
+      versions:
+        mac: yes
+        windows: yes.exe
+        linux: yes
+    - name: example application
+      properties:
+        auto_queue: false
+        single_instance: false
+      versions:
+        mac: yes
+        windows: yes.exe
+        linux: yes
   computers:
-  - address: AA:BB:CC:DD:EE:FF
-    hostname: Jaces-MacBook
-    name: macbook
-  - address: ''
-    hostname: ''
-    name: macbook-pro
+    - address: AA:BB:CC:DD:EE:FF
+      hostname: Jaces-MacBook
+      name: macbook
+      serial: GVKG73G9GV
+    - address: '02:83:95:65:F8:6B'
+      hostname: '69-176-136-38.stellarbb.com'
+      name: macbook-pro
+      serial: GVKG73G9GV
 status:
   applications:
-  - application: itunes
-    computers:
-    - computer: macbook-pro
-      timestamp:
-        started: 444
-        stopped: null
-  counter: 499
+    - application: itunes
+      computers:
+        - computer: macbook-pro
+          timestamp:
+            started: 444
+            stopped: 0
+      next:
+    - application: example application
+      computers:
+        - computer: macbook-pro
+          timestamp:
+            started: 500
+            stopped: 0
+      next:
+  counter: 501

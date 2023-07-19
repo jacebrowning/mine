@@ -12,7 +12,7 @@ from mine.models import Application
 
 @pytest.fixture
 def tmp_path(tmpdir):
-    return tmpdir.join("custom.ext").strpath
+    return tmpdir.join("custom.yml").strpath
 
 
 class TestMain:

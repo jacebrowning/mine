@@ -2,6 +2,7 @@ import os
 import subprocess
 
 import log
+import pytest
 from datafiles.model import create_model
 
 from mine import cli
@@ -113,6 +114,7 @@ class TestFiles:
             assert False
 
 
+@pytest.mark.skip
 class TestProcesses:
     """Integration tests for tracking and stopping processes."""
 

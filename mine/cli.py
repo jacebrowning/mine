@@ -8,6 +8,7 @@ import sys
 import time
 
 import log
+from datafiles import frozen
 from datafiles.model import create_model
 from startfile import startfile
 
@@ -197,8 +198,9 @@ def run(
 
     while True:
         services.delete_conflicts(root, config_only=True, force=True)
-        data.launch_queued_applications(config, status, computer, manager)
-        data.update_status(config, status, computer, manager)
+        with frozen(data):
+            data.launch_queued_applications(config, status, computer, manager)
+            data.update_status(config, status, computer, manager)
 
         if delay is None or delay <= 0:
             break
@@ -218,7 +220,8 @@ def run(
         time.sleep(short_delay)
 
     if cleanup:
-        data.prune_status(config, status)
+        with frozen(data):
+            data.prune_status(config, status)
 
     if delay is None:
         return _restart_daemon(manager)

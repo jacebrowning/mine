@@ -1,16 +1,15 @@
 """Data structures for application information."""
 
 from dataclasses import dataclass, field
-from typing import Optional
 
 
 @dataclass
 class Versions:
     """Dictionary of OS-specific application filenames."""
 
-    mac: Optional[str] = None
-    windows: Optional[str] = None
-    linux: Optional[str] = None
+    mac: str | None = None
+    windows: str | None = None
+    linux: str | None = None
 
 
 @dataclass

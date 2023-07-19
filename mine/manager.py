@@ -6,7 +6,6 @@ import glob
 import os
 import platform
 import time
-from typing import List
 
 import log
 import psutil
@@ -63,7 +62,7 @@ class BaseManager(metaclass=abc.ABCMeta):  # pragma: no cover (abstract)
 
     NAME = FRIENDLY = ""
 
-    IGNORED_APPLICATION_NAMES: List[str] = []
+    IGNORED_APPLICATION_NAMES: list[str] = []
 
     def __str__(self):
         return self.FRIENDLY

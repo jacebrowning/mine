@@ -2,7 +2,6 @@
 
 import functools
 from dataclasses import dataclass, field
-from typing import Optional
 
 import log
 
@@ -68,7 +67,7 @@ class Status:
 
     application: str
     computers: list[State] = field(default_factory=list)
-    next: Optional[str] = None
+    next: str | None = None
 
     def __str__(self):
         return str(self.application)

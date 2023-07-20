@@ -105,7 +105,7 @@ class ProgramStatus:
                         application,
                         ", ".join(str(s) for s in states),
                     )
-                    # TODO: consider returning the computer instance?
+                    # TODO: consider returning the computer instance
                     return states[0].computer
 
         log.debug(f"{application} marked as started on: nothing")

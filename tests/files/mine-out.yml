@@ -1,15 +1,15 @@
 config:
   computers:
     - name: macbook
-      hostname: Jaces-MacBook
-      address: AA:BB:CC:DD:EE:FF
       serial: abc123
-      mine: ''
+      address: AA:BB:CC:DD:EE:FF
+      hostname: Jaces-MacBook
+      mine: v4.0.1
     - name: macbook-pro
-      hostname: Jaces-MacBook-2
-      address: 11:22:33:44:55:66
       serial: def456
-      mine: ''
+      address: 11:22:33:44:55:66
+      hostname: Jaces-MacBook-2
+      mine: v4.0.1
   applications:
     - name: itunes
       properties:

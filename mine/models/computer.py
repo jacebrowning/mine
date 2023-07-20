@@ -8,21 +8,24 @@ import subprocess
 import uuid
 from dataclasses import dataclass
 
+from .. import __version__
+
 
 @dataclass
 class Computer:
     """A dictionary of identifying computer information."""
 
     name: str
-    hostname: str = ""
-    address: str = ""
     serial: str = ""
-    mine: str = ""
+    address: str = ""
+    hostname: str = ""
+    mine: str = "v" + __version__
 
     def __post_init__(self):
         self.address = self.address or self.get_address()
         self.hostname = self.hostname or self.get_hostname()
         self.serial = self.serial or self.get_serial()
+        assert ":" in self.address, f"Invalid address: {self.address!r}"
 
     def __str__(self):
         return self.name

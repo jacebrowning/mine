@@ -81,10 +81,6 @@ class BaseManager(metaclass=abc.ABCMeta):  # pragma: no cover (abstract)
         log.debug("Searching for exe path containing '%s'...", name)
 
         for process in psutil.process_iter():
-            if process.status() == psutil.STATUS_ZOMBIE:
-                log.debug("Skipped zombie process: %s", process)
-                continue
-
             try:
                 command = " ".join(process.cmdline()).lower()
                 parts = []
@@ -92,6 +88,10 @@ class BaseManager(metaclass=abc.ABCMeta):  # pragma: no cover (abstract)
                     parts.extend([p.lower() for p in arg.split(os.sep)])
             except psutil.AccessDenied:
                 continue  # the process is likely owned by root
+
+            if process.status() == psutil.STATUS_ZOMBIE:
+                log.debug("Skipped zombie process: %s", command)
+                continue
 
             if name.lower() not in parts:
                 continue
@@ -129,10 +129,13 @@ class LinuxManager(BaseManager):  # pragma: no cover (manual)
 
     def stop(self, application):
         name = application.versions.linux
-        process = self._get_process(name)
-        if process.is_running():
-            process.terminate()
-            process.wait()
+        while True:
+            process = self._get_process(name)
+            if process and process.is_running():
+                process.terminate()
+                process.wait()
+            else:
+                break
 
 
 class MacManager(BaseManager):  # pragma: no cover (manual)
@@ -187,10 +190,13 @@ class MacManager(BaseManager):  # pragma: no cover (manual)
     @log_stopping
     def stop(self, application):
         name = application.versions.mac
-        process = self._get_process(name)
-        if process and process.is_running():
-            process.terminate()
-            process.wait()
+        while True:
+            process = self._get_process(name)
+            if process and process.is_running():
+                process.terminate()
+                process.wait()
+            else:
+                break
 
     @staticmethod
     def _start_app(path):

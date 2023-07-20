@@ -1,5 +1,9 @@
 # Release Notes
 
+## 4.1 (unreleased)
+
+- Added a flag to manually stop the background daemon process.
+
 ## 4.0 (2023-07-20)
 
 - Dropped support for Python 3.8 and 3.9.

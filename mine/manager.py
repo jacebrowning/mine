@@ -132,6 +132,7 @@ class LinuxManager(BaseManager):  # pragma: no cover (manual)
         process = self._get_process(name)
         if process.is_running():
             process.terminate()
+            process.wait()
 
 
 class MacManager(BaseManager):  # pragma: no cover (manual)
@@ -189,6 +190,7 @@ class MacManager(BaseManager):  # pragma: no cover (manual)
         process = self._get_process(name)
         if process and process.is_running():
             process.terminate()
+            process.wait()
 
     @staticmethod
     def _start_app(path):

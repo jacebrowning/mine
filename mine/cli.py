@@ -105,6 +105,12 @@ def main(args=None):
         action="store_true",
         help="actually delete the conflicted files",
     )
+    sub.add_argument(
+        "-s",
+        "--stop",
+        action="store_true",
+        help="stop the background daemon process ",
+    )
 
     # Parse arguments
     args = parser.parse_args(args=args)
@@ -118,6 +124,7 @@ def main(args=None):
     elif args.command == "clean":
         kwargs["delete"] = True
         kwargs["force"] = args.force
+        kwargs["stop"] = args.stop
 
     # Configure logging
     common.configure_logging(args.verbose)
@@ -148,6 +155,7 @@ def run(
     edit=False,
     delete=False,
     force=False,
+    stop=False,
 ):
     """Run the program.
 
@@ -161,6 +169,7 @@ def run(
 
     :param delete: attempt to delete conflicted files
     :param force: actually delete conflicted files
+    :param stop: stop the background daemon process
 
     """  # pylint: disable=too-many-arguments,too-many-branches
     manager = get_manager()
@@ -180,6 +189,8 @@ def run(
         computer = config.get_current_computer()
     log.info("Current computer: %s", computer)
 
+    if stop:
+        manager.stop(daemon)
     if edit:
         return startfile(path)
     if delete:

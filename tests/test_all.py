@@ -38,7 +38,7 @@ class TestFiles:
         iphoto = Application("iphoto")
         iphoto.versions.mac = "iPhoto"
 
-        mac = Computer("macbook", "Other.local")
+        mac = Computer("macbook", "serial", "address:", "Other.local")
         mac2 = Computer("macbook-pro")
 
         configuration = ProgramConfig()
@@ -77,8 +77,8 @@ class TestFiles:
         iphoto = Application("iphoto")
         iphoto.versions.mac = "iPhoto"
 
-        mac = Computer("macbook", "Jaces-MacBook", "AA:BB:CC:DD:EE:FF", "abc123")
-        mac2 = Computer("macbook-pro", "Jaces-MacBook-2", "11:22:33:44:55:66", "def456")
+        mac = Computer("macbook", "abc123", "AA:BB:CC:DD:EE:FF", "Jaces-MacBook")
+        mac2 = Computer("macbook-pro", "def456", "11:22:33:44:55:66", "Jaces-MacBook-2")
 
         configuration = ProgramConfig()
         configuration.applications = [itunes, iphoto]

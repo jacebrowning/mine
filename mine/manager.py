@@ -10,31 +10,25 @@ import time
 import log
 import psutil
 
-# TODO: delete this after implementing `BaseManager`
-# https://github.com/jacebrowning/mine/issues/8
-# https://github.com/jacebrowning/mine/issues/9
 
-
-# TODO: enable coverage when a Linux test is implemented
-def log_running(func):  # pragma: no cover (manual)
+def log_running(func):
     @functools.wraps(func)
     def wrapped(self, application):
-        log.debug("Determining if %s is running...", application)
+        log.debug(f"Determining if {application} is running...")
         running = func(self, application)
         if running is None:
-            status = "Application untracked"
+            status = "Application is untracked"
         elif running:
-            status = "Application running on current machine"
+            status = "Application running on this computer"
         else:
-            status = "Application not running on current machine"
-        log.info("%s: %s", status, application)
+            status = "Application not running on this computer"
+        log.info(f"{status}: {application}")
         return running
 
     return wrapped
 
 
-# TODO: enable coverage when a Linux test is implemented
-def log_starting(func):  # pragma: no cover (manual)
+def log_starting(func):
     @functools.wraps(func)
     def wrapped(self, application):
         log.info("Starting %s...", application)
@@ -45,8 +39,7 @@ def log_starting(func):  # pragma: no cover (manual)
     return wrapped
 
 
-# TODO: enable coverage when a Linux test is implemented
-def log_stopping(func):  # pragma: no cover (manual)
+def log_stopping(func):
     @functools.wraps(func)
     def wrapped(self, application):
         log.info("Stopping %s...", application)
@@ -145,7 +138,7 @@ class MacManager(BaseManager):  # pragma: no cover (manual)
     """Application manager for macOS."""
 
     NAME = "Darwin"
-    FRIENDLY = "Mac"
+    FRIENDLY = "macOS"
 
     IGNORED_APPLICATION_NAMES = [
         "iTunesHelper.app",
@@ -222,12 +215,12 @@ class WindowsManager(BaseManager):  # pragma: no cover (manual)
 
 def get_manager(name=None) -> BaseManager:
     """Return an application manager for the current operating system."""
-    log.info("Detecting the current system...")
+    log.info("Detecting the operating system...")
     name = name or platform.system()
     manager = {  # type: ignore
         WindowsManager.NAME: WindowsManager,
         MacManager.NAME: MacManager,
         LinuxManager.NAME: LinuxManager,
     }[name]()
-    log.info("Current system: %s", manager)
+    log.info("Identified operating system: %s", manager)
     return manager

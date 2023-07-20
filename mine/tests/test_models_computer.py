@@ -17,10 +17,11 @@ class TestComputer:
 
     def test_init_defaults(self):
         """Verify the correct computer information can be overridden."""
-        computer = Computer("name", "hostname", "address")
+        computer = Computer("name", "serial", "address:", "hostname")
         assert "name" == computer.name
-        assert "address" == computer.address
+        assert "address:" == computer.address
         assert "hostname" == computer.hostname
+        assert "serial" == computer.serial
 
     def test_eq(self):
         """Verify computers and strings can be equated."""
@@ -38,7 +39,7 @@ class TestComputer:
 
     def test_get_match_none(self):
         """Verify a computer is added when missing."""
-        other = Computer("name", "hostname", "address", "serial")
+        other = Computer("name", "serial", "address:", "hostname")
         config = ProgramConfig(computers=[other])
         this = config.get_current_computer()
         assert "sample" == this.name
@@ -48,7 +49,7 @@ class TestComputer:
 
     def test_get_match_all(self):
         """Verify a computer can be matched exactly."""
-        other = Computer("all", "Sample.local", "00:00:00:00:00:00")
+        other = Computer("all", "serial", "00:00:00:00:00:00", "Sample.local")
         config = ProgramConfig(computers=[other])
         this = config.get_current_computer()
         assert "all" == this.name

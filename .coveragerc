@@ -12,7 +12,8 @@ omit =
 [report]
 
 exclude_lines =
+    __main__
+    except PackageNotFoundError
     pragma: no cover
     raise NotImplementedError
-    except DistributionNotFound
     TYPE_CHECKING

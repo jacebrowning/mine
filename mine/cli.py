@@ -7,8 +7,8 @@ import subprocess
 import sys
 import time
 
+import datafiles
 import log
-from datafiles import frozen
 from datafiles.model import create_model
 from startfile import startfile
 
@@ -16,7 +16,7 @@ from . import CLI, DESCRIPTION, VERSION, common, services
 from .manager import BaseManager, get_manager
 from .models import Application, Data, Versions
 
-daemon = Application(CLI, versions=Versions(mac="mine", windows="mine", linux="mine"))
+daemon = Application("Mine", versions=Versions(mac=CLI, windows=CLI, linux=CLI))
 
 
 def main(args=None):
@@ -176,7 +176,8 @@ def run(
     status = data.status
 
     log.info("Identifying current computer...")
-    computer = config.get_current_computer()
+    with datafiles.frozen(data):
+        computer = config.get_current_computer()
     log.info("Current computer: %s", computer)
 
     if edit:
@@ -198,7 +199,7 @@ def run(
 
     while True:
         services.delete_conflicts(root, config_only=True, force=True)
-        with frozen(data):
+        with datafiles.frozen(data):
             data.launch_queued_applications(config, status, computer, manager)
             data.update_status(config, status, computer, manager)
 
@@ -221,7 +222,7 @@ def run(
         time.sleep(short_delay)
 
     if cleanup:
-        with frozen(data):
+        with datafiles.frozen(data):
             data.prune_status(config, status)
 
     if delay is None:
@@ -246,5 +247,5 @@ def _restart_daemon(manager: BaseManager):
     return True
 
 
-if __name__ == "__main__":  # pragma: no cover (manual test)
+if __name__ == "__main__":
     main()

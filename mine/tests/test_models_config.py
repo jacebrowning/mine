@@ -13,10 +13,10 @@ class TestProgramConfig:
     config = ProgramConfig(
         applications=[Application("iTunes"), Application("HipChat")],
         computers=[
-            Computer("abc", "abc.local", "1"),
-            Computer("def", "def.local", "2"),
-            Computer("My iMac", "imac.local", "3"),
-            Computer("My Mac", "mac.local", "4"),
+            Computer("abc", "s1", "1:1", "abc.local"),
+            Computer("def", "s2", "2:2", "def.local"),
+            Computer("My iMac", "s3", "3:3", "imac.local"),
+            Computer("My Mac", "s4", "4:4", "mac.local"),
         ],
     )
 
@@ -66,18 +66,18 @@ class TestProgramConfig:
     def test_generate_name_duplicates(self):
         """Verify a computer name is generated correctly with duplicates."""
         config = ProgramConfig(computers=[Computer("jaces-imac")])
-        computer = Computer("", hostname="Jaces-iMac.local")
+        computer = Computer("", "s", hostname="Jaces-iMac.local")
         name = config.generate_computer_name(computer)
         assert "jaces-imac-2" == name
 
     def test_get_current_computer_by_matching_address(self):
         config = ProgramConfig(
-            computers=[Computer("abc", "foobar", "00:00:00:00:00:00")]
+            computers=[Computer("abc", "s", "00:00:00:00:00:00", "foobar")]
         )
         computer = config.get_current_computer()
         assert "abc" == computer.name
 
     def test_get_current_computer_by_matching_hostname(self):
-        config = ProgramConfig(computers=[Computer("abc", "Sample.local", "foobar")])
+        config = ProgramConfig(computers=[Computer("abc", "s", "a:", "Sample.local")])
         computer = config.get_current_computer()
         assert "abc" == computer.name

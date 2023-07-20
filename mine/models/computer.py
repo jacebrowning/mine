@@ -17,6 +17,7 @@ class Computer:
     hostname: str = ""
     address: str = ""
     serial: str = ""
+    mine: str = ""
 
     def __post_init__(self):
         self.address = self.address or self.get_address()

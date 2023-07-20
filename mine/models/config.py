@@ -4,6 +4,7 @@ from dataclasses import dataclass, field
 
 import log
 
+from .. import __version__
 from .application import Application
 from .computer import Computer
 
@@ -47,7 +48,7 @@ class ProgramConfig:
 
     def get_current_computer(self, default_name: str = ""):
         """Get the current computer's information."""
-        this = Computer("?")
+        this = Computer("?", mine=__version__)
         log.debug(f"Comparing information with {this!r}...")
 
         # Search for a matching hostname
@@ -55,8 +56,8 @@ class ProgramConfig:
             if this.hostname == other.hostname:
                 log.debug(f"Matched via hostname: {other!r}")
                 other.address = this.address
-                if this.serial:
-                    other.serial = this.serial
+                other.serial = other.serial or this.serial
+                other.mine = __version__
                 return other
 
         # Else, search for a matching serial
@@ -64,6 +65,7 @@ class ProgramConfig:
             if this.serial and this.serial == other.serial:
                 log.debug(f"Matched via serial: {other!r}")
                 other.hostname = this.hostname
+                other.mine = __version__
                 return other
 
         # Else, search for a matching address
@@ -71,8 +73,8 @@ class ProgramConfig:
             if this.address == other.address:
                 log.debug(f"Matched via address: {other!r}")
                 other.hostname = this.hostname
-                if this.serial:
-                    other.serial = this.serial
+                other.serial = other.serial or this.serial
+                other.mine = __version__
                 return other
 
         # Else, this is a new computer

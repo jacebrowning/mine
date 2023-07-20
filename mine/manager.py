@@ -129,10 +129,13 @@ class LinuxManager(BaseManager):  # pragma: no cover (manual)
 
     def stop(self, application):
         name = application.versions.linux
-        process = self._get_process(name)
-        if process.is_running():
-            process.terminate()
-            process.wait()
+        while True:
+            process = self._get_process(name)
+            if process and process.is_running():
+                process.terminate()
+                process.wait()
+            else:
+                break
 
 
 class MacManager(BaseManager):  # pragma: no cover (manual)
@@ -187,10 +190,13 @@ class MacManager(BaseManager):  # pragma: no cover (manual)
     @log_stopping
     def stop(self, application):
         name = application.versions.mac
-        process = self._get_process(name)
-        if process and process.is_running():
-            process.terminate()
-            process.wait()
+        while True:
+            process = self._get_process(name)
+            if process and process.is_running():
+                process.terminate()
+                process.wait()
+            else:
+                break
 
     @staticmethod
     def _start_app(path):

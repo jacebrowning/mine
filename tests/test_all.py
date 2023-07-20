@@ -3,7 +3,6 @@ import subprocess
 
 import datafiles
 import log
-from datafiles.model import create_model
 
 from mine import cli
 from mine.models import (
@@ -29,8 +28,8 @@ class TestFiles:
         if os.path.exists(path):
             os.remove(path)
 
-        model = create_model(Data, pattern=path, defaults=True)
-        data: Data = model()
+        data = Data()
+        datafiles.sync(data, path, defaults=True)
 
         itunes = Application("itunes")
         itunes.versions.mac = ""
@@ -69,8 +68,8 @@ class TestFiles:
         if os.path.exists(path):
             os.remove(path)
 
-        model = create_model(Data, pattern=path, defaults=True)
-        data: Data = model()
+        data = Data()
+        datafiles.sync(data, path, defaults=True)
 
         itunes = Application("itunes")
         itunes.versions.mac = ""
@@ -106,7 +105,8 @@ class TestFiles:
         """Verify a sample file is loaded."""
         path = os.path.join(FILES, "mine-in.yml")
 
-        data: Data = create_model(Data, pattern=path, defaults=True)()
+        data = Data()
+        datafiles.sync(data, path, defaults=True)
 
         assert data.config.applications
         for application in data.config.applications:
@@ -133,15 +133,15 @@ class TestProcesses:
 
     def _store_data(self):
         """Set up initial data file for tests."""
-        model = create_model(Data, pattern=self.path, defaults=True)
-        self.data: Data = model()
+        self.data: Data
+        datafiles.sync(self.data, self.path, defaults=True)
         self.data.config.applications.append(self.application)
         self.computer = self.data.config.get_current_computer("This Computer")
 
     def _fetch_data(self) -> Data:
         """Read the final data file back for verification."""
-        model = create_model(Data, pattern=self.path, defaults=True)
-        data: Data = model()
+        data = Data()
+        datafiles.sync(data, self.path, defaults=True)
         return data
 
     def _start_application(self):

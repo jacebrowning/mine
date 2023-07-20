@@ -9,7 +9,6 @@ import time
 
 import datafiles
 import log
-from datafiles.model import create_model
 from startfile import startfile
 
 from . import CLI, DESCRIPTION, VERSION, common, services
@@ -185,8 +184,8 @@ def run(
     root = services.find_root()
     path = path or services.find_config_path(root=root)
 
-    model = create_model(Data, pattern=path, defaults=True)
-    data: Data = model()
+    data = Data()
+    datafiles.sync(data, path, defaults=True)
 
     log.info("Identifying current computer...")
     with datafiles.frozen(data):

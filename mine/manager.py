@@ -141,14 +141,16 @@ class MacManager(BaseManager):  # pragma: no cover (manual)
     FRIENDLY = "macOS"
 
     IGNORED_APPLICATION_NAMES = [
-        "iTunesHelper.app",
-        "slack helper.app",
+        "com.apple.mail.spotlightindexextension",
+        "com.apple.notes.spotlightindexextension",
+        "com.apple.podcasts.spotlightindexextension",
         "garcon.appex",
+        "iTunesHelper.app",
+        "mailcachedelete",
+        "mailshortcutsextension",
         "musiccacheextension",
         "podcastswidget",
-        "mailcachedelete",
-        "com.apple.mail.spotlightindexextension",
-        "mailshortcutsextension",
+        "slack helper.app",
     ]
 
     @log_running

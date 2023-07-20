@@ -1,8 +1,9 @@
 # Release Notes
 
-## 4.0 (alpha)
+## 4.0 (2023-07-20)
 
 - Dropped support for Python 3.8 and 3.9.
+- Improved computer identification using serial numbers.
 
 ## 3.1.1 (2023-07-15)
 

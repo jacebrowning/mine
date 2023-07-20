@@ -1,21 +1,20 @@
 """Data structures for all settings."""
 
+from dataclasses import dataclass, field
+
 import log
-import yorm
 
-from .application import Applications
-from .computer import Computer, Computers
+from .. import __version__
+from .application import Application
+from .computer import Computer
 
 
-@yorm.attr(computers=Computers)
-@yorm.attr(applications=Applications)
-class ProgramConfig(yorm.types.AttributeDictionary):
+@dataclass
+class ProgramConfig:
     """Dictionary of program configuration settings."""
 
-    def __init__(self, applications=None, computers=None):
-        super().__init__()
-        self.applications = applications or Applications()
-        self.computers = computers or Computers()
+    computers: list[Computer] = field(default_factory=list)
+    applications: list[Application] = field(default_factory=list)
 
     @property
     def computer_names(self):
@@ -47,9 +46,9 @@ class ProgramConfig(yorm.types.AttributeDictionary):
             return min(matches, key=lambda computer: len(computer.name))
         return None
 
-    def get_current_computer(self):
+    def get_current_computer(self, default_name: str = ""):
         """Get the current computer's information."""
-        this = Computer("")
+        this = Computer("?", mine=__version__)
         log.debug(f"Comparing information with {this!r}...")
 
         # Search for a matching hostname
@@ -57,8 +56,8 @@ class ProgramConfig(yorm.types.AttributeDictionary):
             if this.hostname == other.hostname:
                 log.debug(f"Matched via hostname: {other!r}")
                 other.address = this.address
-                if this.serial:
-                    other.serial = this.serial
+                other.serial = other.serial or this.serial
+                other.mine = __version__
                 return other
 
         # Else, search for a matching serial
@@ -66,6 +65,7 @@ class ProgramConfig(yorm.types.AttributeDictionary):
             if this.serial and this.serial == other.serial:
                 log.debug(f"Matched via serial: {other!r}")
                 other.hostname = this.hostname
+                other.mine = __version__
                 return other
 
         # Else, search for a matching address
@@ -73,14 +73,14 @@ class ProgramConfig(yorm.types.AttributeDictionary):
             if this.address == other.address:
                 log.debug(f"Matched via address: {other!r}")
                 other.hostname = this.hostname
-                if this.serial:
-                    other.serial = this.serial
+                other.serial = other.serial or this.serial
+                other.mine = __version__
                 return other
 
         # Else, this is a new computer
-        this.name = self.generate_computer_name(this)
+        this.name = default_name or self.generate_computer_name(this)
         assert this.name != "localhost"
-        log.debug("New computer: %s", this)
+        log.debug(f"Detected new computer: {this!r}")
         self.computers.append(this)
         return this
 

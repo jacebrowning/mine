@@ -6,25 +6,35 @@ import re
 import socket
 import subprocess
 import uuid
-
-import yorm
-
-from ._bases import NameMixin
+from dataclasses import dataclass
 
 
-@yorm.attr(name=yorm.types.String)
-@yorm.attr(hostname=yorm.types.String)
-@yorm.attr(address=yorm.types.String)
-@yorm.attr(serial=yorm.types.String)
-class Computer(NameMixin, yorm.types.AttributeDictionary):
+@dataclass
+class Computer:
     """A dictionary of identifying computer information."""
 
-    def __init__(self, name=None, hostname=None, address=None, serial=None):
-        super().__init__()
-        self.name = name
-        self.address = address or self.get_address()
-        self.hostname = hostname or self.get_hostname()
-        self.serial = serial or self.get_serial()
+    name: str
+    hostname: str = ""
+    address: str = ""
+    serial: str = ""
+    mine: str = ""
+
+    def __post_init__(self):
+        self.address = self.address or self.get_address()
+        self.hostname = self.hostname or self.get_hostname()
+        self.serial = self.serial or self.get_serial()
+
+    def __str__(self):
+        return self.name
+
+    def __eq__(self, other):
+        return str(self).lower() == str(other).lower()
+
+    def __ne__(self, other):
+        return not self.__eq__(other)
+
+    def __lt__(self, other):
+        return str(self).lower() < str(other).lower()
 
     @staticmethod
     def get_address(node=None):
@@ -63,8 +73,3 @@ class Computer(NameMixin, yorm.types.AttributeDictionary):
         if serial_numbers:
             return serial_numbers[0]
         return None
-
-
-@yorm.attr(all=Computer)
-class Computers(yorm.types.SortedList):
-    """A list of computers."""

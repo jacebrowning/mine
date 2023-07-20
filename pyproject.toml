@@ -1,7 +1,7 @@
 [tool.poetry]
 
 name = "mine"
-version = "3.1.1"
+version = "4.0"
 description = "Share application state across computers using Dropbox."
 
 license = "MIT"
@@ -25,8 +25,6 @@ classifiers = [
     "Operating System :: OS Independent",
     "Programming Language :: Python",
     "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.8",
-    "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Topic :: System",
@@ -36,10 +34,10 @@ classifiers = [
 
 [tool.poetry.dependencies]
 
-python = "^3.8"
+python = "^3.10"
 
-YORM = "^1.6"
-psutil = ">=4.4,<6.0"
+datafiles = "^2.1"
+psutil = "~5.6"
 crayons = "~0.1"
 minilog = "^2.1"
 universal-startfile = "^0.2"
@@ -98,6 +96,8 @@ no_implicit_optional = true
 check_untyped_defs = true
 
 cache_dir = ".cache/mypy/"
+
+plugins = "datafiles.plugins:mypy"
 
 [tool.pytest.ini_options]
 

@@ -1,22 +1,23 @@
 """Data structures that combine all program data."""
 
+from dataclasses import dataclass, field
+
 import crayons
 import log
-import yorm
 
 from ..manager import BaseManager
 from .config import ProgramConfig
 from .status import ProgramStatus
 
 
-@yorm.attr(config=ProgramConfig)
-@yorm.attr(status=ProgramStatus)
+@dataclass
 class Data:
     """Primary wrapper for all settings."""
 
-    def __init__(self):
-        self.config = ProgramConfig()
-        self.status = ProgramStatus()
+    config: ProgramConfig = field(default_factory=ProgramConfig)
+    status: ProgramStatus = field(default_factory=ProgramStatus)
+
+    def __post_init__(self):
         self._last_counter = self.status.counter
 
     def __repr__(self):

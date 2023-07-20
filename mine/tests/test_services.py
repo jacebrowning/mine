@@ -43,7 +43,7 @@ class TestFindRoot:
 class TestFindConfigPath:
     def test_find_dropbox(self, tmp_dir):
         """Verify a settings file can be found in Dropbox."""
-        touch("Dropbox", "mine.yml")
+        touch("Dropbox", services.CONFIG)
 
         path = services.find_config_path(tmp_dir)
 
@@ -51,7 +51,7 @@ class TestFindConfigPath:
 
     def test_find_dropbox_personal(self, tmp_dir):
         """Verify a settings file can be found in Dropbox (Personal)."""
-        touch("Dropbox (Personal)", "mine.yml")
+        touch("Dropbox (Personal)", services.CONFIG)
 
         path = services.find_config_path(tmp_dir)
 
@@ -60,7 +60,7 @@ class TestFindConfigPath:
     @patch("mine.services.DEPTH", 2)
     def test_find_depth(self, tmp_dir):
         """Verify a settings file is not found below the maximum depth."""
-        touch("Dropbox", "a", "b", "mine.yml")
+        touch("Dropbox", "a", "b", services.CONFIG)
 
         with pytest.raises(OSError):
             services.find_config_path(tmp_dir)

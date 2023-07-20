@@ -1,17 +1,14 @@
 """Data structures for timestamp information."""
 
-import yorm
+from dataclasses import dataclass
 
 
-@yorm.attr(started=yorm.types.Integer)
-@yorm.attr(stopped=yorm.types.Integer)
-class Timestamp(yorm.types.AttributeDictionary):
+@dataclass
+class Timestamp:
     """Dictionary of last start and stop times."""
 
-    def __init__(self, started=0, stopped=0):
-        super().__init__()
-        self.started = started
-        self.stopped = stopped
+    started: int = 0
+    stopped: int = 0
 
     def __repr__(self):
         return "<timestamp {}>".format(self.latest)

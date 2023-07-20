@@ -1,36 +1,44 @@
 """Data structures for application information."""
 
-import yorm
-
-from ._bases import NameMixin
+from dataclasses import dataclass, field
 
 
-@yorm.attr(mac=yorm.types.NullableString)
-@yorm.attr(windows=yorm.types.NullableString)
-@yorm.attr(linux=yorm.types.NullableString)
-class Versions(yorm.types.AttributeDictionary):
+@dataclass
+class Versions:
     """Dictionary of OS-specific application filenames."""
 
+    mac: str | None = None
+    windows: str | None = None
+    linux: str | None = None
 
-@yorm.attr(auto_queue=yorm.types.Boolean)
-@yorm.attr(single_instance=yorm.types.Boolean)
-class Properties(yorm.types.AttributeDictionary):
+
+@dataclass
+class Properties:
     """Dictionary of application management settings."""
 
+    auto_queue: bool = False
+    single_instance: bool = False
 
-@yorm.attr(name=yorm.types.String)
-@yorm.attr(properties=Properties)
-@yorm.attr(versions=Versions)
-class Application(NameMixin, yorm.types.AttributeDictionary):
+
+@dataclass
+class Application:
     """Dictionary of application information."""
 
-    def __init__(self, name=None, properties=None, versions=None, filename=None):
-        super().__init__()
-        self.name = name
-        self.properties = properties or Properties()
-        self.versions = versions or Versions(
-            mac=filename, windows=filename, linux=filename
-        )
+    name: str
+    properties: Properties = field(default_factory=Properties)
+    versions: Versions = field(default_factory=Versions)
+
+    def __str__(self):
+        return self.name
+
+    def __eq__(self, other):
+        return str(self).lower() == str(other).lower()
+
+    def __ne__(self, other):
+        return not self.__eq__(other)
+
+    def __lt__(self, other):
+        return str(self).lower() < str(other).lower()
 
     @property
     def auto_queue(self):
@@ -39,8 +47,3 @@ class Application(NameMixin, yorm.types.AttributeDictionary):
     @property
     def no_wait(self):
         return not self.properties.single_instance
-
-
-@yorm.attr(all=Application)
-class Applications(yorm.types.SortedList):
-    """List of monitored applications."""

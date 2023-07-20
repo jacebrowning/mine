@@ -1,5 +1,6 @@
 # pylint: disable=unused-variable
 
+import datafiles
 import pytest
 
 from mine.models import Data
@@ -7,7 +8,8 @@ from mine.models import Data
 
 def describe_data():
     @pytest.fixture
-    def data():
+    def data(monkeypatch):
+        monkeypatch.setattr(datafiles.settings, "HOOKS_ENABLED", False)
         return Data()
 
     def describe_repr():

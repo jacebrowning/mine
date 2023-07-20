@@ -18,7 +18,7 @@ def pytest_configure(config):
     log.init(
         level=log.DEBUG, format="[%(levelname)-8s] (%(name)s @%(lineno)4d) %(message)s"
     )
-    log.silence("yorm", allow_warning=True)
+    log.silence("datafiles", allow_warning=True)
 
     terminal = config.pluginmanager.getplugin("terminal")
     terminal.TerminalReporter.showfspath = False
@@ -26,8 +26,8 @@ def pytest_configure(config):
 
 def pytest_runtest_setup(item):
     if "linux_only" in item.keywords and platform.system() != "Linux":
-        pytest.skip("test can only be run on Linux")
+        pytest.skip("Test can only be run on Linux")
     if "mac_only" in item.keywords and platform.system() != "Darwin":
-        pytest.skip("test can only be run on OS X")
+        pytest.skip("Test can only be run on macOS")
     if "windows_only" in item.keywords and platform.system() != "Windows":
-        pytest.skip("test can only be run on Windows")
+        pytest.skip("Test can only be run on Windows")

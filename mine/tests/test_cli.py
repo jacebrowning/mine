@@ -12,7 +12,7 @@ from mine.models import Application
 
 @pytest.fixture
 def tmp_path(tmpdir):
-    return tmpdir.join("custom.ext").strpath
+    return tmpdir.join("custom.yml").strpath
 
 
 class TestMain:
@@ -65,7 +65,7 @@ class TestMain:
         cli.main(["--daemon", "42"])
         mock_run.assert_called_once_with(path=None, delay=42)
 
-    @patch("mine.cli.daemon", Application(""))
+    @patch("mine.cli.daemon", Application("?"))
     def test_warning_when_daemon_is_not_running(self, tmp_path):
         with pytest.raises(SystemExit):
             cli.main(["--file", tmp_path])

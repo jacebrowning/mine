@@ -8,14 +8,15 @@ import sys
 import time
 
 import log
-import yorm
+from datafiles import frozen
+from datafiles.model import create_model
 from startfile import startfile
 
 from . import CLI, DESCRIPTION, VERSION, common, services
 from .manager import BaseManager, get_manager
-from .models import Application, Data
+from .models import Application, Data, Versions
 
-daemon = Application(CLI, filename=CLI)
+daemon = Application(CLI, versions=Versions(mac="mine", windows="mine", linux="mine"))
 
 
 def main(args=None):
@@ -169,8 +170,7 @@ def run(
     root = services.find_root()
     path = path or services.find_config_path(root=root)
 
-    data = Data()
-    yorm.sync(data, path)
+    data: Data = create_model(Data, pattern=path, defaults=True)()
 
     config = data.config
     status = data.status
@@ -198,8 +198,9 @@ def run(
 
     while True:
         services.delete_conflicts(root, config_only=True, force=True)
-        data.launch_queued_applications(config, status, computer, manager)
-        data.update_status(config, status, computer, manager)
+        with frozen(data):
+            data.launch_queued_applications(config, status, computer, manager)
+            data.update_status(config, status, computer, manager)
 
         if delay is None or delay <= 0:
             break
@@ -214,12 +215,14 @@ def run(
             time.sleep(step)
             elapsed += step
 
+        print()
         short_delay = 30
         log.info("Delaying %s seconds for files to sync...", short_delay)
         time.sleep(short_delay)
 
     if cleanup:
-        data.prune_status(config, status)
+        with frozen(data):
+            data.prune_status(config, status)
 
     if delay is None:
         return _restart_daemon(manager)

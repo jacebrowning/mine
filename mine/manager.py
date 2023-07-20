@@ -6,7 +6,6 @@ import glob
 import os
 import platform
 import time
-from typing import List
 
 import log
 import psutil
@@ -63,7 +62,7 @@ class BaseManager(metaclass=abc.ABCMeta):  # pragma: no cover (abstract)
 
     NAME = FRIENDLY = ""
 
-    IGNORED_APPLICATION_NAMES: List[str] = []
+    IGNORED_APPLICATION_NAMES: list[str] = []
 
     def __str__(self):
         return self.FRIENDLY
@@ -84,11 +83,15 @@ class BaseManager(metaclass=abc.ABCMeta):  # pragma: no cover (abstract)
         raise NotImplementedError
 
     @classmethod
-    def _get_process(cls, name):
+    def _get_process(cls, name: str):
         """Get a process whose executable path contains an app name."""
         log.debug("Searching for exe path containing '%s'...", name)
 
         for process in psutil.process_iter():
+            if process.status() == psutil.STATUS_ZOMBIE:
+                log.debug("Skipped zombie process: %s", process)
+                continue
+
             try:
                 command = " ".join(process.cmdline()).lower()
                 parts = []
@@ -102,10 +105,6 @@ class BaseManager(metaclass=abc.ABCMeta):  # pragma: no cover (abstract)
 
             if process.pid == os.getpid():
                 log.debug("Skipped current process: %s", command)
-                continue
-
-            if process.status() == psutil.STATUS_ZOMBIE:
-                log.debug("Skipped zombie process: %s", command)
                 continue
 
             log.debug("Found matching process: %s", command)

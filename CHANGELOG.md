@@ -1,5 +1,9 @@
 # Release Notes
 
+## 4.0 (alpha)
+
+- Dropped support for Python 3.8 and 3.9.
+
 ## 3.1.1 (2023-07-15)
 
 - Updated logic to save missing serial numbers.

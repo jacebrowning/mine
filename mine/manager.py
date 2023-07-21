@@ -50,7 +50,7 @@ def log_stopping(func):
     return wrapped
 
 
-class BaseManager(metaclass=abc.ABCMeta):  # pragma: no cover (abstract)
+class Manager(metaclass=abc.ABCMeta):  # pragma: no cover (abstract)
     """Base application manager."""
 
     NAME = FRIENDLY = ""
@@ -111,7 +111,7 @@ class BaseManager(metaclass=abc.ABCMeta):  # pragma: no cover (abstract)
         return None
 
 
-class LinuxManager(BaseManager):  # pragma: no cover (manual)
+class LinuxManager(Manager):  # pragma: no cover (manual)
     """Application manager for Linux."""
 
     NAME = "Linux"
@@ -138,7 +138,7 @@ class LinuxManager(BaseManager):  # pragma: no cover (manual)
                 break
 
 
-class MacManager(BaseManager):  # pragma: no cover (manual)
+class MacManager(Manager):  # pragma: no cover (manual)
     """Application manager for macOS."""
 
     NAME = "Darwin"
@@ -207,7 +207,7 @@ class MacManager(BaseManager):  # pragma: no cover (manual)
         return process
 
 
-class WindowsManager(BaseManager):  # pragma: no cover (manual)
+class WindowsManager(Manager):  # pragma: no cover (manual)
     """Application manager for Windows."""
 
     NAME = "Windows"
@@ -223,7 +223,7 @@ class WindowsManager(BaseManager):  # pragma: no cover (manual)
         pass
 
 
-def get_manager(name=None) -> BaseManager:
+def get_manager(name=None) -> Manager:
     """Return an application manager for the current operating system."""
     log.info("Detecting the operating system...")
     name = name or platform.system()

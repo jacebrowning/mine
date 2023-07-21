@@ -13,7 +13,7 @@ from datafiles.model import create_model
 from startfile import startfile
 
 from . import CLI, DESCRIPTION, VERSION, common, services
-from .manager import BaseManager, get_manager
+from .manager import Manager, get_manager
 from .models import Application, Data, Versions
 
 daemon = Application("Mine", versions=Versions(mac=CLI, windows=CLI, linux=CLI))
@@ -185,14 +185,12 @@ def run(
     root = services.find_root()
     path = path or services.find_config_path(root=root)
 
-    data: Data = create_model(Data, pattern=path, defaults=True)()
-
-    config = data.config
-    status = data.status
+    model = create_model(Data, pattern=path, defaults=True)
+    data: Data = model()
 
     log.info("Identifying current computer...")
     with datafiles.frozen(data):
-        computer = config.get_current_computer()
+        computer = data.config.get_current_computer()
     log.info("Current computer: %s", computer)
 
     if stop:
@@ -205,22 +203,22 @@ def run(
     if switch is True:
         switch = computer
     elif switch is False:
-        data.close_all_applications(config, manager)
+        data.close_all_applications(manager)
     elif switch:
-        switch = config.match_computer(switch)
+        switch = data.config.match_computer(switch)
 
     if switch:
         if switch != computer:
-            data.close_all_applications(config, manager)
-        data.queue_all_applications(config, status, switch)
+            data.close_all_applications(manager)
+        data.queue_all_applications(switch)
 
     while True:
         if services.delete_conflicts(root, config_only=True, force=True):
             log.info("Delaying 10 seconds for changes to delete...")
             time.sleep(10)
         with datafiles.frozen(data):
-            data.launch_queued_applications(config, status, computer, manager)
-            data.update_status(config, status, computer, manager)
+            data.launch_queued_applications(computer, manager)
+            data.update_status(computer, manager)
 
         if delay is None or delay <= 0:
             break
@@ -244,7 +242,7 @@ def run(
 
     if cleanup:
         with datafiles.frozen(data):
-            data.prune_status(config, status)
+            data.prune_status()
 
     if delay is None:
         return _restart_daemon(manager)
@@ -252,7 +250,7 @@ def run(
     return True
 
 
-def _restart_daemon(manager: BaseManager):
+def _restart_daemon(manager: Manager):
     cmd = "nohup {} --daemon --verbose >> /tmp/mine.log 2>&1 &".format(CLI)
     if daemon and not manager.is_running(daemon):
         log.warning("Daemon is not running, attempting to restart...")

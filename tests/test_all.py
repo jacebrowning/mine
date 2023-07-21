@@ -29,7 +29,8 @@ class TestFiles:
         if os.path.exists(path):
             os.remove(path)
 
-        data: Data = create_model(Data, pattern=path, defaults=True)()
+        model = create_model(Data, pattern=path, defaults=True)
+        data: Data = model()
 
         itunes = Application("itunes")
         itunes.versions.mac = ""
@@ -68,7 +69,8 @@ class TestFiles:
         if os.path.exists(path):
             os.remove(path)
 
-        data: Data = create_model(Data, pattern=path, defaults=True)()
+        model = create_model(Data, pattern=path, defaults=True)
+        data: Data = model()
 
         itunes = Application("itunes")
         itunes.versions.mac = ""
@@ -131,13 +133,15 @@ class TestProcesses:
 
     def _store_data(self):
         """Set up initial data file for tests."""
-        self.data: Data = create_model(Data, pattern=self.path, defaults=True)()
+        model = create_model(Data, pattern=self.path, defaults=True)
+        self.data: Data = model()
         self.data.config.applications.append(self.application)
         self.computer = self.data.config.get_current_computer("This Computer")
 
     def _fetch_data(self) -> Data:
         """Read the final data file back for verification."""
-        data: Data = create_model(Data, pattern=self.path, defaults=True)()
+        model = create_model(Data, pattern=self.path, defaults=True)
+        data: Data = model()
         return data
 
     def _start_application(self):
@@ -206,9 +210,7 @@ class TestProcesses:
 
         # manually mark the application as running on a remote computer
         computer = Computer("other", "Other.local", "AA:BB:CC:DD:EE:FF")
-        status = self.data.status
-        status.start(self.application, computer)
-        self.data.status = status
+        self.data.status.start(self.application, computer)
         assert self.data.status.is_running(self.application, computer)
 
         # start the application
@@ -232,9 +234,7 @@ class TestProcesses:
 
         self._store_data()
 
-        status = self.data.status
-        status.start(self.application, self.computer)
-        self.data.status = status
+        self.data.status.start(self.application, self.computer)
 
         self._start_application()
 
@@ -256,9 +256,7 @@ class TestProcesses:
 
         self._store_data()
 
-        status = self.data.status
-        status.start(self.application, self.computer)
-        self.data.status = status
+        self.data.status.start(self.application, self.computer)
 
         self._stop_application()
 

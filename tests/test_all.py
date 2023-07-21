@@ -186,7 +186,7 @@ class TestProcesses:
 
         # Act
 
-        cli.run(self.path, cleanup=False)
+        cli.run(self.path, delay=0, cleanup=False)
 
         # Assert
 
@@ -215,7 +215,7 @@ class TestProcesses:
         self._start_application()
 
         # Act
-        cli.run(self.path, cleanup=False)
+        cli.run(self.path, delay=0, cleanup=False)
 
         # Assert
 
@@ -240,7 +240,7 @@ class TestProcesses:
 
         # Act
 
-        cli.run(self.path)
+        cli.run(self.path, delay=0, cleanup=False)
 
         # Assert
 
@@ -264,7 +264,7 @@ class TestProcesses:
 
         # Act
 
-        cli.run(self.path)
+        cli.run(self.path, delay=0, cleanup=False)
 
         # Assert
 
@@ -284,7 +284,7 @@ class TestProcesses:
 
         # Act
 
-        cli.run(self.path)
+        cli.run(self.path, delay=0, cleanup=False)
 
         # Assert
 

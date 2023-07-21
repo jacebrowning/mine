@@ -54,7 +54,11 @@ def main(args=None):
         type=int,
         help="run continuously with delay [seconds]",
     )
-    parser.add_argument("-f", "--file", help="custom settings file path")
+    parser.add_argument(
+        "-f",
+        "--file",
+        help="custom settings file path",
+    )
     subs = parser.add_subparsers(help="", dest="command", metavar="<command>")
 
     # Build switch parser
@@ -67,7 +71,9 @@ def main(args=None):
         parents=[debug],
     )
     sub.add_argument(
-        "name", nargs="?", help="computer to queue for launch (default: current)"
+        "name",
+        nargs="?",
+        help="computer to queue for launch (default: current)",
     )
 
     # Build close parser
@@ -209,7 +215,9 @@ def run(
         data.queue_all_applications(config, status, switch)
 
     while True:
-        services.delete_conflicts(root, config_only=True, force=True)
+        if services.delete_conflicts(root, config_only=True, force=True):
+            log.info("Delaying 10 seconds for changes to delete...")
+            time.sleep(10)
         with datafiles.frozen(data):
             data.launch_queued_applications(config, status, computer, manager)
             data.update_status(config, status, computer, manager)
@@ -217,20 +225,22 @@ def run(
         if delay is None or delay <= 0:
             break
 
-        log.info("Delaying %s seconds for files to sync...", delay)
-        time.sleep(delay)
+        if data.modified:
+            log.info("Delaying 10 seconds for changes to upload...")
+            time.sleep(10)
 
-        step = 5
         elapsed = 0
-        log.info("Waiting %s seconds for status changes...", delay)
-        while elapsed < delay and not data.modified:
-            time.sleep(step)
-            elapsed += step
-
-        print()
-        short_delay = 30
-        log.info("Delaying %s seconds for files to sync...", short_delay)
-        time.sleep(short_delay)
+        log.info(f"Waiting up to {delay} seconds for changes...")
+        while elapsed < delay:
+            time.sleep(5)
+            elapsed += 5
+            if data.modified:
+                log.info(f"Status changed after {elapsed} seconds")
+                log.info("Delaying 10 seconds for changes to download...")
+                time.sleep(10)
+                break
+        else:
+            log.info(f"No status change after {elapsed} seconds")
 
     if cleanup:
         with datafiles.frozen(data):

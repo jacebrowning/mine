@@ -86,27 +86,29 @@ class TestDeleteConflicts:
     def test_fail_when_leftover_conflicts(self, _, tmpdir):
         root = self._create_conflicts(tmpdir)
 
-        result = services.delete_conflicts(root)
+        count = services.delete_conflicts(root)
 
-        assert False is result
+        assert count == 0
 
     def test_pass_when_no_conflicts(self, _, tmpdir):
         root = self._create_conflicts(tmpdir, count=0)
 
-        result = services.delete_conflicts(root)
+        count = services.delete_conflicts(root)
 
-        assert True is result
+        assert count == 0
 
     def test_no_deletion_without_force(self, mock_remove, tmpdir):
         root = self._create_conflicts(tmpdir)
 
-        services.delete_conflicts(root, force=False)
+        count = services.delete_conflicts(root, force=False)
 
+        assert count == 0
         assert 0 == mock_remove.call_count
 
     def test_deletion_count_is_correct(self, mock_remove, tmpdir):
         root = self._create_conflicts(tmpdir, count=2)
 
-        services.delete_conflicts(root, force=True)
+        count = services.delete_conflicts(root, force=True)
 
+        assert count == 2
         assert 2 == mock_remove.call_count

@@ -31,7 +31,7 @@ def find_root(top=None):
             log.debug("Found sharing service: %s", path)
             return path
 
-    msg = "no sharing service found"
+    msg = "No sharing service found"
     if os.getenv("CI"):
         log.warning(msg)
         return top
@@ -59,13 +59,12 @@ def find_config_path(top=None, root=None):
     raise EnvironmentError("No '{}' file found".format(CONFIG))
 
 
-def delete_conflicts(root=None, config_only=False, force=False):
+def delete_conflicts(root=None, config_only=False, force=False) -> int:
     """Delete all files with conflicted filenames."""
     root = root or find_root()
 
     log.info("%s conflicted files...", "Deleting" if force else "Displaying")
     pattern = CONFLICT_CONFIG if config_only else CONFLICT_ANY
-    log.debug("Pattern: %r", pattern)
     regex = re.compile(pattern)
     count = 0
     for dirname, _, filenames in os.walk(root):
@@ -79,6 +78,6 @@ def delete_conflicts(root=None, config_only=False, force=False):
 
     if count and not force:
         print(f"\nRun again with '--force' to delete these {count} conflict(s)")
-        return False
+        return 0
 
-    return True
+    return count

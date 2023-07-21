@@ -80,8 +80,8 @@ class Status:
 class ProgramStatus:
     """Dictionary of current program status."""
 
-    applications: list[Status] = field(default_factory=list)
     counter: int = 0
+    applications: list[Status] = field(default_factory=list)
 
     def find(self, application):
         """Return the application status for an application."""

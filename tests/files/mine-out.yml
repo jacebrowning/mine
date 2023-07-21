@@ -28,6 +28,7 @@ config:
         windows:
         linux:
 status:
+  counter: 499
   applications:
     - application: itunes
       computers:
@@ -36,4 +37,3 @@ status:
             started: 444
             stopped: 0
       next:
-  counter: 499

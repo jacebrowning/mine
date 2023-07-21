@@ -5,7 +5,7 @@ from dataclasses import dataclass, field
 import crayons
 import log
 
-from ..manager import BaseManager
+from ..manager import Manager
 from .computer import Computer
 from .config import ProgramConfig
 from .status import ProgramStatus
@@ -33,7 +33,6 @@ class Data:
     def prune_status(self):
         """Remove undefined applications and computers."""
         log.info("Cleaning up applications and computers...")
-        # TODO: remove copy and drop freeze?
         for status in self.status.applications.copy():
             if not self.config.find_application(status.application):
                 self.status.applications.remove(status)
@@ -52,7 +51,7 @@ class Data:
                 log.debug("Queuing %s on %s...", application, computer)
                 self.status.queue(application, computer)
 
-    def launch_queued_applications(self, computer: Computer, manager: BaseManager):
+    def launch_queued_applications(self, computer: Computer, manager: Manager):
         """Launch applications that have been queued."""
         log.info("Launching queued applications...")
         for status in self.status.applications:
@@ -74,13 +73,13 @@ class Data:
                 elif manager.is_running(application):
                     manager.stop(application)
 
-    def close_all_applications(self, manager: BaseManager):
+    def close_all_applications(self, manager: Manager):
         """Close all applications running on this computer."""
         log.info("Closing all applications on this computer...")
         for application in self.config.applications:
             manager.stop(application)
 
-    def update_status(self, computer: Computer, manager: BaseManager):
+    def update_status(self, computer: Computer, manager: Manager):
         """Update each application's status."""
         log.info("Recording application status...")
         for application in self.config.applications:

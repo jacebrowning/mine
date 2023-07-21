@@ -13,7 +13,7 @@ from datafiles.model import create_model
 from startfile import startfile
 
 from . import CLI, DESCRIPTION, VERSION, common, services
-from .manager import BaseManager, get_manager
+from .manager import Manager, get_manager
 from .models import Application, Data, Versions
 
 daemon = Application("Mine", versions=Versions(mac=CLI, windows=CLI, linux=CLI))
@@ -250,7 +250,7 @@ def run(
     return True
 
 
-def _restart_daemon(manager: BaseManager):
+def _restart_daemon(manager: Manager):
     cmd = "nohup {} --daemon --verbose >> /tmp/mine.log 2>&1 &".format(CLI)
     if daemon and not manager.is_running(daemon):
         log.warning("Daemon is not running, attempting to restart...")

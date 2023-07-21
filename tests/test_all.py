@@ -210,9 +210,7 @@ class TestProcesses:
 
         # manually mark the application as running on a remote computer
         computer = Computer("other", "Other.local", "AA:BB:CC:DD:EE:FF")
-        status = self.data.status
-        status.start(self.application, computer)
-        self.data.status = status
+        self.data.status.start(self.application, computer)
         assert self.data.status.is_running(self.application, computer)
 
         # start the application
@@ -236,9 +234,7 @@ class TestProcesses:
 
         self._store_data()
 
-        status = self.data.status
-        status.start(self.application, self.computer)
-        self.data.status = status
+        self.data.status.start(self.application, self.computer)
 
         self._start_application()
 
@@ -260,9 +256,7 @@ class TestProcesses:
 
         self._store_data()
 
-        status = self.data.status
-        status.start(self.application, self.computer)
-        self.data.status = status
+        self.data.status.start(self.application, self.computer)
 
         self._stop_application()
 

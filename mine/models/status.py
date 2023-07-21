@@ -85,13 +85,13 @@ class ProgramStatus:
 
     def find(self, application):
         """Return the application status for an application."""
-        for app_status in self.applications:
-            if app_status.application == application.name:
+        for status in self.applications:
+            if status.application == application.name:
                 break
         else:
-            app_status = Status(application.name)
-            self.applications.append(app_status)
-        return app_status
+            status = Status(application.name)
+            self.applications.append(status)
+        return status
 
     def get_latest(self, application):
         """Get the last computer's name logged as running an application."""

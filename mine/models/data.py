@@ -6,6 +6,7 @@ import crayons
 import log
 
 from ..manager import BaseManager
+from .computer import Computer
 from .config import ProgramConfig
 from .status import ProgramStatus
 
@@ -29,45 +30,41 @@ class Data:
         self._last_counter = self.status.counter
         return changed
 
-    @staticmethod
-    def prune_status(config: ProgramConfig, status: ProgramStatus):
+    def prune_status(self):
         """Remove undefined applications and computers."""
         log.info("Cleaning up applications and computers...")
-        for appstatus in status.applications.copy():
-            if not config.find_application(appstatus.application):
-                status.applications.remove(appstatus)
-                log.info("Removed application: %s", appstatus)
+        # TODO: remove copy and drop freeze?
+        for status in self.status.applications.copy():
+            if not self.config.find_application(status.application):
+                self.status.applications.remove(status)
+                log.info("Removed application: %s", status)
             else:
-                for computerstate in appstatus.computers.copy():
-                    if not config.find_computer(computerstate.computer):
-                        appstatus.computers.remove(computerstate)
-                        log.info("Removed computer: %s", computerstate)
+                for state in status.computers.copy():
+                    if not self.config.find_computer(state.computer):
+                        status.computers.remove(state)
+                        log.info("Removed computer: %s", state)
 
-    @staticmethod
-    def queue_all_applications(config: ProgramConfig, status: ProgramStatus, computer):
+    def queue_all_applications(self, computer: Computer):
         """Queue applications for launch."""
         log.info("Queuing applications for launch...")
-        for application in config.applications:
+        for application in self.config.applications:
             if application.auto_queue:
                 log.debug("Queuing %s on %s...", application, computer)
-                status.queue(application, computer)
+                self.status.queue(application, computer)
 
-    @staticmethod
-    def launch_queued_applications(
-        config: ProgramConfig, status: ProgramStatus, computer, manager: BaseManager
-    ):
+    def launch_queued_applications(self, computer: Computer, manager: BaseManager):
         """Launch applications that have been queued."""
         log.info("Launching queued applications...")
-        for app_status in status.applications:
-            if app_status.next:
-                application = config.get_application(app_status.application)
-                print(crayons.yellow(f"{application} is queued for {app_status.next}"))
-                if app_status.next == computer:
-                    latest = status.get_latest(application)
+        for status in self.status.applications:
+            if status.next:
+                application = self.config.get_application(status.application)
+                print(crayons.yellow(f"{application} is queued for {status.next}"))
+                if status.next == computer:
+                    latest = self.status.get_latest(application)
                     if latest in (computer, None) or application.no_wait:
                         if not manager.is_running(application):
                             manager.start(application)
-                        app_status.next = None
+                        status.next = None
                     else:
                         print(
                             crayons.yellow(
@@ -77,27 +74,23 @@ class Data:
                 elif manager.is_running(application):
                     manager.stop(application)
 
-    @staticmethod
-    def close_all_applications(config: ProgramConfig, manager: BaseManager):
+    def close_all_applications(self, manager: BaseManager):
         """Close all applications running on this computer."""
         log.info("Closing all applications on this computer...")
-        for application in config.applications:
+        for application in self.config.applications:
             manager.stop(application)
 
-    @staticmethod
-    def update_status(
-        config: ProgramConfig, status: ProgramStatus, computer, manager: BaseManager
-    ):
+    def update_status(self, computer: Computer, manager: BaseManager):
         """Update each application's status."""
         log.info("Recording application status...")
-        for application in config.applications:
-            latest = status.get_latest(application)
+        for application in self.config.applications:
+            latest = self.status.get_latest(application)
             if manager.is_running(application):
                 if computer != latest:
-                    if status.is_running(application, computer):
+                    if self.status.is_running(application, computer):
                         # case 1: application just launched remotely
                         manager.stop(application)
-                        status.stop(application, computer)
+                        self.status.stop(application, computer)
                         print(
                             crayons.green(f"{application} is now running on {latest}")
                         )
@@ -106,7 +99,7 @@ class Data:
                         )
                     else:
                         # case 2: application just launched locally
-                        status.start(application, computer)
+                        self.status.start(application, computer)
                         print(
                             crayons.green(f"{application} is now running on {computer}")
                         )
@@ -114,9 +107,9 @@ class Data:
                     # case 3: application already running locally
                     print(crayons.cyan(f"{application} is running on {computer}"))
             else:
-                if status.is_running(application, computer):
+                if self.status.is_running(application, computer):
                     # case 4: application just closed locally
-                    status.stop(application, computer)
+                    self.status.stop(application, computer)
                     print(crayons.red(f"{application} is now stopped on {computer}"))
                 elif latest:
                     # case 5: application already closed locally

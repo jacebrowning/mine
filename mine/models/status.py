@@ -83,7 +83,7 @@ class ProgramStatus:
     counter: int = 0
     applications: list[Status] = field(default_factory=list)
 
-    def find(self, application):
+    def find(self, application: Application):
         """Return the application status for an application."""
         for status in self.applications:
             if status.application == application.name:
@@ -93,7 +93,7 @@ class ProgramStatus:
             self.applications.append(status)
         return status
 
-    def get_latest(self, application):
+    def get_latest(self, application: Application) -> str | None:
         """Get the last computer's name logged as running an application."""
         for status in self.applications:
             if status.application == application.name:
@@ -105,14 +105,13 @@ class ProgramStatus:
                         application,
                         ", ".join(str(s) for s in states),
                     )
-                    # TODO: consider returning the computer instance
                     return states[0].computer
 
         log.debug(f"{application} marked as started on: nothing")
         return None
 
     @log_running
-    def is_running(self, application, computer):
+    def is_running(self, application: Application, computer: Computer):
         """Determine if an application is logged as running on a computer."""
         for status in self.applications:
             if status.application == application.name:

@@ -48,7 +48,7 @@ class TestMain:
             cli.main(["-vvvv"])
         assert mock_log.exception.call_count == 1
 
-    @patch("mine.cli.daemon", None)
+    @patch("mine.daemon.application", None)
     def test_path(self, tmp_path):
         """Verify a custom setting file path can be used."""
         cli.main(["--file", tmp_path])
@@ -65,7 +65,7 @@ class TestMain:
         cli.main(["--daemon", "42"])
         mock_run.assert_called_once_with(path=None, delay=42)
 
-    @patch("mine.cli.daemon", Application("?"))
+    @patch("mine.daemon.application", Application("?"))
     def test_warning_when_daemon_is_not_running(self, tmp_path):
         with pytest.raises(SystemExit):
             cli.main(["--file", tmp_path])
@@ -92,21 +92,21 @@ class TestClean:
     def test_clean(self, mock_run):
         cli.main(["clean"])
         mock_run.assert_called_once_with(
-            path=None, delay=None, delete=True, force=False, stop=False
+            path=None, delay=None, delete=True, force=False, reset=False, stop=False
         )
 
     @patch("mine.cli.run")
     def test_clean_with_force(self, mock_run):
         cli.main(["clean", "--force"])
         mock_run.assert_called_once_with(
-            path=None, delay=None, delete=True, force=True, stop=False
+            path=None, delay=None, delete=True, force=True, reset=False, stop=False
         )
 
     @patch("mine.cli.run")
     def test_clean_with_stop(self, mock_run):
         cli.main(["clean", "--stop"])
         mock_run.assert_called_once_with(
-            path=None, delay=None, delete=True, force=False, stop=True
+            path=None, delay=None, delete=True, force=False, reset=False, stop=True
         )
 
 

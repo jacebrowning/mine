@@ -1,9 +1,9 @@
 """Data structures that combine all program data."""
 
-from dataclasses import dataclass, field
 
 import crayons
 import log
+from datafiles import datafile, field
 
 from ..manager import Manager
 from .computer import Computer
@@ -11,10 +11,11 @@ from .config import ProgramConfig
 from .status import ProgramStatus
 
 
-@dataclass
+@datafile("{self.path}", defaults=True)
 class Data:
     """Primary wrapper for all settings."""
 
+    path: str
     config: ProgramConfig = field(default_factory=ProgramConfig)
     status: ProgramStatus = field(default_factory=ProgramStatus)
 
@@ -30,7 +31,7 @@ class Data:
         self._last_counter = self.status.counter
         return changed
 
-    def prune_status(self):
+    def prune_status(self, *, reset_counter=False):
         """Remove undefined applications and computers."""
         log.info("Cleaning up applications and computers...")
         for status in self.status.applications.copy():
@@ -42,6 +43,12 @@ class Data:
                     if not self.config.find_computer(state.computer):
                         status.computers.remove(state)
                         log.info("Removed computer: %s", state)
+        if reset_counter:
+            self.status.counter = 0
+            for status in self.status.applications:
+                for computer in status.computers:
+                    computer.timestamp.started = 0
+                    computer.timestamp.stopped = 0
 
     def queue_all_applications(self, computer: Computer):
         """Queue applications for launch."""

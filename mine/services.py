@@ -74,7 +74,8 @@ def delete_conflicts(root=None, config_only=False, force=False) -> int:
                 path = os.path.join(dirname, filename)
                 if force:
                     os.remove(path)
-                print(path)
+                if not config_only:
+                    print(path)
 
     if count and not force:
         print(f"\nRun again with '--force' to delete these {count} conflict(s)")

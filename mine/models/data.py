@@ -1,9 +1,9 @@
 """Data structures that combine all program data."""
 
-from dataclasses import dataclass, field
 
 import crayons
 import log
+from datafiles import datafile, field
 
 from ..manager import Manager
 from .computer import Computer
@@ -11,10 +11,11 @@ from .config import ProgramConfig
 from .status import ProgramStatus
 
 
-@dataclass
+@datafile("{self.path}", defaults=True)
 class Data:
     """Primary wrapper for all settings."""
 
+    path: str
     config: ProgramConfig = field(default_factory=ProgramConfig)
     status: ProgramStatus = field(default_factory=ProgramStatus)
 

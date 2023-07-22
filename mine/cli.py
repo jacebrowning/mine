@@ -3,20 +3,16 @@
 """Command-line interface."""
 
 import argparse
-import subprocess
 import sys
 import time
 
 import datafiles
 import log
-from datafiles.model import create_model
 from startfile import startfile
 
-from . import CLI, DESCRIPTION, VERSION, common, services
-from .manager import Manager, get_manager
-from .models import Application, Data, Versions
-
-daemon = Application("Mine", versions=Versions(mac=CLI, windows=CLI, linux=CLI))
+from . import CLI, DESCRIPTION, VERSION, common, daemon, services
+from .manager import get_manager
+from .models import Data
 
 
 def main(args=None):
@@ -184,9 +180,7 @@ def run(
 
     root = services.find_root()
     path = path or services.find_config_path(root=root)
-
-    model = create_model(Data, pattern=path, defaults=True)
-    data: Data = model()
+    data = Data(path)
 
     log.info("Identifying current computer...")
     with datafiles.frozen(data):
@@ -194,7 +188,7 @@ def run(
     log.info("Current computer: %s", computer)
 
     if stop:
-        manager.stop(daemon)
+        daemon.stop(manager)
     if edit:
         return startfile(path)
     if delete:
@@ -245,23 +239,7 @@ def run(
             data.prune_status()
 
     if delay is None:
-        return _restart_daemon(manager)
-
-    return True
-
-
-def _restart_daemon(manager: Manager):
-    cmd = "nohup {} --daemon --verbose >> /tmp/mine.log 2>&1 &".format(CLI)
-    if daemon and not manager.is_running(daemon):
-        log.warning("Daemon is not running, attempting to restart...")
-
-        log.info("$ %s", cmd)
-        subprocess.call(cmd, shell=True)
-        if manager.is_running(daemon):
-            return True
-
-        log.error("Manually start daemon: %s", cmd)
-        return False
+        return daemon.restart(manager)
 
     return True
 

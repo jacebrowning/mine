@@ -10,7 +10,7 @@ def describe_data():
     @pytest.fixture
     def data(monkeypatch):
         monkeypatch.setattr(datafiles.settings, "HOOKS_ENABLED", False)
-        return Data()
+        return Data("tmp/mine.yml")
 
     def describe_repr():
         def it_should_always_be_a_simple_name(data):

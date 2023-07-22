@@ -1,8 +1,9 @@
 # Release Notes
 
-## 4.1 (unreleased)
+## 4.1 (2023-07-22)
 
 - Added a flag to manually stop the background daemon process.
+- Improved change detection in the daemon loop.
 
 ## 4.0 (2023-07-20)
 

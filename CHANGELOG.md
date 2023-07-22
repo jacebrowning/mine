@@ -3,6 +3,7 @@
 ## 4.1 (2023-07-22)
 
 - Added a flag to manually stop the background daemon process.
+- Added a flag to reset the internal status counter.
 - Improved change detection in the daemon loop.
 
 ## 4.0 (2023-07-20)

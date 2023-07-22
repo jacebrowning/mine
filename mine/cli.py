@@ -108,10 +108,16 @@ def main(args=None):
         help="actually delete the conflicted files",
     )
     sub.add_argument(
+        "-r",
+        "--reset",
+        action="store_true",
+        help="reset the internal status counter",
+    )
+    sub.add_argument(
         "-s",
         "--stop",
         action="store_true",
-        help="stop the background daemon process ",
+        help="stop the background daemon process",
     )
 
     # Parse arguments
@@ -126,6 +132,7 @@ def main(args=None):
     elif args.command == "clean":
         kwargs["delete"] = True
         kwargs["force"] = args.force
+        kwargs["reset"] = args.reset
         kwargs["stop"] = args.stop
 
     # Configure logging
@@ -157,6 +164,7 @@ def run(
     edit=False,
     delete=False,
     force=False,
+    reset=False,
     stop=False,
 ):
     """Run the program.
@@ -171,9 +179,10 @@ def run(
 
     :param delete: attempt to delete conflicted files
     :param force: actually delete conflicted files
+    :param reset: reset the internal status counter
     :param stop: stop the background daemon process
 
-    """  # pylint: disable=too-many-arguments,too-many-branches
+    """
     manager = get_manager()
     if not manager.is_running(services.APPLICATION):
         manager.start(services.APPLICATION)
@@ -189,6 +198,9 @@ def run(
 
     if stop:
         daemon.stop(manager)
+    if reset:
+        with datafiles.frozen(data):
+            data.prune_status(reset_counter=True)
     if edit:
         return startfile(path)
     if delete:

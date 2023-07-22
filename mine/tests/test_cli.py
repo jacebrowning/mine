@@ -92,21 +92,21 @@ class TestClean:
     def test_clean(self, mock_run):
         cli.main(["clean"])
         mock_run.assert_called_once_with(
-            path=None, delay=None, delete=True, force=False, stop=False
+            path=None, delay=None, delete=True, force=False, reset=False, stop=False
         )
 
     @patch("mine.cli.run")
     def test_clean_with_force(self, mock_run):
         cli.main(["clean", "--force"])
         mock_run.assert_called_once_with(
-            path=None, delay=None, delete=True, force=True, stop=False
+            path=None, delay=None, delete=True, force=True, reset=False, stop=False
         )
 
     @patch("mine.cli.run")
     def test_clean_with_stop(self, mock_run):
         cli.main(["clean", "--stop"])
         mock_run.assert_called_once_with(
-            path=None, delay=None, delete=True, force=False, stop=True
+            path=None, delay=None, delete=True, force=False, reset=False, stop=True
         )
 
 

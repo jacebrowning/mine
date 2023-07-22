@@ -36,7 +36,8 @@ classifiers = [
 
 python = "^3.10"
 
-datafiles = "^2.1"
+# datafiles = "^2.1"
+datafiles = { path = "../datafiles", develop=true }
 psutil = "~5.6"
 crayons = "~0.1"
 minilog = "^2.1"

@@ -18,7 +18,8 @@ def pytest_configure(config):
     log.init(
         level=log.DEBUG, format="[%(levelname)-8s] (%(name)s @%(lineno)4d) %(message)s"
     )
-    log.silence("datafiles", allow_warning=True)
+    # log.silence("datafiles", allow_warning=True)
+    log.silence("datafiles", allow_info=True)
 
     terminal = config.pluginmanager.getplugin("terminal")
     terminal.TerminalReporter.showfspath = False

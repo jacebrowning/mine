@@ -108,6 +108,8 @@ class TestFiles:
         data = Data()
         datafiles.sync(data, path, defaults=True)
 
+        log.c(data.datafile.text)
+
         assert data.config.applications
         for application in data.config.applications:
             if application.name == "slack":
@@ -133,7 +135,7 @@ class TestProcesses:
 
     def _store_data(self):
         """Set up initial data file for tests."""
-        self.data: Data
+        self.data = Data()
         datafiles.sync(self.data, self.path, defaults=True)
         self.data.config.applications.append(self.application)
         self.computer = self.data.config.get_current_computer("This Computer")

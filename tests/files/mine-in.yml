@@ -32,24 +32,35 @@ config:
         mac: yes
         windows: yes.exe
         linux: yes
+    - name: Example Application
+      properties:
+        auto_queue: false
+        single_instance: false
+      versions:
+        mac: yes
+        windows: yes.exe
+        linux: yes
+    - name: Example Application
+      properties:
+        auto_queue: false
+        single_instance: false
+      versions:
+        mac: yes
+        windows: yes.exe
+        linux: yes
   computers:
     - address: AA:BB:CC:DD:EE:FF
-      hostname: Jaces-MacBook
+      hostname: 69-176-136-38.stellarbb.com
       name: macbook
       serial: GVKG73G9GV
+      mine: v4.0.4
     - address: '02:83:95:65:F8:6B'
       hostname: '69-176-136-38.stellarbb.com'
       name: macbook-pro
       serial: GVKG73G9GV
+      mine: ''
 status:
   applications:
-    - application: itunes
-      computers:
-        - computer: macbook-pro
-          timestamp:
-            started: 444
-            stopped: 0
-      next:
     - application: example application
       computers:
         - computer: macbook-pro
@@ -57,4 +68,22 @@ status:
             started: 500
             stopped: 0
       next:
-  counter: 501
+    - application: slack
+      computers:
+        - computer: macbook
+          timestamp:
+            started: 502
+            stopped: 0
+      next:
+    - application: Example Application
+      computers:
+        - computer: macbook
+          timestamp:
+            started: 505
+            stopped: 0
+        - computer: Other Computer
+          timestamp:
+            started: 506
+            stopped: 0
+      next:
+  counter: 506

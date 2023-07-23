@@ -18,6 +18,7 @@ class Properties:
 
     auto_queue: bool = False
     single_instance: bool = False
+    keep_running: bool = False
 
 
 @dataclass
@@ -39,11 +40,3 @@ class Application:
 
     def __lt__(self, other):
         return str(self).lower() < str(other).lower()
-
-    @property
-    def auto_queue(self):
-        return self.properties.auto_queue
-
-    @property
-    def no_wait(self):
-        return not self.properties.single_instance

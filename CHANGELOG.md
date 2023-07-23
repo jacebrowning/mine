@@ -1,5 +1,9 @@
 # Release Notes
 
+## 4.2 (2023-07-23)
+
+- Added `keep_running` option for applications that can stay running forever.
+
 ## 4.1 (2023-07-22)
 
 - Added a flag to manually stop the background daemon process.

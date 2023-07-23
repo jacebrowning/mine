@@ -54,7 +54,7 @@ class Data:
         """Queue applications for launch."""
         log.info("Queuing applications for launch...")
         for application in self.config.applications:
-            if application.auto_queue:
+            if application.properties.auto_queue:
                 log.debug("Queuing %s on %s...", application, computer)
                 self.status.queue(application, computer)
 
@@ -67,7 +67,10 @@ class Data:
                 print(crayons.yellow(f"{application} is queued for {status.next}"))
                 if status.next == computer:
                     latest = self.status.get_latest(application)
-                    if latest in (computer, None) or application.no_wait:
+                    if (
+                        latest in (computer, None)
+                        or not application.properties.single_instance
+                    ):
                         if not manager.is_running(application):
                             manager.start(application)
                         status.next = None
@@ -84,7 +87,8 @@ class Data:
         """Close all applications running on this computer."""
         log.info("Closing all applications on this computer...")
         for application in self.config.applications:
-            manager.stop(application)
+            if not application.properties.keep_running:
+                manager.stop(application)
 
     def update_status(self, computer: Computer, manager: Manager):
         """Update each application's status."""

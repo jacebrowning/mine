@@ -10,7 +10,7 @@ def describe_data():
     @pytest.fixture
     def data(monkeypatch):
         monkeypatch.setattr(datafiles.settings, "HOOKS_ENABLED", False)
-        return Data("../../tests/files/mine.yml")
+        return Data("tmp/mine.yml")
 
     def describe_repr():
         def it_should_always_be_a_simple_name(data: Data):
@@ -34,13 +34,11 @@ def describe_data():
 
     def describe_prune_status():
         def it_can_preserve_counter(data: Data):
-            data.datafile.load()  # type: ignore
-            assert data.status.counter > 0
+            data.status.counter = 1
             data.prune_status()
             assert data.status.counter > 0
 
         def it_can_reset_counter(data: Data):
-            data.datafile.load()  # type: ignore
-            assert data.status.counter > 0
+            data.status.counter = 1
             data.prune_status(reset_counter=True)
             assert data.status.counter == 0

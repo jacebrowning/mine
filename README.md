@@ -20,7 +20,7 @@ and some just don't make sense to keep running on all your computers:
 - HipChat
 - etc.
 
-[![Build Status](https://img.shields.io/github/actions/workflow/status/jacebrowning/mine/main.yml?branch=main&label=linux)](https://github.com/jacebrowning/mine/actions)
+[![Build Status](https://img.shields.io/github/actions/workflow/status/jacebrowning/mine/main.yml?branch=main&label=build)](https://github.com/jacebrowning/mine/actions)
 [![Coverage Status](https://img.shields.io/codecov/c/gh/jacebrowning/mine)](https://codecov.io/gh/jacebrowning/mine)
 [![Scrutinizer Code Quality](https://img.shields.io/scrutinizer/g/jacebrowning/mine.svg)](https://scrutinizer-ci.com/g/jacebrowning/mine/?branch=main)
 [![PyPI Version](https://img.shields.io/pypi/v/mine.svg)](https://pypi.org/project/mine)

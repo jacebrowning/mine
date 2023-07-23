@@ -38,7 +38,7 @@ python = "^3.10"
 
 datafiles = "^2.1"
 psutil = "~5.6"
-crayons = "~0.1"
+crayons = "~0.4"
 minilog = "^2.1"
 universal-startfile = "^0.2"
 

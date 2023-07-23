@@ -4,17 +4,18 @@ config:
       serial: abc123
       address: AA:BB:CC:DD:EE:FF
       hostname: Jaces-MacBook
-      mine: v4.1
+      mine: v4.2
     - name: macbook-pro
       serial: def456
       address: 11:22:33:44:55:66
       hostname: Jaces-MacBook-2
-      mine: v4.1
+      mine: v4.2
   applications:
     - name: itunes
       properties:
         auto_queue: false
         single_instance: false
+        keep_running: false
       versions:
         mac: ''
         windows: iTunes.exe
@@ -23,6 +24,7 @@ config:
       properties:
         auto_queue: false
         single_instance: false
+        keep_running: false
       versions:
         mac: iPhoto
         windows:

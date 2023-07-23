@@ -355,14 +355,14 @@ requests = ">=2.28,<3.0"
 
 [[package]]
 name = "crayons"
-version = "0.1.2"
+version = "0.4.0"
 description = "TextUI colors for Python."
 category = "main"
 optional = false
 python-versions = "*"
 files = [
-    {file = "crayons-0.1.2-py2-none-any.whl", hash = "sha256:6f51241d0c4faec1c04c1c0ac6a68f1d66a4655476ce1570b3f37e5166a599cc"},
-    {file = "crayons-0.1.2.tar.gz", hash = "sha256:5e17691605e564d63482067eb6327d01a584bbaf870beffd4456a3391bd8809d"},
+    {file = "crayons-0.4.0-py2.py3-none-any.whl", hash = "sha256:e73ad105c78935d71fe454dd4b85c5c437ba199294e7ffd3341842bc683654b1"},
+    {file = "crayons-0.4.0.tar.gz", hash = "sha256:bd33b7547800f2cfbd26b38431f9e64b487a7de74a947b0fafc89b45a601813f"},
 ]
 
 [package.dependencies]
@@ -1738,4 +1738,4 @@ files = [
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.10"
-content-hash = "4c5fd96a0645d0c41735d003bc1a78cda3ecd7a143a8f894948fbabac5a4d5fe"
+content-hash = "e65505b8429d62a42cd61bafe24f2d1bee738ef8fd31171eb7a8775cc031dfbb"

@@ -40,10 +40,9 @@ class Computer:
         return str(self).lower() < str(other).lower()
 
     @staticmethod
-    def get_address(node=None):
+    def get_address():
         """Get this computer's MAC address."""
-        if node is None:
-            node = uuid.getnode()
+        node = uuid.getnode()
         return ":".join(("%012X" % node)[i : i + 2] for i in range(0, 12, 2))
 
     @staticmethod
@@ -53,6 +52,7 @@ class Computer:
 
     @staticmethod
     def get_serial():
+        """Get this computer's storage serial number."""
         if os.name == "nt":
             cmd = "vol C:"
             output = os.popen(cmd).read()

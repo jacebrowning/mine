@@ -56,7 +56,7 @@ wrapt = "*" # missing 'pylint' dependency
 types-setuptools = "*"
 
 # Testing
-pytest = "^7.1"
+pytest = "^7.4"
 pytest-describe = "^2.0"
 pytest-expecter = "^3.0"
 pytest-random = "*"

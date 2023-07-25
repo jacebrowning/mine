@@ -81,7 +81,8 @@ class Data:
                             )
                         )
                 elif manager.is_running(application):
-                    manager.stop(application)
+                    if not application.properties.keep_running:
+                        manager.stop(application)
 
     def close_all_applications(self, manager: Manager):
         """Close all applications running on this computer."""
@@ -99,14 +100,17 @@ class Data:
                 if computer != latest:
                     if self.status.is_running(application, computer):
                         # case 1: application just launched remotely
-                        manager.stop(application)
-                        self.status.stop(application, computer)
                         print(
                             crayons.green(f"{application} is now running on {latest}")
                         )
-                        print(
-                            crayons.red(f"{application} is now stopped on {computer}")
-                        )
+                        if not application.properties.keep_running:
+                            manager.stop(application)
+                            self.status.stop(application, computer)
+                            print(
+                                crayons.red(
+                                    f"{application} is now stopped on {computer}"
+                                )
+                            )
                     else:
                         # case 2: application just launched locally
                         self.status.start(application, computer)

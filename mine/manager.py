@@ -146,6 +146,7 @@ class MacManager(Manager):  # pragma: no cover (manual)
 
     IGNORED_APPLICATION_NAMES = [
         "com.apple.mail.spotlightindexextension",
+        "com.apple.notes.intentsextension",
         "com.apple.notes.spotlightindexextension",
         "com.apple.notes.widgetextension",
         "com.apple.podcasts.spotlightindexextension",

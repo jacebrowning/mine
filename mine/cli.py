@@ -204,7 +204,12 @@ def run(
     if edit:
         return startfile(path)
     if delete:
-        return services.delete_conflicts(root, force=force)
+        # The conflict count doubles as the "deleted something" signal for
+        # the daemon loop below; here it must not double as the success
+        # flag, otherwise a clean tree (or a force run with nothing to
+        # delete) exits nonzero.
+        services.delete_conflicts(root, force=force)
+        return True
 
     if switch is True:
         switch = computer

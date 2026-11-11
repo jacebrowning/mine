@@ -117,6 +117,41 @@ class TestEdit:
         mock_run.assert_called_once_with(path=None, delay=None, edit=True)
 
 
+class TestCleanRun:
+    """Integration tests for `run` with the `delete` path."""
+
+    @patch("mine.services.find_root")
+    def test_clean_without_conflicts_succeeds(self, mock_root, tmpdir_factory):
+        """`mine clean` on a clean tree must succeed (exit 0)."""
+        root = tmpdir_factory.mktemp("clean")
+        mock_root.return_value = str(root)
+        path = str(root.join("mine.yml"))
+        assert cli.run(path, delete=True, cleanup=False) is True
+
+    @patch("mine.services.find_root")
+    def test_clean_with_force_and_nothing_to_delete_succeeds(
+        self, mock_root, tmpdir_factory
+    ):
+        """`mine clean --force` with no conflicts must succeed (exit 0)."""
+        root = tmpdir_factory.mktemp("clean-force")
+        mock_root.return_value = str(root)
+        path = str(root.join("mine.yml"))
+        assert cli.run(path, delete=True, force=True, cleanup=False) is True
+
+    @patch("mine.services.find_root")
+    def test_clean_with_force_deletes_and_succeeds(
+        self, mock_root, tmpdir_factory
+    ):
+        """`mine clean --force` deletes conflicts and succeeds (exit 0)."""
+        root = tmpdir_factory.mktemp("clean-delete")
+        mock_root.return_value = str(root)
+        conflict = root.join("0 (Jace's conflicted copy 2015-03-11).fake")
+        conflict.write("")
+        path = str(root.join("mine.yml"))
+        assert cli.run(path, delete=True, force=True, cleanup=False) is True
+        assert not os.path.exists(str(conflict))
+
+
 def _mock_run(*args, **kwargs):
     """Placeholder logic for logging tests."""
     logging.debug(args)

@@ -3,6 +3,7 @@ import subprocess
 
 import datafiles
 import log
+import pytest
 
 from mine import cli
 from mine.models import (
@@ -113,6 +114,7 @@ class TestFiles:
             assert False
 
 
+@pytest.mark.requires_dropbox
 class TestProcesses:
     """Integration tests for tracking and stopping processes."""
 

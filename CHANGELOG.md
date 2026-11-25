@@ -4,6 +4,7 @@
 
 - Dropped support for Python 3.10.
 - Added support for Python 3.13, 3.14, and 3.15.
+- Implemented application detection on Windows.
 
 ## 4.2 (2023-07-23)
 

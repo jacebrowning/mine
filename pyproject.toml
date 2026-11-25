@@ -120,7 +120,7 @@ addopts = """
 
 cache_dir = ".cache/pytest/"
 
-markers = ["linux_only", "mac_only", "windows_only"]
+markers = ["linux_only", "mac_only", "windows_only", "requires_dropbox"]
 
 [build-system]
 

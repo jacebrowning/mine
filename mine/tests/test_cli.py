@@ -48,6 +48,7 @@ class TestMain:
             cli.main(["-vvvv"])
         assert mock_log.exception.call_count == 1
 
+    @pytest.mark.requires_dropbox
     @patch("mine.daemon.application", None)
     def test_path(self, tmp_path):
         """Verify a custom setting file path can be used."""
@@ -65,6 +66,7 @@ class TestMain:
         cli.main(["--daemon", "42"])
         mock_run.assert_called_once_with(path=None, delay=42)
 
+    @pytest.mark.requires_dropbox
     @patch("mine.daemon.application", Application("?"))
     def test_warning_when_daemon_is_not_running(self, tmp_path):
         with pytest.raises(SystemExit):

@@ -1,3 +1,5 @@
+import subprocess
+
 import pytest
 
 from mine.manager import LinuxManager, MacManager, WindowsManager, get_manager
@@ -23,9 +25,14 @@ class TestLinuxManager:
     @pytest.mark.linux_only
     def test_is_running_true(self):
         """Verify a process can be detected as running."""
-        application = Application("init")
-        application.versions.linux = "init"
-        assert True is self.manager.is_running(application)
+        application = Application("sleep")
+        application.versions.linux = "sleep"
+        process = subprocess.Popen(["sleep", "60"])
+        try:
+            assert True is self.manager.is_running(application)
+        finally:
+            process.kill()
+            process.wait()
 
     def test_is_running_none(self):
         """Verify a process can be detected as untracked."""

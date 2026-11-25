@@ -46,7 +46,7 @@ jobs:
       run: make test
 
     - name: Upload coverage
-      if: matrix.python-version == '3.15'
+      if: matrix.python-version == '3.15' && !github.event.pull_request.head.repo.fork
       uses: codecov/codecov-action@v4
       with:
         fail_ci_if_error: true

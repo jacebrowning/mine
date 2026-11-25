@@ -216,13 +216,24 @@ class WindowsManager(Manager):  # pragma: no cover (manual)
     FRIENDLY = NAME
 
     def is_running(self, application):
-        pass
+        name = application.versions.windows
+        if not name:
+            return None
+        process = self._get_process(name)
+        return process is not None
 
     def start(self, application):
         pass
 
     def stop(self, application):
-        pass
+        name = application.versions.windows
+        while True:
+            process = self._get_process(name)
+            if process and process.is_running():
+                process.terminate()
+                process.wait()
+            else:
+                break
 
 
 def get_manager(name=None) -> Manager:

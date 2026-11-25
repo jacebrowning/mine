@@ -1,5 +1,10 @@
 # Release Notes
 
+## 4.3 (unreleased)
+
+- Dropped support for Python 3.10.
+- Added support for Python 3.13, 3.14, and 3.15.
+
 ## 4.2 (2023-07-23)
 
 - Added `keep_running` option for applications that can stay running forever.

@@ -1,6 +1,5 @@
 """Data structures that combine all program data."""
 
-
 import crayons
 import log
 from datafiles import datafile, field

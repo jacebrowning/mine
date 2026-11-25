@@ -48,7 +48,7 @@ universal-startfile = "*"
 [tool.poetry.group.dev.dependencies]
 
 # Formatters
-black = "^24.8"
+black = ">=24.8,<27.0"
 isort = "^5.13"
 
 # Linters

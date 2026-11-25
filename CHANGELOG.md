@@ -1,6 +1,6 @@
 # Release Notes
 
-## 4.3 (unreleased)
+## 4.3 (2026-11-25)
 
 - Dropped support for Python 3.10.
 - Added support for Python 3.13, 3.14, and 3.15.
